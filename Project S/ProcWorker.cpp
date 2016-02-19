@@ -1,7 +1,6 @@
 //author - sam gates
 #include "ProcWorker.h"
 
-
 /*
 The class used to start and check if a process is running
 */
@@ -15,11 +14,13 @@ ProcWorker::ProcWorker()
 
 }
 
+//Returns server directory
 System::String^ ProcWorker::servDir() {
-	
+
 	return Globals::ServDir;
 }
 
+//Set server directory
 void ProcWorker::setServDir(System::String^ s) {
 
 	Globals::ServDir = s;
@@ -48,6 +49,8 @@ void ProcWorker::startProc(LPCTSTR lpApp) {
 		&si,
 		&pi))
 	std::printf("Started\n");
+
+	//Close the process handle
 	CloseHandle(pi.hProcess);
 	CloseHandle(pi.hThread);
 
@@ -63,10 +66,11 @@ void ProcWorker::endProc(char *procName) {
 	BOOL bInheritHandle = FALSE;
 	HANDLE h = OpenProcess(dwDesiredAccess, bInheritHandle, id);
 	if (h == NULL)
-		std::printf("failed\n");
+		std::printf("Server not open\n");
 	else
 	{
 		BOOL result = TerminateProcess(h, 0);
+		std::printf("Server terminated\n");
 		CloseHandle(h);
 	}
 }

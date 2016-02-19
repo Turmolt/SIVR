@@ -27,7 +27,7 @@ namespace ProjectS {
 			//
 			//TODO: Add the constructor code here
 			//
-			
+			this->serverDir->Text = ProcWorker::servDir();
 				
 		}
 
@@ -50,12 +50,14 @@ namespace ProjectS {
 	private: System::Windows::Forms::Button^  button2;
 
 
-	private: System::Windows::Forms::Panel^  panel1;
-	private: System::Windows::Forms::Label^  label2;
+
+
 	private: System::Windows::Forms::Label^  label1;
 	
 	private: System::Windows::Forms::TextBox^  serverDir;
-	
+	private: System::Windows::Forms::Button^  button1;
+	private: System::Windows::Forms::Button^  button3;
+
 
 	private:
 		/// <summary>
@@ -75,21 +77,20 @@ namespace ProjectS {
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->serverDir = (gcnew System::Windows::Forms::TextBox());
-			this->panel1 = (gcnew System::Windows::Forms::Panel());
-			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->button1 = (gcnew System::Windows::Forms::Button());
+			this->button3 = (gcnew System::Windows::Forms::Button());
 			this->flowLayoutPanel1->SuspendLayout();
 			this->panel2->SuspendLayout();
-			this->panel1->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// flowLayoutPanel1
 			// 
 			this->flowLayoutPanel1->Controls->Add(this->panel2);
-			this->flowLayoutPanel1->Controls->Add(this->panel1);
-			this->flowLayoutPanel1->Location = System::Drawing::Point(12, 64);
+			this->flowLayoutPanel1->Location = System::Drawing::Point(16, 79);
+			this->flowLayoutPanel1->Margin = System::Windows::Forms::Padding(4);
 			this->flowLayoutPanel1->Name = L"flowLayoutPanel1";
-			this->flowLayoutPanel1->Size = System::Drawing::Size(665, 506);
+			this->flowLayoutPanel1->Size = System::Drawing::Size(679, 103);
 			this->flowLayoutPanel1->TabIndex = 1;
 			// 
 			// panel2
@@ -97,26 +98,29 @@ namespace ProjectS {
 			this->panel2->Controls->Add(this->label3);
 			this->panel2->Controls->Add(this->button2);
 			this->panel2->Controls->Add(this->serverDir);
-			this->panel2->Location = System::Drawing::Point(3, 3);
+			this->panel2->Location = System::Drawing::Point(4, 4);
+			this->panel2->Margin = System::Windows::Forms::Padding(4);
 			this->panel2->Name = L"panel2";
-			this->panel2->Size = System::Drawing::Size(662, 74);
+			this->panel2->Size = System::Drawing::Size(673, 91);
 			this->panel2->TabIndex = 3;
 			// 
 			// label3
 			// 
 			this->label3->AutoSize = true;
 			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12));
-			this->label3->Location = System::Drawing::Point(27, 13);
+			this->label3->Location = System::Drawing::Point(36, 16);
+			this->label3->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(167, 20);
+			this->label3->Size = System::Drawing::Size(208, 25);
 			this->label3->TabIndex = 2;
 			this->label3->Text = L"VRPN Server directory";
 			// 
 			// button2
 			// 
-			this->button2->Location = System::Drawing::Point(388, 36);
+			this->button2->Location = System::Drawing::Point(517, 44);
+			this->button2->Margin = System::Windows::Forms::Padding(4);
 			this->button2->Name = L"button2";
-			this->button2->Size = System::Drawing::Size(75, 23);
+			this->button2->Size = System::Drawing::Size(100, 28);
 			this->button2->TabIndex = 1;
 			this->button2->Text = L"browse";
 			this->button2->UseVisualStyleBackColor = true;
@@ -124,55 +128,61 @@ namespace ProjectS {
 			// 
 			// serverDir
 			// 
-			this->serverDir->Location = System::Drawing::Point(31, 36);
+			this->serverDir->Location = System::Drawing::Point(41, 44);
+			this->serverDir->Margin = System::Windows::Forms::Padding(4);
 			this->serverDir->Name = L"serverDir";
-			this->serverDir->Size = System::Drawing::Size(351, 20);
+			this->serverDir->Size = System::Drawing::Size(467, 22);
 			this->serverDir->TabIndex = 0;
-			this->serverDir->Text = ProcWorker::servDir();
-			// 
-			// panel1
-			// 
-			this->panel1->Controls->Add(this->label2);
-			this->panel1->Location = System::Drawing::Point(3, 83);
-			this->panel1->Name = L"panel1";
-			this->panel1->Size = System::Drawing::Size(662, 423);
-			this->panel1->TabIndex = 1;
-			// 
-			// label2
-			// 
-			this->label2->AutoSize = true;
-			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12));
-			this->label2->Location = System::Drawing::Point(27, 13);
-			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(128, 20);
-			this->label2->TabIndex = 2;
-			this->label2->Text = L"Enabled Devices";
 			// 
 			// label1
 			// 
 			this->label1->AutoSize = true;
 			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 25));
-			this->label1->Location = System::Drawing::Point(39, 13);
+			this->label1->Location = System::Drawing::Point(52, 16);
+			this->label1->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(215, 39);
+			this->label1->Size = System::Drawing::Size(263, 48);
 			this->label1->TabIndex = 2;
 			this->label1->Text = L"Server Setup";
 			// 
+			// button1
+			// 
+			this->button1->Location = System::Drawing::Point(226, 203);
+			this->button1->Margin = System::Windows::Forms::Padding(4);
+			this->button1->Name = L"button1";
+			this->button1->Size = System::Drawing::Size(100, 28);
+			this->button1->TabIndex = 3;
+			this->button1->Text = L"save";
+			this->button1->UseVisualStyleBackColor = true;
+			this->button1->Click += gcnew System::EventHandler(this, &ServerSetup::button1_Click);
+			// 
+			// button3
+			// 
+			this->button3->Location = System::Drawing::Point(378, 203);
+			this->button3->Margin = System::Windows::Forms::Padding(4);
+			this->button3->Name = L"button3";
+			this->button3->Size = System::Drawing::Size(100, 28);
+			this->button3->TabIndex = 4;
+			this->button3->Text = L"cancel";
+			this->button3->UseVisualStyleBackColor = true;
+			this->button3->Click += gcnew System::EventHandler(this, &ServerSetup::button3_Click);
+			// 
 			// ServerSetup
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::LightSteelBlue;
-			this->ClientSize = System::Drawing::Size(689, 582);
+			this->ClientSize = System::Drawing::Size(729, 250);
+			this->Controls->Add(this->button3);
+			this->Controls->Add(this->button1);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->flowLayoutPanel1);
+			this->Margin = System::Windows::Forms::Padding(4);
 			this->Name = L"ServerSetup";
 			this->Text = L"ServerSetup";
 			this->flowLayoutPanel1->ResumeLayout(false);
 			this->panel2->ResumeLayout(false);
 			this->panel2->PerformLayout();
-			this->panel1->ResumeLayout(false);
-			this->panel1->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -199,8 +209,15 @@ namespace ProjectS {
 
 		String^ s = gcnew String(filename);
 		this->serverDir->Text = s;
-		ProcWorker::setServDir(s);
-		
 	}
+
+private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
+	ProcWorker::setServDir(this->serverDir->Text);
+	this->Close();
+}
+
+private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
+	this->Close();
+}
 };
 }

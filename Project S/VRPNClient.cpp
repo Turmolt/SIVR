@@ -13,7 +13,7 @@ void VRPNClient::makeClient()
 }
 
 void VRPNClient::enableDevice(char t) {
-
-
+	
 
 }
+

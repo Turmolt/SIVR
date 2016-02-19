@@ -11,8 +11,6 @@ Boss::Boss()
 [STAThread]
 int main()
 {
-	
-
 	Application::EnableVisualStyles();
 	Application::SetCompatibleTextRenderingDefault(false);
 	Application::Run(gcnew MainWindow());
