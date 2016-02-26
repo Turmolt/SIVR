@@ -4,11 +4,12 @@
 #include <string.h>
 #include <iostream>
 #include <fstream>
+#include "Glob.h"
 
 ref class VRPNClient
 {
 public:
-	VRPNClient();
+	VRPNClient(Type t);
 	void makeClient();
 	void enableDevice(char);
 

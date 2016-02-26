@@ -2,7 +2,7 @@
 
 
 
-VRPNClient::VRPNClient()
+VRPNClient::VRPNClient(Type t)
 {
 
 }

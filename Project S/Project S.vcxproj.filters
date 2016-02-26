@@ -37,7 +37,7 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="DeviceNames.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
