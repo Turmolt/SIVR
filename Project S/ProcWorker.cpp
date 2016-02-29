@@ -7,6 +7,7 @@ The class used to start and check if a process is running
 ref class Globals {
 public:
 	static System::String^ ServDir = "";
+	static System::String^ ConfigDir = "C:/Users/Sam/Desktop/Coding/C++/SIVR/Project S/vrpn.cfg";
 };
 
 ProcWorker::ProcWorker()
@@ -20,11 +21,21 @@ System::String^ ProcWorker::servDir() {
 	return Globals::ServDir;
 }
 
+System::String^ ProcWorker::configDir() {
+
+	return Globals::ConfigDir;
+}
+
 //Set server directory
 void ProcWorker::setServDir(System::String^ s) {
-
 	Globals::ServDir = s;
 }
+
+void ProcWorker::setConfigDir(System::String^ s) {
+	Globals::ConfigDir = s;
+}
+
+
 //startProc starts a .exe file, lpApp is the path of the .exe to start
 void ProcWorker::startProc(LPCTSTR lpApp) {
 

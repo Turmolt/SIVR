@@ -268,7 +268,7 @@ namespace ProjectS {
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ActiveCaption;
-			this->ClientSize = System::Drawing::Size(519, 694);
+			this->ClientSize = System::Drawing::Size(519, 459);
 			this->Controls->Add(this->panel3);
 			this->Controls->Add(this->panel2);
 			this->Controls->Add(this->flowLayoutPanel1);
@@ -278,6 +278,7 @@ namespace ProjectS {
 			this->Margin = System::Windows::Forms::Padding(4);
 			this->Name = L"MainWindow";
 			this->Text = L"MainWindow";
+			this->Load += gcnew System::EventHandler(this, &MainWindow::MainWindow_Load);
 			this->flowLayoutPanel1->ResumeLayout(false);
 			this->flowLayoutPanel1->PerformLayout();
 			this->flowLayoutPanel2->ResumeLayout(false);
@@ -347,6 +348,8 @@ private: System::Void setupDevice_Click(System::Object^  sender, System::EventAr
 		Form^ dw = gcnew DeviceWindow();
 		dw->Show();
 	}
+}
+private: System::Void MainWindow_Load(System::Object^  sender, System::EventArgs^  e) {
 }
 };
 
