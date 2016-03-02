@@ -233,7 +233,39 @@ namespace ProjectS {
 	private: System::Void DeviceWindow_Load(System::Object^  sender, System::EventArgs^  e) {
 		
 	}
+
+	//select the device type box to be displayed
 	private: System::Void devTypeBox_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
+		switch (this->devTypeBox->SelectedIndex) {
+		case 0:
+			this->HMDbox->Visible = true;
+			this->GamepadBox->Visible = false;
+			this->TrackerBox->Visible = false;
+			this->MiscDevicesBox->Visible = false;
+			break;
+		case 1:
+			this->HMDbox->Visible = false;
+			this->GamepadBox->Visible = false;
+			this->TrackerBox->Visible = true;
+			this->MiscDevicesBox->Visible = false;
+			break;
+		case 2:
+			this->HMDbox->Visible = false;
+			this->GamepadBox->Visible = true;
+			this->TrackerBox->Visible = false;
+			this->MiscDevicesBox->Visible = false;
+			break;
+		case 3:
+			this->HMDbox->Visible = false;
+			this->GamepadBox->Visible = false;
+			this->TrackerBox->Visible = false;
+			this->MiscDevicesBox->Visible = true;
+			break;
+		default:
+			break;
+		}
+
+		
 
 
 	}
