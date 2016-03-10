@@ -13,5 +13,9 @@ public:
 	VRPNClient(DevType t, std::string dn);
 	void makeClient();
 	void enableDevice(DevType t, std::string devName);
+	void startThread();
+	void stopThread();
+	void listen();
+	Thread ^ aThread;
 };
 

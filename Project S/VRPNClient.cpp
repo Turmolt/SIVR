@@ -3,15 +3,16 @@
 #include "Boss.h"
 #include "DeviceNames.h"
 #include "ProcWorker.h"
+#include <time.h>
 
 using namespace std;
 using namespace System::Runtime::InteropServices;
+using namespace System::Threading;
 DevType x;
 std::string devName;
 
 
-
-
+//create a VRPNClient with a device type and a device name to use on the VRPN Server
 VRPNClient::VRPNClient(DevType t,std::string dn)
 {
 	if (t == DevType::Gamepad) {
@@ -20,11 +21,19 @@ VRPNClient::VRPNClient(DevType t,std::string dn)
 	devName = dn;
 }
 
+//idk?
 void VRPNClient::makeClient()
 {
 
 }
 
+void VRPNClient::listen() {
+
+	//device specific stuff here
+
+}
+
+//ensure that the device type is enabled in the config file
 void VRPNClient::enableDevice(DevType t, std::string devName) {
 	
 	const char* cfgPath = (const char*)Marshal::StringToHGlobalAnsi(ProcWorker::configDir()).ToPointer();
@@ -35,5 +44,32 @@ void VRPNClient::enableDevice(DevType t, std::string devName) {
 
 	}
 
+	
+
+}
+
+//start a thread for listening information
+void VRPNClient::startThread()
+{
+	aThread = gcnew Thread(gcnew ThreadStart(this, &VRPNClient::listen));
+	aThread->Start();
+	while (!aThread->IsAlive); //waiting for the thread to start
+	Thread::Sleep(100);
+}
+
+
+//call when ending device listening
+void VRPNClient::stopThread()
+{
+	if (aThread != nullptr) {
+		//delete objects before closing the thread?
+		if (aThread && aThread->IsAlive) {
+			System::TimeSpan waitTime = System::TimeSpan(0, 0, 1);
+			if (aThread->Join(waitTime) != true) {
+				aThread->Abort(); //if doesnt close through other means
+			}
+				
+		}
+	}
 }
 
