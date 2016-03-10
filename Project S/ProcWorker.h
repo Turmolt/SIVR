@@ -4,6 +4,7 @@
 #include <TlHelp32.h>
 #include <cstdio>
 #include <string>
+#include "Boss.h"
 
 
 
@@ -19,6 +20,9 @@ public:
 	static System::String^ configDir();
 	static void setServDir(System::String^);
 	static void setConfigDir(System::String^);
+	static Boss^ getBoss();
+	static void setBoss(Boss^ b);
+
 };
 
 

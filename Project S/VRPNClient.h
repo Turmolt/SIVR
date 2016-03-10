@@ -6,12 +6,12 @@
 #include <fstream>
 #include "Glob.h"
 
+
 ref class VRPNClient
 {
 public:
-	VRPNClient(Type t);
+	VRPNClient(DevType t, std::string dn);
 	void makeClient();
-	void enableDevice(char);
-
+	void enableDevice(DevType t, std::string devName);
 };
 

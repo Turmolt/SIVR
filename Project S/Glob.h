@@ -1,3 +1,3 @@
 #pragma once
 
-static enum Type{Gamepad, HMD, Tracker, Mouse};
+static enum DevType{Gamepad, HMD, Tracker, Mouse};

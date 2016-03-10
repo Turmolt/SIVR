@@ -287,8 +287,9 @@ private: System::Void ServerSetup_Load(System::Object^  sender, System::EventArg
 
 private: System::Void button4_Click(System::Object^  sender, System::EventArgs^  e) {
 	//Button was clicked to browse for the directory of the server
+	printf("ello");
 	char filename[MAX_PATH];
-	OPENFILENAME o;
+	OPENFILENAME o = { 0 };
 	ZeroMemory(&filename, sizeof(filename));
 	ZeroMemory(&o, sizeof(o));
 	o.lStructSize = sizeof(o);

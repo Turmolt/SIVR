@@ -8,7 +8,11 @@ ref class Globals {
 public:
 	static System::String^ ServDir = "";
 	static System::String^ ConfigDir = "C:/Users/Sam/Desktop/Coding/C++/SIVR/Project S/vrpn.cfg";
+	static Boss^ boss;
+	
 };
+
+
 
 ProcWorker::ProcWorker()
 {
@@ -33,6 +37,16 @@ void ProcWorker::setServDir(System::String^ s) {
 
 void ProcWorker::setConfigDir(System::String^ s) {
 	Globals::ConfigDir = s;
+}
+
+Boss ^ ProcWorker::getBoss()
+{
+	return Globals::boss;
+}
+
+void ProcWorker::setBoss(Boss^ b)
+{
+	Globals::boss = b;
 }
 
 

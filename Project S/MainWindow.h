@@ -7,6 +7,7 @@
 #include <msclr/marshal.h>
 #include "ServerSetup.h"
 #include "DeviceWindow.h"
+#include "Boss.h"
 
 namespace ProjectS {
 
@@ -25,12 +26,16 @@ namespace ProjectS {
 	public ref class MainWindow : public System::Windows::Forms::Form
 	{
 	public:
+		
 		MainWindow(void)
 		{
 			InitializeComponent();
 			//
 			//TODO: Add the constructor code here
 			//
+			
+			//create the boss of the program
+			ProcWorker::setBoss(gcnew Boss());
 			
 			
 
@@ -48,7 +53,7 @@ namespace ProjectS {
 				delete components;
 			}
 		}
-
+		
 	private: System::Windows::Forms::Label^  label1;
 	private: System::Windows::Forms::Button^  startButton;
 

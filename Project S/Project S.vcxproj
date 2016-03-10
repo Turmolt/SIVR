@@ -76,6 +76,7 @@
     <LibraryPath>PATH=S:\Coding\Lib\BuiltVRPN\Release;$(LibraryPath)</LibraryPath>
     <ReferencePath>PATH=S:\Coding\Lib\BuiltVRPN;$(VC_ReferencesPath_x86);</ReferencePath>
     <SourcePath>PATH=S:\Coding\Lib\vrpn;$(VC_SourcePath);</SourcePath>
+    <TargetName>SIVR</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
