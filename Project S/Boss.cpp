@@ -1,5 +1,9 @@
 #include "Boss.h"
 
+#include "MainWindow.h"
+
+using namespace System::Windows::Forms;
+using namespace ProjectS;
 
 Boss::Boss()
 {
