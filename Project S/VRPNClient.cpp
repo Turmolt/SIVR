@@ -31,6 +31,12 @@ void VRPNClient::listen() {
 
 	//device specific stuff here
 
+
+}
+
+void VRPN_CALLBACK VRPNClient::gamepadCb(void* userData, const vrpn_BUTTONCB b, const vrpn_TRACKERCB t)
+{
+	cout << b.button << " : " << b.state << endl;
 }
 
 //ensure that the device type is enabled in the config file
