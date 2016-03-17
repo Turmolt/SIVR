@@ -33,6 +33,8 @@ void VRPNClient::makeClient()
 
 }
 
+//Listen is the function in which the thread runs, when this ends the thread ends.
+//TODO: Create a "listen" func for each device
 void VRPNClient::listen() {
 
 	//device specific stuff here
