@@ -8,8 +8,8 @@
 #include "Glob.h"
 
 
-using namespace std;
-ref class VRPNClient
+
+public ref class VRPNClient
 {
 public:
 	VRPNClient(DevType t, std::string dn);
@@ -18,10 +18,13 @@ public:
 	void startThread();
 	void stopThread();
 	void listen();
+	void listen2();
 	void VRPN_CALLBACK gamepadCb(void * userData, const vrpn_BUTTONCB b, const vrpn_TRACKERCB t);
 
-
-
-	Thread ^ aThread;
+	
+	System::String^ s;
+	System::Threading::Thread^ aThread;
+	System::Threading::Thread^ a2Thread;
+	
 };
 
