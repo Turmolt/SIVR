@@ -294,7 +294,7 @@ private: System::Void applyDevices_Click(System::Object^  sender, System::EventA
 		case 2:
 			if (this->GamepadBox->CheckedItems->Contains("Xbox 360")) {
 
-				ProcWorker::getBoss()->newClient(DevType::Gamepad);
+				ProcWorker::getBoss()->newClient(DevType::Gamepad,"XInput0");
 		}	
 			break;
 			//misc devices

@@ -4,27 +4,29 @@
 #include "DeviceNames.h"
 #include "ProcWorker.h"
 #include <time.h>
+#include <msclr\marshal_cppstd.h>
 
-using namespace std;
+using namespace System;
 using namespace System::Runtime::InteropServices;
 using namespace System::Threading;
+using namespace System::IO;
+
 DevType x;
-std::string devName;
 
 struct Mutex2 {
-	bool taken = false;
+	int taken = 0;
 };
 Mutex2 m2;
 //create a VRPNClient with a device type and a device name to use on the VRPN Server
-VRPNClient::VRPNClient(DevType t,std::string dn)
+VRPNClient::VRPNClient(DevType t,String^ dev)
 {
 	
 	if (t == DevType::Gamepad) {
-		printf("We did it! %s\n", dn.c_str());
+		Console::WriteLine(dev);
 		startThread();
 	}
-	s = gcnew System::String("");
-	devName = dn;
+	s = gcnew String("");
+	dName = dev;
 }
 
 //idk?
@@ -36,40 +38,59 @@ void VRPNClient::makeClient()
 //Listen is the function in which the thread runs, when this ends the thread ends.
 //TODO: Create a "listen" func for each device
 void VRPNClient::listen() {
+	
+	//const char* deviceName = msclr::interop::marshal_as<const char*>(dName->ToString()+"@localhost");
 
+	//vrpn_Analog_Remote* vrpnAnalog = new vrpn_Analog_Remote(deviceName);
+
+	//vrpn_Button_Remote* vrpnButton = new vrpn_Button_Remote(deviceName);
+
+	//vrpnButton->register_change_handler(0);
+	
 	//device specific stuff here
 	for (int i = 0; i < 100; i++) {
-		//System::IO::StreamWriter sw = gcnew StreamWrit(s);
-		while (m2.taken);
-		System::Console::Write("0");
-		m2.taken = true;
+		while (!m2.taken == 0);
+		Console::Write("0");
+		m2.taken = 1;
 	}
 }
+
 void VRPNClient::listen2() {
 
 	//device specific stuff here
 	for (int i = 0; i < 100; i++) {
-		//System::IO::StreamWriter sw = gcnew StreamWrit(s);
-		while (!m2.taken);
-		System::Console::Write("1");
-		m2.taken = false;
+		while (!m2.taken==1);
+		Console::Write("1");
+		m2.taken = 0;
 	}
 }
 
-void VRPN_CALLBACK VRPNClient::gamepadCb(void* userData, const vrpn_BUTTONCB b, const vrpn_TRACKERCB t)
+
+
+void VRPN_CALLBACK VRPNClient::ButtonCb(void* userData,  const vrpn_BUTTONCB b)
 {
-	cout << b.button << " : " << b.state << endl;
+	
+	Console::WriteLine(b.button + ": " + b.state);
+
+}
+
+void VRPN_CALLBACK VRPNClient::AnalogCb(void* userData, const vrpn_ANALOGCB a) {
+	int channels = a.num_channel;
+	Console::Write("Analog: ");
+	for (int i = 0; i < channels; i++) {
+		Console::Write(a.channel[i]);
+	}
+	Console::Write("\n");
 }
 
 //ensure that the device type is enabled in the config file
-void VRPNClient::enableDevice(DevType t, std::string devName) {
+void VRPNClient::enableDevice(DevType t, System::String^ devName) {
 	
-	const char* cfgPath = (const char*)Marshal::StringToHGlobalAnsi(ProcWorker::configDir()).ToPointer();
+	//const char* cfgPath = (const char*)Marshal::StringToHGlobalAnsi(ProcWorker::configDir()).ToPointer();
+	String^ cfgPath = ProcWorker::configDir();
 	if (t == DevType::Gamepad) {
-		ofstream cfgStream(cfgPath, std::ofstream::binary);
-		cfgStream << DeviceNames::xinput<< " " << devName << "\n";
-		cfgStream.close();
-
+		StreamWriter^ sw = gcnew StreamWriter(cfgPath);
+		sw->Write(DeviceNames::xinput->ToString()+" " + devName->ToString());
 	}
 
 	
@@ -80,9 +101,7 @@ void VRPNClient::enableDevice(DevType t, std::string devName) {
 
 void VRPNClient::startThread()
 {
-
 	//ThreadWork^ tw = gcnew ThreadWork();
-
 	this->aThread = gcnew Thread(gcnew ThreadStart(this, &VRPNClient::listen));
 	this->a2Thread = gcnew Thread(gcnew ThreadStart(this, &VRPNClient::listen2));
 	this->aThread->Start();

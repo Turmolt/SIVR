@@ -13,13 +13,12 @@ Boss::Boss()
 {
 	curMax = 0;
 	clientArray = gcnew cli::array<VRPNClient^>(ARRAY_SIZE);
-	
 }
 
-VRPNClient ^ Boss::newClient(DevType t)
+VRPNClient ^ Boss::newClient(DevType t, String^ devName)
 {
 	if (t == DevType::Gamepad) {
-		this->clientArray[curMax] = gcnew VRPNClient(t,"XInput0");
+		this->clientArray[curMax] = gcnew VRPNClient(t,devName);
 	}
 	return this->clientArray[curMax++];
 }

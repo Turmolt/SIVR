@@ -9,10 +9,7 @@ public:
 	static System::String^ ServDir = "";
 	static System::String^ ConfigDir = "C:/Users/Sam/Desktop/Coding/C++/SIVR/Project S/vrpn.cfg";
 	static Boss^ boss;
-	
 };
-
-
 
 ProcWorker::ProcWorker()
 {
