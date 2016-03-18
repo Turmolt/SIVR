@@ -39,13 +39,16 @@ void VRPNClient::makeClient()
 //TODO: Create a "listen" func for each device
 void VRPNClient::listen() {
 	
-	//const char* deviceName = msclr::interop::marshal_as<const char*>(dName->ToString()+"@localhost");
+	const char* deviceName = msclr::interop::marshal_as<const char*>(dName->ToString()+"@localhost");
 
 	//vrpn_Analog_Remote* vrpnAnalog = new vrpn_Analog_Remote(deviceName);
 
-	//vrpn_Button_Remote* vrpnButton = new vrpn_Button_Remote(deviceName);
+	//myCallbackDelegate^ del = gcnew myCallbackDelegate(&ButtonCb);
 
-	//vrpnButton->register_change_handler(0);
+	vrpn_Button_Remote* vrpnButton = new vrpn_Button_Remote(deviceName);
+	
+	
+	//vrpnButton->register_change_handler(0,ButtonCb);
 	
 	//device specific stuff here
 	for (int i = 0; i < 100; i++) {
@@ -66,6 +69,8 @@ void VRPNClient::listen2() {
 }
 
 
+[UnmanagedFunctionPointerAttribute(CallingConvention::Cdecl)]
+delegate void myCallbackDelegate(void * VRPN_CALLBACK usr_data);
 
 void VRPN_CALLBACK VRPNClient::ButtonCb(void* userData,  const vrpn_BUTTONCB b)
 {

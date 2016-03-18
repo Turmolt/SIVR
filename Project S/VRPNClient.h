@@ -1,4 +1,5 @@
 #pragma once
+
 #include "vrpn_XInputGamepad.h"
 #include "vrpn_Button.h"
 #include "vrpn_Tracker.h"
