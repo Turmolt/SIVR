@@ -30,6 +30,9 @@ public:
 	System::String^ s;
 	System::Threading::Thread^ aThread;
 	System::Threading::Thread^ a2Thread;
+
+	int* external;
+	
 	
 };
 

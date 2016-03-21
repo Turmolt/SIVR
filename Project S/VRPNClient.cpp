@@ -5,6 +5,7 @@
 #include "ProcWorker.h"
 #include <time.h>
 #include <msclr\marshal_cppstd.h>
+#include "Bridge.h"
 
 using namespace System;
 using namespace System::Runtime::InteropServices;
@@ -13,20 +14,23 @@ using namespace System::IO;
 
 DevType x;
 
+
 struct Mutex2 {
 	int taken = 0;
+
 };
 Mutex2 m2;
 //create a VRPNClient with a device type and a device name to use on the VRPN Server
 VRPNClient::VRPNClient(DevType t,String^ dev)
 {
-	
+	//VrpnBridge* b = new VrpnBridge(external);
 	if (t == DevType::Gamepad) {
 		Console::WriteLine(dev);
 		startThread();
 	}
 	s = gcnew String("");
 	dName = dev;
+	
 }
 
 //idk?
@@ -39,6 +43,7 @@ void VRPNClient::makeClient()
 //TODO: Create a "listen" func for each device
 void VRPNClient::listen() {
 	
+	
 	//const char* deviceName = msclr::interop::marshal_as<const char*>(dName->ToString()+"@localhost");
 
 	//vrpn_Analog_Remote* vrpnAnalog = new vrpn_Analog_Remote(deviceName);
@@ -50,27 +55,22 @@ void VRPNClient::listen() {
 	
 	//vrpnButton->register_change_handler(0,ButtonCb);
 	
+	
+	VrpnBridge* b = new VrpnBridge(1.0f);
 	//device specific stuff here
-	for (int i = 0; i < 100; i++) {
-		while (!m2.taken == 0);
-		Console::Write("0");
-		m2.taken = 1;
-	}
+	b->StartHandler(external);
 }
 
 void VRPNClient::listen2() {
 
 	//device specific stuff here
-	for (int i = 0; i < 100; i++) {
-		while (!m2.taken==1);
-		Console::Write("1");
-		m2.taken = 0;
+	while(1) {
+		Console::Write(external);
+		Sleep(100.0);
 	}
 }
 
 
-[UnmanagedFunctionPointerAttribute(CallingConvention::Cdecl)]
-delegate void myCallbackDelegate(void * VRPN_CALLBACK usr_data);
 
 void VRPN_CALLBACK VRPNClient::ButtonCb(void* userData,  const vrpn_BUTTONCB b)
 {
