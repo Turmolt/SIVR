@@ -6,7 +6,7 @@
 #include <time.h>
 #include <msclr\marshal_cppstd.h>
 #include "Bridge.h"
-
+#include <string>
 using namespace System;
 using namespace System::Runtime::InteropServices;
 using namespace System::Threading;
@@ -20,17 +20,22 @@ struct Mutex2 {
 };
 Mutex2 m2;
 //create a VRPNClient with a device type and a device name to use on the VRPN Server
-VRPNClient::VRPNClient(DevType t,String^ dev)
+VRPNClient::VRPNClient(DevType t, String^ dev)
 {
 	//VrpnBridge* b = new VrpnBridge(external);
-	if (t == DevType::Gamepad) {
-		Console::WriteLine(dev);
-		startThread();
-	}
 	s = gcnew String("");
 	this->dName = dev;
-	b = new VrpnBridge(t);
+	std::string dn = msclr::interop::marshal_as<std::string>(dev);
+	b = new VrpnBridge(t, dn);
 	this->deviceType = t;
+	Console::WriteLine(dev);
+	if (t == DevType::Gamepad){
+		startThread();
+	}
+	else if (t == DevType::Mouse) {
+		startAnalogThread();
+	}
+
 	
 }
 
@@ -42,11 +47,11 @@ void VRPNClient::makeClient()
 
 //Listen is the function in which the thread runs, when this ends the thread ends.
 //TODO: Create a "listen" func for each device
-void VRPNClient::listen() {
+void VRPNClient::buttonListen() {
 	b->StartButtonHandler(external);
 }
 
-void VRPNClient::listen2() {
+void VRPNClient::buttonListen2() {
 	this->running = true;
 	//device specific stuff here
 	while(this->running) {
@@ -56,7 +61,8 @@ void VRPNClient::listen2() {
 		else
 		{
 			Console::Write("Fak");
-			b = new VrpnBridge(this->deviceType);
+			std::string dn = msclr::interop::marshal_as<std::string>(dName->ToString());
+			b = new VrpnBridge(this->deviceType,dn);
 		}
 		
 		
@@ -66,7 +72,32 @@ void VRPNClient::listen2() {
 	b->running = false;
 }
 
+//Listen is the function in which the thread runs, when this ends the thread ends.
+//TODO: Create a "listen" func for each device
+void VRPNClient::analogListen() {
+	b->StartAnalogHandler();
+}
 
+void VRPNClient::analogListen2() {
+	this->running = true;
+	//device specific stuff here
+	while (this->running) {
+		if (b != NULL) {
+			//Console::WriteLine(b->buttonNumber);
+		}
+		else
+		{
+			Console::Write("Fak");
+			std::string dn = msclr::interop::marshal_as<std::string>(dName->ToString());
+			b = new VrpnBridge(this->deviceType, dn);
+		}
+
+
+		Sleep(100.0);
+	}
+
+	b->running = false;
+}
 
 //ensure that the device type is enabled in the config file
 void VRPNClient::enableDevice(DevType t, System::String^ devName) {
@@ -88,8 +119,21 @@ void VRPNClient::startThread()
 {
 	//ThreadWork^ tw = gcnew ThreadWork();
 	this->running = true;
-	this->aThread = gcnew Thread(gcnew ThreadStart(this, &VRPNClient::listen));
-	this->a2Thread = gcnew Thread(gcnew ThreadStart(this, &VRPNClient::listen2));
+	this->aThread = gcnew Thread(gcnew ThreadStart(this, &VRPNClient::buttonListen));
+	this->a2Thread = gcnew Thread(gcnew ThreadStart(this, &VRPNClient::buttonListen2));
+	this->aThread->Start();
+	this->a2Thread->Start();
+	while (!this->aThread->IsAlive); //waiting for the thread to start
+	Thread::Sleep(100);
+	//this->running = false;
+}
+
+void VRPNClient::startAnalogThread()
+{
+	//ThreadWork^ tw = gcnew ThreadWork();
+	this->running = true;
+	this->aThread = gcnew Thread(gcnew ThreadStart(this, &VRPNClient::analogListen));
+	this->a2Thread = gcnew Thread(gcnew ThreadStart(this, &VRPNClient::analogListen2));
 	this->aThread->Start();
 	this->a2Thread->Start();
 	while (!this->aThread->IsAlive); //waiting for the thread to start
@@ -104,6 +148,7 @@ void VRPNClient::stopThread()
 
 	this->running = false;
 	Console::WriteLine("Shutting down thread");
+	
 	/*
 	if (this->aThread != nullptr) {
 		//delete objects before closing the thread?

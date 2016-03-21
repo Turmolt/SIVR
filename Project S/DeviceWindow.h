@@ -321,11 +321,16 @@ private: System::Void applyDevices_Click(System::Object^  sender, System::EventA
 		case 2:
 			if (this->GamepadBox->CheckedItems->Contains("Xbox 360")) {
 
-				ProcWorker::getBoss()->newClient(DevType::Gamepad,"XInput0");
+				ProcWorker::getBoss()->newClient(DevType::Gamepad,"Mouse0");
 		}	
 			break;
 			//misc devices
 		case 3:
+			Console::Write("Mouse");
+			if (this->MiscDevicesBox->CheckedItems->Contains("Mouse")) {
+				Console::Write("Mouse");
+				ProcWorker::getBoss()->newClient(DevType::Mouse, "Mouse0");
+			}
 			break;
 		default:
 			break;
@@ -350,6 +355,9 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 		break;
 	case 4:
 		ProcWorker::getBoss()->killClient(DevType::Mouse);
+		break;
+	case 5:
+		ProcWorker::getBoss()->killClient(DevType::HeadTracker);
 		break;
 	}
 	

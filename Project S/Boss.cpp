@@ -11,33 +11,70 @@ using namespace System::Runtime::InteropServices;
 
 Boss::Boss()
 {
+	this->hands=false;
+	this->head = false;
+	this->tracker = false;
+	this->gamepad = false;
+	this->mouse = false;
+
 	curMax = 0;
 	clientArray = gcnew cli::array<VRPNClient^>(ARRAY_SIZE);
 }
 
-
+//create new client for VRPN based on type fed in
 VRPNClient ^ Boss::newClient(DevType t, String^ devName)
 {
 	switch (t) {
 	case DevType::HMD:
-		this->Head = gcnew VRPNClient(t, devName);
+		if (!this->head)
+		{
+			this->Head = gcnew VRPNClient(t, devName);
+			this->head = true;
+		}
+		else
+			Console::WriteLine("Head already has a device assigned.");
 		return this->Head;
 		break;
 	case DevType::Gamepad:
-		this->Gamepad = gcnew VRPNClient(t, devName);
+		if (!this->gamepad){
+			this->Gamepad = gcnew VRPNClient(t, devName);
+			this->gamepad = true;
+		}
+		else
+			Console::WriteLine("Gamepad already has a device assigned.");
 		return this->Gamepad;
 		break;
 	case DevType::Tracker:
-		this->Tracker = gcnew VRPNClient(t, devName);
+		if (!this->tracker){
+			this->Tracker = gcnew VRPNClient(t, devName);
+			this->tracker = true;
+		}
+		else
+			Console::WriteLine("Tracker already has a device assigned.");
 		return this->Tracker;
 		break;
 	case DevType::Mouse:
-		this->Mouse = gcnew VRPNClient(t, devName);
+		if (!this->mouse){
+			this->Mouse = gcnew VRPNClient(t, devName);
+			this->mouse = true;
+		}
+		else
+			Console::WriteLine("Mouse already has a device assigned.");
+		return this->Mouse;
+		break;
+	case DevType::HandTracker:
+		if (!this->hands) {
+			this->Hands = gcnew VRPNClient(t, devName);
+			this->hands = true;
+		}
+		else
+			Console::WriteLine("Hands already has a device assigned.");
 		return this->Mouse;
 		break;
 	}
 }
 
+//return the client of selected type
 VRPNClient ^ Boss::getClient(DevType type)
 {
 	switch (type) {
@@ -53,23 +90,36 @@ VRPNClient ^ Boss::getClient(DevType type)
 	case DevType::Mouse:
 		return this->Mouse;
 		break;
+	case DevType::HandTracker:
+		return this->Mouse;
+		break;
 	}
 }
 
+//kill client of type t, swap the bool related to it.
 void Boss::killClient(DevType t) {
 	try{
 		switch (t) {
 		case DevType::HMD:
 			this->Head->stopThread();
+			delete this->Head;
+			this->head = false;
 			break;
 		case DevType::Gamepad:
 			this->Gamepad->stopThread();
+			this->gamepad = false;
 			break;
 		case DevType::Tracker:
 			this->Tracker->stopThread();
+			this->tracker = false;
 			break;
 		case DevType::Mouse:
 			this->Mouse->stopThread();
+			this->mouse = false;
+			break;
+		case DevType::HandTracker:
+			this->Hands->stopThread();
+			this->hands = false;
 			break;
 		}
 	}

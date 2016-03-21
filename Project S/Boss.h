@@ -21,6 +21,13 @@ public:
 	VRPNClient^ Gamepad;
 	VRPNClient^ Mouse;
 
+	bool hands;
+	bool head;
+	bool tracker;
+	bool gamepad;
+	bool mouse;
+
+
 	int curMax;
 	int curKill;
 

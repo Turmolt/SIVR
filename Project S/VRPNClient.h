@@ -22,10 +22,15 @@ public:
 
 	void startThread();
 	void stopThread();
+
+	void startAnalogThread();
 	
 	//thread functions
-	void listen();
-	void listen2();
+	void buttonListen();
+	void buttonListen2();
+
+	void analogListen();
+	void analogListen2();
 
 	System::String^ dName;
 	System::String^ s;
@@ -34,6 +39,8 @@ public:
 	DevType deviceType;
 
 	int* external;
+
+	
 
 	bool running;
 	
