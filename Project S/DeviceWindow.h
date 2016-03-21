@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include "ProcWorker.h"
+#include "Glob.h"
 
 namespace ProjectS {
 
@@ -49,6 +50,8 @@ namespace ProjectS {
 	private: System::Windows::Forms::CheckedListBox^  MiscDevicesBox;
 	private: System::Windows::Forms::CheckedListBox^  TrackerBox;
 	private: System::Windows::Forms::CheckedListBox^  GamepadBox;
+	private: System::Windows::Forms::Button^  button1;
+	private: System::Windows::Forms::ComboBox^  comboBox1;
 
 
 	protected:
@@ -89,6 +92,8 @@ namespace ProjectS {
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
 			this->applyDevices = (gcnew System::Windows::Forms::Button());
 			this->appliedRB = (gcnew System::Windows::Forms::RadioButton());
+			this->button1 = (gcnew System::Windows::Forms::Button());
+			this->comboBox1 = (gcnew System::Windows::Forms::ComboBox());
 			this->flowLayoutPanel1->SuspendLayout();
 			this->SuspendLayout();
 			// 
@@ -97,7 +102,7 @@ namespace ProjectS {
 			this->devTypeBox->FormattingEnabled = true;
 			this->devTypeBox->Items->AddRange(gcnew cli::array< System::Object^  >(4) { L"HMD", L"Tracker", L"Gamepad", L"Misc Devices" });
 			this->devTypeBox->Location = System::Drawing::Point(9, 40);
-			this->devTypeBox->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->devTypeBox->Margin = System::Windows::Forms::Padding(2);
 			this->devTypeBox->Name = L"devTypeBox";
 			this->devTypeBox->Size = System::Drawing::Size(117, 21);
 			this->devTypeBox->TabIndex = 0;
@@ -121,7 +126,7 @@ namespace ProjectS {
 			this->flowLayoutPanel1->Controls->Add(this->GamepadBox);
 			this->flowLayoutPanel1->Controls->Add(this->HMDbox);
 			this->flowLayoutPanel1->Location = System::Drawing::Point(32, 64);
-			this->flowLayoutPanel1->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->flowLayoutPanel1->Margin = System::Windows::Forms::Padding(2);
 			this->flowLayoutPanel1->Name = L"flowLayoutPanel1";
 			this->flowLayoutPanel1->Size = System::Drawing::Size(734, 383);
 			this->flowLayoutPanel1->TabIndex = 2;
@@ -137,7 +142,7 @@ namespace ProjectS {
 					L"Joystick"
 			});
 			this->MiscDevicesBox->Location = System::Drawing::Point(2, 2);
-			this->MiscDevicesBox->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->MiscDevicesBox->Margin = System::Windows::Forms::Padding(2);
 			this->MiscDevicesBox->Name = L"MiscDevicesBox";
 			this->MiscDevicesBox->Size = System::Drawing::Size(243, 166);
 			this->MiscDevicesBox->TabIndex = 3;
@@ -151,7 +156,7 @@ namespace ProjectS {
 			this->TrackerBox->FormattingEnabled = true;
 			this->TrackerBox->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Phasespace", L"PPT System" });
 			this->TrackerBox->Location = System::Drawing::Point(249, 2);
-			this->TrackerBox->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->TrackerBox->Margin = System::Windows::Forms::Padding(2);
 			this->TrackerBox->Name = L"TrackerBox";
 			this->TrackerBox->Size = System::Drawing::Size(243, 166);
 			this->TrackerBox->TabIndex = 2;
@@ -168,7 +173,7 @@ namespace ProjectS {
 					L"Xbox One", L"Logitech", L"Mayflash Gamecube", L"Wiimote"
 			});
 			this->GamepadBox->Location = System::Drawing::Point(2, 172);
-			this->GamepadBox->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->GamepadBox->Margin = System::Windows::Forms::Padding(2);
 			this->GamepadBox->Name = L"GamepadBox";
 			this->GamepadBox->Size = System::Drawing::Size(243, 166);
 			this->GamepadBox->TabIndex = 1;
@@ -182,7 +187,7 @@ namespace ProjectS {
 			this->HMDbox->FormattingEnabled = true;
 			this->HMDbox->Items->AddRange(gcnew cli::array< System::Object^  >(5) { L"Oculus Rift", L"zSight", L"dSight", L"SX111", L"Hololense" });
 			this->HMDbox->Location = System::Drawing::Point(249, 172);
-			this->HMDbox->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->HMDbox->Margin = System::Windows::Forms::Padding(2);
 			this->HMDbox->Name = L"HMDbox";
 			this->HMDbox->Size = System::Drawing::Size(243, 166);
 			this->HMDbox->TabIndex = 0;
@@ -192,7 +197,7 @@ namespace ProjectS {
 			// 
 			this->panel1->BackColor = System::Drawing::SystemColors::InactiveCaptionText;
 			this->panel1->Location = System::Drawing::Point(14, 64);
-			this->panel1->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->panel1->Margin = System::Windows::Forms::Padding(2);
 			this->panel1->Name = L"panel1";
 			this->panel1->Size = System::Drawing::Size(14, 383);
 			this->panel1->TabIndex = 3;
@@ -200,7 +205,7 @@ namespace ProjectS {
 			// applyDevices
 			// 
 			this->applyDevices->Location = System::Drawing::Point(96, 464);
-			this->applyDevices->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->applyDevices->Margin = System::Windows::Forms::Padding(2);
 			this->applyDevices->Name = L"applyDevices";
 			this->applyDevices->Size = System::Drawing::Size(66, 21);
 			this->applyDevices->TabIndex = 4;
@@ -213,12 +218,32 @@ namespace ProjectS {
 			this->appliedRB->AutoCheck = false;
 			this->appliedRB->AutoSize = true;
 			this->appliedRB->Location = System::Drawing::Point(167, 467);
-			this->appliedRB->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->appliedRB->Margin = System::Windows::Forms::Padding(2);
 			this->appliedRB->Name = L"appliedRB";
 			this->appliedRB->Size = System::Drawing::Size(14, 13);
 			this->appliedRB->TabIndex = 5;
 			this->appliedRB->TabStop = true;
 			this->appliedRB->UseVisualStyleBackColor = true;
+			// 
+			// button1
+			// 
+			this->button1->Location = System::Drawing::Point(87, 506);
+			this->button1->Name = L"button1";
+			this->button1->Size = System::Drawing::Size(75, 23);
+			this->button1->TabIndex = 6;
+			this->button1->Text = L"Kill Client";
+			this->button1->UseVisualStyleBackColor = true;
+			this->button1->Click += gcnew System::EventHandler(this, &DeviceWindow::button1_Click);
+			// 
+			// comboBox1
+			// 
+			this->comboBox1->FormattingEnabled = true;
+			this->comboBox1->Items->AddRange(gcnew cli::array< System::Object^  >(5) { L"Head", L"Hands", L"Tracker", L"Gamepad", L"Mouse" });
+			this->comboBox1->Location = System::Drawing::Point(180, 506);
+			this->comboBox1->Name = L"comboBox1";
+			this->comboBox1->Size = System::Drawing::Size(121, 21);
+			this->comboBox1->TabIndex = 7;
+			this->comboBox1->SelectedIndexChanged += gcnew System::EventHandler(this, &DeviceWindow::comboBox1_SelectedIndexChanged);
 			// 
 			// DeviceWindow
 			// 
@@ -226,13 +251,15 @@ namespace ProjectS {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::GradientInactiveCaption;
 			this->ClientSize = System::Drawing::Size(364, 624);
+			this->Controls->Add(this->comboBox1);
+			this->Controls->Add(this->button1);
 			this->Controls->Add(this->appliedRB);
 			this->Controls->Add(this->applyDevices);
 			this->Controls->Add(this->panel1);
 			this->Controls->Add(this->flowLayoutPanel1);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->devTypeBox);
-			this->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->Margin = System::Windows::Forms::Padding(2);
 			this->Name = L"DeviceWindow";
 			this->Text = L"DeviceWindow";
 			this->Load += gcnew System::EventHandler(this, &DeviceWindow::DeviceWindow_Load);
@@ -305,6 +332,30 @@ private: System::Void applyDevices_Click(System::Object^  sender, System::EventA
 		}
 	else
 		printf("Max Number of Devices achieved\n");
+}
+
+private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
+	switch (this->comboBox1->SelectedIndex) {
+	case 0:
+		ProcWorker::getBoss()->killClient(DevType::HMD);
+		break;
+	case 1:
+		ProcWorker::getBoss()->killClient(DevType::HandTracker);
+		break;
+	case 2:
+		ProcWorker::getBoss()->killClient(DevType::Tracker);
+		break;
+	case 3:
+		ProcWorker::getBoss()->killClient(DevType::Gamepad);
+		break;
+	case 4:
+		ProcWorker::getBoss()->killClient(DevType::Mouse);
+		break;
+	}
+	
+}
+private: System::Void comboBox1_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
+
 }
 };
 }

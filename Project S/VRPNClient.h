@@ -19,19 +19,23 @@ public:
 	VRPNClient(DevType t, System::String^ dn);
 	void makeClient();
 	void enableDevice(DevType t, System::String^ dev);
+
 	void startThread();
 	void stopThread();
+	
+	//thread functions
 	void listen();
 	void listen2();
-	void VRPN_CALLBACK ButtonCb(void * userData, const vrpn_BUTTONCB);
-	void VRPN_CALLBACK AnalogCb(void * userData, const vrpn_ANALOGCB);
 
 	System::String^ dName;
 	System::String^ s;
 	System::Threading::Thread^ aThread;
 	System::Threading::Thread^ a2Thread;
+	DevType deviceType;
 
 	int* external;
+
+	bool running;
 	
 	
 };

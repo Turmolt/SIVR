@@ -12,8 +12,7 @@ using namespace System::Runtime::InteropServices;
 using namespace System::Threading;
 using namespace System::IO;
 
-DevType x;
-
+VrpnBridge* b;
 
 struct Mutex2 {
 	int taken = 0;
@@ -29,7 +28,9 @@ VRPNClient::VRPNClient(DevType t,String^ dev)
 		startThread();
 	}
 	s = gcnew String("");
-	dName = dev;
+	this->dName = dev;
+	b = new VrpnBridge(t);
+	this->deviceType = t;
 	
 }
 
@@ -42,51 +43,30 @@ void VRPNClient::makeClient()
 //Listen is the function in which the thread runs, when this ends the thread ends.
 //TODO: Create a "listen" func for each device
 void VRPNClient::listen() {
-	
-	
-	//const char* deviceName = msclr::interop::marshal_as<const char*>(dName->ToString()+"@localhost");
-
-	//vrpn_Analog_Remote* vrpnAnalog = new vrpn_Analog_Remote(deviceName);
-
-	//myCallbackDelegate^ del = gcnew myCallbackDelegate(&ButtonCb);
-
-	//vrpn_Button_Remote* vrpnButton = new vrpn_Button_Remote(deviceName);
-	
-	
-	//vrpnButton->register_change_handler(0,ButtonCb);
-	
-	
-	VrpnBridge* b = new VrpnBridge(1.0f);
-	//device specific stuff here
-	b->StartHandler(external);
+	b->StartButtonHandler(external);
 }
 
 void VRPNClient::listen2() {
-
+	this->running = true;
 	//device specific stuff here
-	while(1) {
-		Console::Write(external);
+	while(this->running) {
+		if (b != NULL) {
+			Console::WriteLine(b->buttonNumber + " : " + b->buttonState);
+		}
+		else
+		{
+			Console::Write("Fak");
+			b = new VrpnBridge(this->deviceType);
+		}
+		
+		
 		Sleep(100.0);
 	}
+
+	b->running = false;
 }
 
 
-
-void VRPN_CALLBACK VRPNClient::ButtonCb(void* userData,  const vrpn_BUTTONCB b)
-{
-	
-	Console::WriteLine(b.button + ": " + b.state);
-
-}
-
-void VRPN_CALLBACK VRPNClient::AnalogCb(void* userData, const vrpn_ANALOGCB a) {
-	int channels = a.num_channel;
-	Console::Write("Analog: ");
-	for (int i = 0; i < channels; i++) {
-		Console::Write(a.channel[i]);
-	}
-	Console::Write("\n");
-}
 
 //ensure that the device type is enabled in the config file
 void VRPNClient::enableDevice(DevType t, System::String^ devName) {
@@ -107,18 +87,24 @@ void VRPNClient::enableDevice(DevType t, System::String^ devName) {
 void VRPNClient::startThread()
 {
 	//ThreadWork^ tw = gcnew ThreadWork();
+	this->running = true;
 	this->aThread = gcnew Thread(gcnew ThreadStart(this, &VRPNClient::listen));
 	this->a2Thread = gcnew Thread(gcnew ThreadStart(this, &VRPNClient::listen2));
 	this->aThread->Start();
 	this->a2Thread->Start();
 	while (!this->aThread->IsAlive); //waiting for the thread to start
 	Thread::Sleep(100);
+	//this->running = false;
 }
 
 
 //call when ending device listening
 void VRPNClient::stopThread()
 {
+
+	this->running = false;
+	Console::WriteLine("Shutting down thread");
+	/*
 	if (this->aThread != nullptr) {
 		//delete objects before closing the thread?
 		if (this->aThread && this->aThread->IsAlive) {
@@ -129,6 +115,7 @@ void VRPNClient::stopThread()
 				
 		}
 	}
+	*/
 }
 
 /*

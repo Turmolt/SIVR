@@ -1,11 +1,17 @@
 #pragma once
+#include "Glob.h"
 
 class VrpnBridge {
 public:
-	VrpnBridge(float mine);
-	void ButtonH();
-	void StartHandler(int*);
-	void Param();
+	VrpnBridge(DevType x);
+	void StartButtonHandler(int*);
 
-	int &ext;
+	//set this to false when the thread should stop running vrpn mainloop
+	bool running;
+
+	//The variables for different device types found below
+	int &buttonState;
+	int &buttonNumber;
+
+	DevType deviceType;
 };
