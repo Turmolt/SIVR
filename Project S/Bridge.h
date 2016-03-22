@@ -7,6 +7,7 @@ public:
 	VrpnBridge(DevType x, std::string devName);
 	void StartButtonHandler(int*);
 	void StartAnalogHandler();
+	void StartGamepadHandler();
 
 
 	//set this to false when the thread should stop running vrpn mainloop
@@ -16,7 +17,9 @@ public:
 	int &buttonState;
 	int &buttonNumber;
 
-	float &analogArray;
+	//float &analogArray;
+	bool &changed;
+	std::array<float, 7> &analogArray;
 
 	std::string deviceName;
 

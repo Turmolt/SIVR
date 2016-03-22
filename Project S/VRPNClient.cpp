@@ -7,6 +7,7 @@
 #include <msclr\marshal_cppstd.h>
 #include "Bridge.h"
 #include <string>
+#include <array>
 using namespace System;
 using namespace System::Runtime::InteropServices;
 using namespace System::Threading;
@@ -30,10 +31,10 @@ VRPNClient::VRPNClient(DevType t, String^ dev)
 	this->deviceType = t;
 	Console::WriteLine(dev);
 	if (t == DevType::Gamepad){
-		startThread();
+		startAnalogThread();
 	}
 	else if (t == DevType::Mouse) {
-		startAnalogThread();
+		startThread();
 	}
 
 	
@@ -56,7 +57,10 @@ void VRPNClient::buttonListen2() {
 	//device specific stuff here
 	while(this->running) {
 		if (b != NULL) {
-			Console::WriteLine(b->buttonNumber + " : " + b->buttonState);
+			if (b->changed) {
+				Console::WriteLine(b->buttonNumber + " : " + b->buttonState);
+				b->changed = false;
+			}
 		}
 		else
 		{
@@ -75,7 +79,7 @@ void VRPNClient::buttonListen2() {
 //Listen is the function in which the thread runs, when this ends the thread ends.
 //TODO: Create a "listen" func for each device
 void VRPNClient::analogListen() {
-	b->StartAnalogHandler();
+	b->StartGamepadHandler();
 }
 
 void VRPNClient::analogListen2() {
@@ -83,6 +87,13 @@ void VRPNClient::analogListen2() {
 	//device specific stuff here
 	while (this->running) {
 		if (b != NULL) {
+			if (b->changed) {
+				for (int i = 0; i < 7;i++)
+					Console::Write(b->analogArray[i]+" ");
+				Console::WriteLine();
+				//Console::WriteLine(b->buttonNumber + " : " + b->buttonState);
+				b->changed = false;
+			}
 			//Console::WriteLine(b->buttonNumber);
 		}
 		else

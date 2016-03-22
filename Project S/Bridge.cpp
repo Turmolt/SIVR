@@ -9,16 +9,18 @@
 
 using namespace std;
 
+bool chng = false;
+
 int butState = 0;
 int butNumber = -1;
 
 
-array<typename float,2> analogState;
+array<typename float,7> analogState;
 float analogChan;
 int totalChannels;
 
 VrpnBridge::VrpnBridge(DevType x, std::string devName)
-	:buttonState(butState), buttonNumber(butNumber), analogArray(analogChan)
+	:buttonState(butState), buttonNumber(butNumber),changed(chng), analogArray(analogState)
 {
 	//ex = external;
 	this->deviceType = x;
@@ -31,15 +33,18 @@ VrpnBridge::VrpnBridge(DevType x, std::string devName)
 void VRPN_CALLBACK ButtonHandler(void* userData, const vrpn_BUTTONCB b) {
 	butState = b.state;
 	butNumber = b.button;
+	chng = true;
 }
 
 void VRPN_CALLBACK AnalogHandler(void* userData, const vrpn_ANALOGCB a) {
 	
-	totalChannels = a.num_channel;
-	for (int i = 0; i < totalChannels; i++) {
-		cout << a.channel[i]<<" ";
+//	totalChannels = a.num_channel;
+	for (int i = 0; i < a.num_channel; i++) {
+		//cout << a.channel[i]<<" ";
+		analogState[i] = a.channel[i];
 	}
-	cout << endl;
+	//cout << endl;
+	chng = true;
 }
 
 
@@ -49,9 +54,9 @@ void VrpnBridge::StartButtonHandler(int* external) {
 
 	//external = &ext;
 	std::string m = this->deviceName + "@localhost";
-	cout <<"\nm is: "<< m << endl;
+	//cout <<"\nm is: "<< m << endl;
 	const char* host = m.c_str();
-	cout << "host is: " << host << endl;
+	//cout << "host is: " << host << endl;
 
 	vrpn_Button_Remote* vrpnButton = new vrpn_Button_Remote(host);
 	
@@ -89,4 +94,29 @@ void VrpnBridge::StartAnalogHandler() {
 			cout << "Running null value" << endl;
 		}
 	}
+}
+
+void VrpnBridge::StartGamepadHandler() {
+	std::string m = this->deviceName + "@localhost";
+	const char* host = m.c_str();
+	vrpn_Analog_Remote* vrpnAnalog = new vrpn_Analog_Remote(host);
+	vrpn_Button_Remote* vrpnButton = new vrpn_Button_Remote(host);
+
+	vrpnAnalog->register_change_handler(0, AnalogHandler);
+	vrpnButton->register_change_handler(0, ButtonHandler);
+	while (this->running != NULL) {
+		vrpnAnalog->mainloop();
+		vrpnButton->mainloop();
+		Sleep(50.0);
+		try {
+			if (this->running == false)
+				break;
+		}
+		catch (System::NullReferenceException^) {
+			cout << "Running null value" << endl;
+		}
+	}
+
+
+
 }
