@@ -12,6 +12,7 @@ namespace ProjectS {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::IO;
 
 	/// <summary>
 	/// Summary for DeviceWindow
@@ -22,9 +23,15 @@ namespace ProjectS {
 		DeviceWindow(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: Add the constructor code here
-			//
+			
+
+
+			array<String^>^ files = Directory::GetFiles("/Devices/" , "*.*", System::IO::SearchOption::AllDirectories);
+
+
+
+
+
 		}
 
 	protected:
@@ -52,6 +59,31 @@ namespace ProjectS {
 	private: System::Windows::Forms::CheckedListBox^  GamepadBox;
 	private: System::Windows::Forms::Button^  button1;
 	private: System::Windows::Forms::ComboBox^  comboBox1;
+	private: System::Windows::Forms::Panel^  panel2;
+	private: System::Windows::Forms::Label^  Title;
+	private: System::Windows::Forms::ComboBox^  miscDeviceChoices;
+
+
+
+
+	private: System::Windows::Forms::CheckBox^  checkBox4;
+	private: System::Windows::Forms::Label^  label5;
+	private: System::Windows::Forms::ComboBox^  handDeviceChoices;
+
+	private: System::Windows::Forms::CheckBox^  checkBox3;
+	private: System::Windows::Forms::Label^  label4;
+	private: System::Windows::Forms::ComboBox^  PositionTrackingChoices;
+	private: System::Windows::Forms::ComboBox^  headDeviceChoices;
+	private: System::Windows::Forms::CheckBox^  checkBox2;
+	private: System::Windows::Forms::CheckBox^  checkBox1;
+	private: System::Windows::Forms::Label^  label3;
+	private: System::Windows::Forms::Label^  label2;
+	private: System::Windows::Forms::Panel^  panel3;
+	private: System::Windows::Forms::Button^  refreshDevices;
+	private: System::Windows::Forms::Button^  KillClients;
+	private: System::Windows::Forms::Button^  applyDevicePurposes;
+
+
 
 
 	protected:
@@ -94,7 +126,26 @@ namespace ProjectS {
 			this->appliedRB = (gcnew System::Windows::Forms::RadioButton());
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->comboBox1 = (gcnew System::Windows::Forms::ComboBox());
+			this->panel2 = (gcnew System::Windows::Forms::Panel());
+			this->refreshDevices = (gcnew System::Windows::Forms::Button());
+			this->KillClients = (gcnew System::Windows::Forms::Button());
+			this->applyDevicePurposes = (gcnew System::Windows::Forms::Button());
+			this->miscDeviceChoices = (gcnew System::Windows::Forms::ComboBox());
+			this->checkBox4 = (gcnew System::Windows::Forms::CheckBox());
+			this->label5 = (gcnew System::Windows::Forms::Label());
+			this->handDeviceChoices = (gcnew System::Windows::Forms::ComboBox());
+			this->checkBox3 = (gcnew System::Windows::Forms::CheckBox());
+			this->label4 = (gcnew System::Windows::Forms::Label());
+			this->PositionTrackingChoices = (gcnew System::Windows::Forms::ComboBox());
+			this->headDeviceChoices = (gcnew System::Windows::Forms::ComboBox());
+			this->checkBox2 = (gcnew System::Windows::Forms::CheckBox());
+			this->checkBox1 = (gcnew System::Windows::Forms::CheckBox());
+			this->label3 = (gcnew System::Windows::Forms::Label());
+			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->panel3 = (gcnew System::Windows::Forms::Panel());
+			this->Title = (gcnew System::Windows::Forms::Label());
 			this->flowLayoutPanel1->SuspendLayout();
+			this->panel2->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// devTypeBox
@@ -128,7 +179,7 @@ namespace ProjectS {
 			this->flowLayoutPanel1->Location = System::Drawing::Point(32, 64);
 			this->flowLayoutPanel1->Margin = System::Windows::Forms::Padding(2);
 			this->flowLayoutPanel1->Name = L"flowLayoutPanel1";
-			this->flowLayoutPanel1->Size = System::Drawing::Size(734, 383);
+			this->flowLayoutPanel1->Size = System::Drawing::Size(506, 383);
 			this->flowLayoutPanel1->TabIndex = 2;
 			// 
 			// MiscDevicesBox
@@ -245,12 +296,195 @@ namespace ProjectS {
 			this->comboBox1->TabIndex = 7;
 			this->comboBox1->SelectedIndexChanged += gcnew System::EventHandler(this, &DeviceWindow::comboBox1_SelectedIndexChanged);
 			// 
+			// panel2
+			// 
+			this->panel2->Controls->Add(this->refreshDevices);
+			this->panel2->Controls->Add(this->KillClients);
+			this->panel2->Controls->Add(this->applyDevicePurposes);
+			this->panel2->Controls->Add(this->miscDeviceChoices);
+			this->panel2->Controls->Add(this->checkBox4);
+			this->panel2->Controls->Add(this->label5);
+			this->panel2->Controls->Add(this->handDeviceChoices);
+			this->panel2->Controls->Add(this->checkBox3);
+			this->panel2->Controls->Add(this->label4);
+			this->panel2->Controls->Add(this->PositionTrackingChoices);
+			this->panel2->Controls->Add(this->headDeviceChoices);
+			this->panel2->Controls->Add(this->checkBox2);
+			this->panel2->Controls->Add(this->checkBox1);
+			this->panel2->Controls->Add(this->label3);
+			this->panel2->Controls->Add(this->label2);
+			this->panel2->Controls->Add(this->panel3);
+			this->panel2->Controls->Add(this->Title);
+			this->panel2->Location = System::Drawing::Point(556, 12);
+			this->panel2->Name = L"panel2";
+			this->panel2->Size = System::Drawing::Size(259, 413);
+			this->panel2->TabIndex = 8;
+			this->panel2->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &DeviceWindow::panel2_Paint);
+			// 
+			// refreshDevices
+			// 
+			this->refreshDevices->Location = System::Drawing::Point(78, 309);
+			this->refreshDevices->Name = L"refreshDevices";
+			this->refreshDevices->Size = System::Drawing::Size(75, 23);
+			this->refreshDevices->TabIndex = 19;
+			this->refreshDevices->Text = L"Refresh";
+			this->refreshDevices->UseVisualStyleBackColor = true;
+			this->refreshDevices->Click += gcnew System::EventHandler(this, &DeviceWindow::refreshDevices_Click);
+			// 
+			// KillClients
+			// 
+			this->KillClients->Location = System::Drawing::Point(78, 367);
+			this->KillClients->Name = L"KillClients";
+			this->KillClients->Size = System::Drawing::Size(75, 23);
+			this->KillClients->TabIndex = 18;
+			this->KillClients->Text = L"Kill Clients";
+			this->KillClients->UseVisualStyleBackColor = true;
+			// 
+			// applyDevicePurposes
+			// 
+			this->applyDevicePurposes->Location = System::Drawing::Point(78, 338);
+			this->applyDevicePurposes->Name = L"applyDevicePurposes";
+			this->applyDevicePurposes->Size = System::Drawing::Size(75, 23);
+			this->applyDevicePurposes->TabIndex = 17;
+			this->applyDevicePurposes->Text = L"Apply";
+			this->applyDevicePurposes->UseVisualStyleBackColor = true;
+			// 
+			// miscDeviceChoices
+			// 
+			this->miscDeviceChoices->FormattingEnabled = true;
+			this->miscDeviceChoices->Location = System::Drawing::Point(56, 250);
+			this->miscDeviceChoices->Name = L"miscDeviceChoices";
+			this->miscDeviceChoices->Size = System::Drawing::Size(121, 21);
+			this->miscDeviceChoices->TabIndex = 16;
+			// 
+			// checkBox4
+			// 
+			this->checkBox4->AutoSize = true;
+			this->checkBox4->Location = System::Drawing::Point(31, 232);
+			this->checkBox4->Name = L"checkBox4";
+			this->checkBox4->Size = System::Drawing::Size(15, 14);
+			this->checkBox4->TabIndex = 15;
+			this->checkBox4->UseVisualStyleBackColor = true;
+			// 
+			// label5
+			// 
+			this->label5->AutoSize = true;
+			this->label5->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12));
+			this->label5->Location = System::Drawing::Point(52, 227);
+			this->label5->Name = L"label5";
+			this->label5->Size = System::Drawing::Size(101, 20);
+			this->label5->TabIndex = 14;
+			this->label5->Text = L"Misc Devices";
+			// 
+			// handDeviceChoices
+			// 
+			this->handDeviceChoices->FormattingEnabled = true;
+			this->handDeviceChoices->Location = System::Drawing::Point(56, 189);
+			this->handDeviceChoices->Name = L"handDeviceChoices";
+			this->handDeviceChoices->Size = System::Drawing::Size(121, 21);
+			this->handDeviceChoices->TabIndex = 13;
+			// 
+			// checkBox3
+			// 
+			this->checkBox3->AutoSize = true;
+			this->checkBox3->Location = System::Drawing::Point(31, 171);
+			this->checkBox3->Name = L"checkBox3";
+			this->checkBox3->Size = System::Drawing::Size(15, 14);
+			this->checkBox3->TabIndex = 12;
+			this->checkBox3->UseVisualStyleBackColor = true;
+			// 
+			// label4
+			// 
+			this->label4->AutoSize = true;
+			this->label4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12));
+			this->label4->Location = System::Drawing::Point(52, 166);
+			this->label4->Name = L"label4";
+			this->label4->Size = System::Drawing::Size(112, 20);
+			this->label4->TabIndex = 11;
+			this->label4->Text = L"Hand Tracking";
+			// 
+			// PositionTrackingChoices
+			// 
+			this->PositionTrackingChoices->FormattingEnabled = true;
+			this->PositionTrackingChoices->Location = System::Drawing::Point(56, 128);
+			this->PositionTrackingChoices->Name = L"PositionTrackingChoices";
+			this->PositionTrackingChoices->Size = System::Drawing::Size(121, 21);
+			this->PositionTrackingChoices->TabIndex = 10;
+			// 
+			// headDeviceChoices
+			// 
+			this->headDeviceChoices->FormattingEnabled = true;
+			this->headDeviceChoices->Location = System::Drawing::Point(56, 68);
+			this->headDeviceChoices->Name = L"headDeviceChoices";
+			this->headDeviceChoices->Size = System::Drawing::Size(121, 21);
+			this->headDeviceChoices->TabIndex = 9;
+			// 
+			// checkBox2
+			// 
+			this->checkBox2->AutoSize = true;
+			this->checkBox2->Location = System::Drawing::Point(31, 110);
+			this->checkBox2->Name = L"checkBox2";
+			this->checkBox2->Size = System::Drawing::Size(15, 14);
+			this->checkBox2->TabIndex = 8;
+			this->checkBox2->UseVisualStyleBackColor = true;
+			// 
+			// checkBox1
+			// 
+			this->checkBox1->AutoSize = true;
+			this->checkBox1->Location = System::Drawing::Point(31, 50);
+			this->checkBox1->Name = L"checkBox1";
+			this->checkBox1->Size = System::Drawing::Size(15, 14);
+			this->checkBox1->TabIndex = 7;
+			this->checkBox1->UseVisualStyleBackColor = true;
+			// 
+			// label3
+			// 
+			this->label3->AutoSize = true;
+			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12));
+			this->label3->Location = System::Drawing::Point(52, 105);
+			this->label3->Name = L"label3";
+			this->label3->Size = System::Drawing::Size(129, 20);
+			this->label3->TabIndex = 6;
+			this->label3->Text = L"Position Tracking";
+			// 
+			// label2
+			// 
+			this->label2->AutoSize = true;
+			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12));
+			this->label2->Location = System::Drawing::Point(52, 45);
+			this->label2->Name = L"label2";
+			this->label2->Size = System::Drawing::Size(112, 20);
+			this->label2->TabIndex = 5;
+			this->label2->Text = L"Head Tracking";
+			// 
+			// panel3
+			// 
+			this->panel3->BackColor = System::Drawing::SystemColors::InactiveCaptionText;
+			this->panel3->Location = System::Drawing::Point(21, 37);
+			this->panel3->Margin = System::Windows::Forms::Padding(2);
+			this->panel3->Name = L"panel3";
+			this->panel3->Size = System::Drawing::Size(5, 254);
+			this->panel3->TabIndex = 4;
+			// 
+			// Title
+			// 
+			this->Title->AutoSize = true;
+			this->Title->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15, System::Drawing::FontStyle::Bold));
+			this->Title->Location = System::Drawing::Point(16, 10);
+			this->Title->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->Title->Name = L"Title";
+			this->Title->Size = System::Drawing::Size(227, 25);
+			this->Title->TabIndex = 2;
+			this->Title->Text = L"Device Purpose Setup";
+			this->Title->Click += gcnew System::EventHandler(this, &DeviceWindow::label2_Click);
+			// 
 			// DeviceWindow
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->BackColor = System::Drawing::SystemColors::GradientInactiveCaption;
-			this->ClientSize = System::Drawing::Size(364, 624);
+			this->BackColor = System::Drawing::SystemColors::GradientActiveCaption;
+			this->ClientSize = System::Drawing::Size(829, 624);
+			this->Controls->Add(this->panel2);
 			this->Controls->Add(this->comboBox1);
 			this->Controls->Add(this->button1);
 			this->Controls->Add(this->appliedRB);
@@ -264,6 +498,8 @@ namespace ProjectS {
 			this->Text = L"DeviceWindow";
 			this->Load += gcnew System::EventHandler(this, &DeviceWindow::DeviceWindow_Load);
 			this->flowLayoutPanel1->ResumeLayout(false);
+			this->panel2->ResumeLayout(false);
+			this->panel2->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -362,7 +598,12 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 	}
 	
 }
-private: System::Void comboBox1_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
+
+
+
+
+//REFRESH DEVICE LIST
+private: System::Void refreshDevices_Click(System::Object^  sender, System::EventArgs^  e) {
 
 }
 };

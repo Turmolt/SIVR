@@ -8,10 +8,13 @@
 #include "Bridge.h"
 #include <string>
 #include <array>
+#include <subscriptionservices.h>
+
 using namespace System;
 using namespace System::Runtime::InteropServices;
 using namespace System::Threading;
 using namespace System::IO;
+//using namespace System::ServiceModel;
 
 VrpnBridge* b;
 
@@ -70,7 +73,7 @@ void VRPNClient::buttonListen2() {
 		}
 		
 		
-		Sleep(100.0);
+		Sleep(5.0);
 	}
 
 	b->running = false;
@@ -104,7 +107,7 @@ void VRPNClient::analogListen2() {
 		}
 
 
-		Sleep(100.0);
+		Sleep(5.0);
 	}
 
 	b->running = false;

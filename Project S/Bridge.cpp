@@ -1,11 +1,13 @@
 #include <string>
 #include <iostream>
+#include <fstream>
 #include <vrpn_Button.h>
 #include <vrpn_Tracker.h>
 #include <vrpn_Analog.h>
 #include <vrpn_XInputGamepad.h>
 #include "Bridge.h"
 #include <array>
+#include <sstream>
 
 using namespace std;
 
@@ -97,6 +99,8 @@ void VrpnBridge::StartAnalogHandler() {
 }
 
 void VrpnBridge::StartGamepadHandler() {
+	ofstream SIVRData;
+	SIVRData.open("S:/Coding/Unity/SIVR Unity/Assets/SIVRData.siv", std::ofstream::trunc);
 	std::string m = this->deviceName + "@localhost";
 	const char* host = m.c_str();
 	vrpn_Analog_Remote* vrpnAnalog = new vrpn_Analog_Remote(host);
@@ -105,8 +109,14 @@ void VrpnBridge::StartGamepadHandler() {
 	vrpnAnalog->register_change_handler(0, AnalogHandler);
 	vrpnButton->register_change_handler(0, ButtonHandler);
 	while (this->running != NULL) {
+		
 		vrpnAnalog->mainloop();
-		vrpnButton->mainloop();
+		//vrpnButton->mainloop();
+		SIVRData.seekp(0);
+		for (int i = 0; i < 7; i++)
+		{
+			SIVRData << analogArray[i] << endl;
+		}
 		Sleep(50.0);
 		try {
 			if (this->running == false)
@@ -116,7 +126,7 @@ void VrpnBridge::StartGamepadHandler() {
 			cout << "Running null value" << endl;
 		}
 	}
-
-
+	SIVRData.close();
+	cout << "Closing Time~~\n";
 
 }
