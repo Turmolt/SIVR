@@ -1,6 +1,9 @@
 //author - sam gates
 #include "ProcWorker.h"
 
+//max number of configs we can read in per purpose
+#define MAX_CONFIG 5
+
 /*
 The class used to start and check if a process is running
 */
@@ -9,6 +12,7 @@ public:
 	static System::String^ ServDir = "";
 	static System::String^ ConfigDir = "C:/Users/Sam/Desktop/Coding/C++/SIVR/Project S/vrpn.cfg";
 	static Boss^ boss;
+	static array<SIVConfig^>^ sivc = gcnew array<SIVConfig^>(4);
 };
 
 ProcWorker::ProcWorker()
@@ -45,6 +49,37 @@ void ProcWorker::setBoss(Boss^ b)
 {
 	Globals::boss = b;
 }
+
+array<SIVConfig^>^ ProcWorker::readDevices(System::String^ purpose)
+{
+	
+	System::String^ folder = System::IO::Directory::GetCurrentDirectory()->ToString();
+	if (purpose->ToString()->Equals("Head")) {
+		folder += "/Devices/Head";
+	}
+	else if (purpose->ToString()->Equals("Misc")){
+		folder += "/Devices/Misc Devices";
+	}
+	else if (purpose->ToString()->Equals("Hands")) {
+		folder += "/Devices/Hands";
+	}
+	else if (purpose->ToString()->Equals("Spatial")) {
+		folder += "/Devices/Spatial Tracking";
+	}
+
+	array<System::String^>^ file = System::IO::Directory::GetFiles(folder);
+	array<SIVConfig^>^ configArray = gcnew array<SIVConfig^>(file->Length);
+
+	//System::Console::WriteLine("--== Files inside '{0}' ==--", folder);
+	folder += "\\";
+	for (int i = 0; i < file->Length; i++) {
+		System::String^ filename = file[i]->Replace(folder, "");
+		configArray[i] = gcnew SIVConfig(filename->Split('.')[0]);
+	}
+
+	return configArray;
+}
+
 
 
 //startProc starts a .exe file, lpApp is the path of the .exe to start

@@ -5,7 +5,7 @@
 #include <cstdio>
 #include <string>
 #include "Boss.h"
-
+#include "SIVConfig.h"
 
 
 
@@ -22,6 +22,8 @@ public:
 	static void setConfigDir(System::String^);
 	static Boss^ getBoss();
 	static void setBoss(Boss^ b);
+
+	static array<SIVConfig^>^ readDevices(System::String^);
 
 };
 

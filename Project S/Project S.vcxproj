@@ -72,9 +72,9 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>PATH=S:\Coding\Lib\vrpn;$(IncludePath)</IncludePath>
-    <LibraryPath>PATH=S:\Coding\Lib\BuiltVRPN\Debug;$(LibraryPath)</LibraryPath>
-    <ReferencePath>PATH=S:\Coding\Lib\vrpn;$(VC_ReferencesPath_x86);</ReferencePath>
+    <IncludePath>PATH=C:\Users\Sam\Desktop\Coding\Lib\vrpn;$(IncludePath)</IncludePath>
+    <LibraryPath>PATH=C:\Users\Sam\Desktop\Coding\Lib\BuiltVRPN\Debug;$(LibraryPath)</LibraryPath>
+    <ReferencePath>PATH=C:\Users\Sam\Desktop\Coding\Lib\vrpn;$(VC_ReferencesPath_x86);</ReferencePath>
     <SourcePath>;$(VC_SourcePath);</SourcePath>
     <TargetName>SIVR</TargetName>
   </PropertyGroup>
@@ -96,7 +96,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>S:\Coding\Lib\vrpn;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Sam\Desktop\Coding\Lib\vrpn;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -151,6 +151,7 @@
     <ClInclude Include="ServerSetup.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="SIVConfig.h" />
     <ClInclude Include="VRPNClient.h" />
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +161,7 @@
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="ProcWorker.cpp" />
     <ClCompile Include="ServerSetup.cpp" />
+    <ClCompile Include="SIVConfig.cpp" />
     <ClCompile Include="VRPNClient.cpp" />
   </ItemGroup>
   <ItemGroup>

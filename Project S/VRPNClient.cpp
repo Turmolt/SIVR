@@ -143,7 +143,7 @@ void VRPNClient::startThread()
 }
 
 void VRPNClient::startAnalogThread()
-{
+{	
 	//ThreadWork^ tw = gcnew ThreadWork();
 	this->running = true;
 	this->aThread = gcnew Thread(gcnew ThreadStart(this, &VRPNClient::analogListen));

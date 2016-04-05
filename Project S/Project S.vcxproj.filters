@@ -42,6 +42,9 @@
     <ClInclude Include="Bridge.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SIVConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Boss.cpp">
@@ -63,6 +66,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Bridge.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SIVConfig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
