@@ -294,7 +294,7 @@ namespace ProjectS {
 			this->comboBox1->Name = L"comboBox1";
 			this->comboBox1->Size = System::Drawing::Size(121, 21);
 			this->comboBox1->TabIndex = 7;
-			this->comboBox1->SelectedIndexChanged += gcnew System::EventHandler(this, &DeviceWindow::comboBox1_SelectedIndexChanged);
+			
 			// 
 			// panel2
 			// 
@@ -319,7 +319,7 @@ namespace ProjectS {
 			this->panel2->Name = L"panel2";
 			this->panel2->Size = System::Drawing::Size(259, 413);
 			this->panel2->TabIndex = 8;
-			this->panel2->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &DeviceWindow::panel2_Paint);
+			
 			// 
 			// refreshDevices
 			// 
@@ -476,7 +476,7 @@ namespace ProjectS {
 			this->Title->Size = System::Drawing::Size(227, 25);
 			this->Title->TabIndex = 2;
 			this->Title->Text = L"Device Purpose Setup";
-			this->Title->Click += gcnew System::EventHandler(this, &DeviceWindow::label2_Click);
+			
 			// 
 			// DeviceWindow
 			// 
