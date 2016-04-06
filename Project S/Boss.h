@@ -3,12 +3,13 @@
 #include <windows.h>
 #include "VRPNClient.h"
 #include <vcclr.h>
+#include "SIVConfig.h"
 
 ref class Boss
 {
 public:
 	Boss();
-	VRPNClient^ newClient(DevType t, System::String^);
+	VRPNClient^ newClient(DevType t, System::String^,SIVConfig^ cfg);
 	VRPNClient^ getClient(DevType type);
 	void killClient(DevType t);
 	cli::array<VRPNClient^>^ clientArray;

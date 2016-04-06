@@ -20,7 +20,6 @@ VrpnBridge* b;
 
 struct Mutex2 {
 	int taken = 0;
-
 };
 Mutex2 m2;
 //create a VRPNClient with a device type and a device name to use on the VRPN Server
@@ -101,7 +100,7 @@ void VRPNClient::analogListen2() {
 		}
 		else
 		{
-			Console::Write("Fak");
+			Console::Write("Oops");
 			std::string dn = msclr::interop::marshal_as<std::string>(dName->ToString());
 			b = new VrpnBridge(this->deviceType, dn);
 		}

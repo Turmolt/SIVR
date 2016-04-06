@@ -2,7 +2,7 @@
 #include "ProcWorker.h"
 
 //max number of configs we can read in per purpose
-#define MAX_CONFIG 5
+
 
 /*
 The class used to start and check if a process is running
@@ -80,7 +80,30 @@ array<SIVConfig^>^ ProcWorker::readDevices(System::String^ purpose)
 	return configArray;
 }
 
+void ProcWorker::readConfig(DevType t, System::String^ devName)
+{
+	System::String^ folder = System::IO::Directory::GetCurrentDirectory()->ToString();
+	if (t==DevType::HeadTracker) {
+		folder += "/Devices/Head";
+	}
+	else if (t == DevType::Spatial) {
+		folder += "/Devices/Spatial Tracking";
+	}
+	else if (t == DevType::HandTracker) {
+		folder += "/Devices/Hands";
+	}
+	else{
+		folder += "/Devices/Misc Devices";
+	}
 
+	//array<System::String^>^ file = System::IO::Directory::GetFiles(folder);
+
+	//System::Console::WriteLine("--== Files inside '{0}' ==--", folder);
+	folder += "\\";
+	
+
+
+}
 
 //startProc starts a .exe file, lpApp is the path of the .exe to start
 void ProcWorker::startProc(LPCTSTR lpApp) {

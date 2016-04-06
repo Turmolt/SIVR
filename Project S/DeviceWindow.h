@@ -595,7 +595,7 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 		ProcWorker::getBoss()->killClient(DevType::HandTracker);
 		break;
 	case 2:
-		ProcWorker::getBoss()->killClient(DevType::Tracker);
+		ProcWorker::getBoss()->killClient(DevType::Spatial);
 		break;
 	case 3:
 		ProcWorker::getBoss()->killClient(DevType::Gamepad);
@@ -607,7 +607,6 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 		ProcWorker::getBoss()->killClient(DevType::HeadTracker);
 		break;
 	}
-	
 }
 
 

@@ -22,13 +22,14 @@ Boss::Boss()
 }
 
 //create new client for VRPN based on type fed in
-VRPNClient ^ Boss::newClient(DevType t, String^ devName)
+VRPNClient ^ Boss::newClient(DevType t, String^ devName, SIVConfig^ cfg)
 {
 	switch (t) {
 	case DevType::HMD:
 		if (!this->head)
 		{
 			this->Head = gcnew VRPNClient(t, devName);
+			this->Head->config = cfg;
 			this->head = true;
 		}
 		else
@@ -38,19 +39,21 @@ VRPNClient ^ Boss::newClient(DevType t, String^ devName)
 	case DevType::Gamepad:
 		if (!this->gamepad){
 			this->Gamepad = gcnew VRPNClient(t, devName);
+			this->Gamepad->config = cfg;
 			this->gamepad = true;
 		}
 		else
 			Console::WriteLine("Gamepad already has a device assigned.");
 		return this->Gamepad;
 		break;
-	case DevType::Tracker:
+	case DevType::Spatial:
 		if (!this->tracker){
 			this->Tracker = gcnew VRPNClient(t, devName);
+			this->Tracker->config = cfg;
 			this->tracker = true;
 		}
 		else
-			Console::WriteLine("Tracker already has a device assigned.");
+			Console::WriteLine("Spatial already has a device assigned.");
 		return this->Tracker;
 		break;
 	case DevType::Mouse:
@@ -84,7 +87,7 @@ VRPNClient ^ Boss::getClient(DevType type)
 	case DevType::Gamepad:
 		return this->Gamepad;
 		break;
-	case DevType::Tracker:
+	case DevType::Spatial:
 		return this->Tracker;
 		break;
 	case DevType::Mouse:
@@ -109,7 +112,7 @@ void Boss::killClient(DevType t) {
 			this->Gamepad->stopThread();
 			this->gamepad = false;
 			break;
-		case DevType::Tracker:
+		case DevType::Spatial:
 			this->Tracker->stopThread();
 			this->tracker = false;
 			break;

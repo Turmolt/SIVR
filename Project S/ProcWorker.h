@@ -7,7 +7,11 @@
 #include "Boss.h"
 #include "SIVConfig.h"
 
-
+#define MAX_CONFIG 5
+#define HEAD_N 0
+#define HAND_N 1
+#define SPATIAL_N 2
+#define MISC_N 3
 
 static class ProcWorker
 {
@@ -24,6 +28,8 @@ public:
 	static void setBoss(Boss^ b);
 
 	static array<SIVConfig^>^ readDevices(System::String^);
+
+	static void readConfig(DevType, System::String^);
 
 };
 

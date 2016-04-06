@@ -9,7 +9,7 @@
 #include <vrpn_XInputGamepad.h>
 #include <vrpn_Analog.h>
 #include <Xinput.h>
-
+#include "SIVConfig.h"
 
 
 
@@ -31,6 +31,8 @@ public:
 
 	void analogListen();
 	void analogListen2();
+
+	SIVConfig^ config;
 
 	System::String^ dName;
 	System::String^ s;
