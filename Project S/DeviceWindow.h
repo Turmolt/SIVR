@@ -567,8 +567,8 @@ private: System::Void applyDevices_Click(System::Object^  sender, System::EventA
 			//gamepads
 		case 2:
 			if (this->GamepadBox->CheckedItems->Contains("Xbox 360")) {
-
-				ProcWorker::getBoss()->newClient(DevType::Gamepad,"XInput0");
+				ProcWorker::readConfig(DevType::Gamepad, "XInput");
+				ProcWorker::getBoss()->newClient(DevType::Gamepad,"XInput0",ProcWorker::GetCfg("Misc"));
 		}	
 			break;
 			//misc devices
@@ -576,7 +576,7 @@ private: System::Void applyDevices_Click(System::Object^  sender, System::EventA
 			Console::Write("Mouse");
 			if (this->MiscDevicesBox->CheckedItems->Contains("Mouse")) {
 				Console::Write("Mouse");
-				ProcWorker::getBoss()->newClient(DevType::Mouse, "Mouse0");
+				//ProcWorker::getBoss()->newClient(DevType::Mouse, "Mouse0");
 			}
 			break;
 		default:

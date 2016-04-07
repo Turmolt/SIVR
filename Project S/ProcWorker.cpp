@@ -50,6 +50,15 @@ void ProcWorker::setBoss(Boss^ b)
 	Globals::boss = b;
 }
 
+SIVConfig^ ProcWorker::GetCfg(System::String ^ c)
+{
+	if (c->Equals("Misc")) {
+		return Globals::sivc[3];
+	}
+
+	return Globals::sivc[3];
+}
+
 array<SIVConfig^>^ ProcWorker::readDevices(System::String^ purpose)
 {
 	
@@ -100,6 +109,19 @@ void ProcWorker::readConfig(DevType t, System::String^ devName)
 
 	//System::Console::WriteLine("--== Files inside '{0}' ==--", folder);
 	folder += "\\";
+
+	System::String^ filename = folder + devName + ".txt";
+
+	//okay time to read the file
+	System::IO::StreamReader^ reader = System::IO::File::OpenText(filename);
+
+	array<System::String^>^ cfgString = gcnew array<System::String^>(6);
+
+	for (int i = 0; i < 6; i++) {
+		cfgString[i] = reader->ReadLine();
+		System::Console::WriteLine(cfgString[i]->ToString());
+	}
+
 	
 
 

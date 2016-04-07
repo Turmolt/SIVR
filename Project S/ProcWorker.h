@@ -27,6 +27,8 @@ public:
 	static Boss^ getBoss();
 	static void setBoss(Boss^ b);
 
+	static SIVConfig^ GetCfg(System::String^);
+
 	static array<SIVConfig^>^ readDevices(System::String^);
 
 	static void readConfig(DevType, System::String^);
