@@ -14,7 +14,7 @@ Boss::Boss()
 	this->hands=false;
 	this->head = false;
 	this->tracker = false;
-	this->gamepad = false;
+	this->misc = false;
 	this->mouse = false;
 
 	curMax = 0;
@@ -28,28 +28,28 @@ VRPNClient ^ Boss::newClient(DevType t, String^ devName, SIVConfig^ cfg)
 	case DevType::HMD:
 		if (!this->head)
 		{
-			this->Head = gcnew VRPNClient(t, devName);
-			this->Head->config = cfg;
+			this->Head = gcnew VRPNClient(t, devName,cfg);
+			//this->Head->config = cfg;
 			this->head = true;
 		}
 		else
 			Console::WriteLine("Head already has a device assigned.");
 		return this->Head;
 		break;
-	case DevType::Gamepad:
-		if (!this->gamepad){
-			this->Gamepad = gcnew VRPNClient(t, devName);
-			this->Gamepad->config = cfg;
-			this->gamepad = true;
+	case DevType::Misc:
+		if (!this->misc){
+			this->Misc = gcnew VRPNClient(t, devName,cfg);
+			//this->Misc->config = cfg;
+			this->misc = true;
 		}
 		else
 			Console::WriteLine("Gamepad already has a device assigned.");
-		return this->Gamepad;
+		return this->Misc;
 		break;
 	case DevType::Spatial:
 		if (!this->tracker){
-			this->Tracker = gcnew VRPNClient(t, devName);
-			this->Tracker->config = cfg;
+			this->Tracker = gcnew VRPNClient(t, devName, cfg);
+			//this->Tracker->config = cfg;
 			this->tracker = true;
 		}
 		else
@@ -58,7 +58,7 @@ VRPNClient ^ Boss::newClient(DevType t, String^ devName, SIVConfig^ cfg)
 		break;
 	case DevType::Mouse:
 		if (!this->mouse){
-			this->Mouse = gcnew VRPNClient(t, devName);
+			this->Mouse = gcnew VRPNClient(t, devName, cfg);
 			this->mouse = true;
 		}
 		else
@@ -67,7 +67,7 @@ VRPNClient ^ Boss::newClient(DevType t, String^ devName, SIVConfig^ cfg)
 		break;
 	case DevType::HandTracker:
 		if (!this->hands) {
-			this->Hands = gcnew VRPNClient(t, devName);
+			this->Hands = gcnew VRPNClient(t, devName, cfg);
 			this->hands = true;
 		}
 		else
@@ -84,8 +84,8 @@ VRPNClient ^ Boss::getClient(DevType type)
 	case DevType::HMD:
 		return this->Head;
 		break;
-	case DevType::Gamepad:
-		return this->Gamepad;
+	case DevType::Misc:
+		return this->Misc;
 		break;
 	case DevType::Spatial:
 		return this->Tracker;
@@ -108,9 +108,9 @@ void Boss::killClient(DevType t) {
 			delete this->Head;
 			this->head = false;
 			break;
-		case DevType::Gamepad:
-			this->Gamepad->stopThread();
-			this->gamepad = false;
+		case DevType::Misc:
+			this->Misc->stopThread();
+			this->misc = false;
 			break;
 		case DevType::Spatial:
 			this->Tracker->stopThread();

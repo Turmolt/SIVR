@@ -29,9 +29,9 @@ public:
 
 	static SIVConfig^ GetCfg(System::String^);
 
-	static array<SIVConfig^>^ readDevices(System::String^);
+	static array<System::String^>^ readDevices(System::String^);
 
-	static void readConfig(DevType, System::String^);
+	static SIVConfig^ readConfig(DevType, System::String^);
 
 };
 

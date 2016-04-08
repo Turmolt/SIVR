@@ -7,7 +7,9 @@
 #include <vrpn_XInputGamepad.h>
 #include "Bridge.h"
 #include <array>
+#include <msclr\marshal.h>
 #include <sstream>
+
 
 using namespace std;
 
@@ -21,13 +23,50 @@ array<typename float,7> analogState;
 float analogChan;
 int totalChannels;
 
-VrpnBridge::VrpnBridge(DevType x, std::string devName)
-	:buttonState(butState), buttonNumber(butNumber),changed(chng), analogArray(analogState)
+VrpnBridge::VrpnBridge(DevType x, std::string devName, SIVConfig^ cfg)
+	:buttonState(butState), buttonNumber(butNumber), changed(chng), analogArray(analogState)
 {
 	//ex = external;
 	this->deviceType = x;
 	this->running = true;
-	this->deviceName = devName;
+	this->deviceName = msclr::interop::marshal_as<std::string>(cfg->deviceName->ToString());
+	this->VRPNname = msclr::interop::marshal_as<std::string>(cfg->VRPNname->ToString());
+	this->dataTypes = msclr::interop::marshal_as<std::string>(cfg->dataTypes->ToString());
+	this->channels = cfg->channels;
+	totalChannels = this->channels;
+
+
+	if (this->dataTypes == "Rotation") {
+		this->rot = true;
+		this->pos = false;
+	}
+	else if (dataTypes == "Position") {
+		this->pos = true;
+		this->rot = false;
+	}
+	else if (dataTypes == "Both") {
+		this->pos = true;
+		this->rot = true;
+	}
+	else {
+		this->pos = false;
+		this->rot = false;
+	}
+
+	if (this->pos) {
+		this->XPos = cfg->XPos;
+		this->YPos = cfg->YPos;
+		this->ZPos = cfg->ZPos;
+		this->Scale = cfg->Scale;
+	}
+
+	if (this->rot) {
+		this->YRot = cfg->YRot;
+		this->ZRot = cfg->ZRot;
+		this->XRot = cfg->XRot;
+		this->WRot = cfg->WRot;
+	}
+
 	
 }
 
@@ -97,7 +136,7 @@ void VrpnBridge::StartAnalogHandler() {
 		}
 	}
 }
-
+// TODO: write handlers to write data to specific spots
 void VrpnBridge::StartGamepadHandler() {
 	ofstream SIVRData;
 	SIVRData.open("S:/Coding/Unity/SIVR Unity/Assets/SIVRData.siv", std::ofstream::trunc);

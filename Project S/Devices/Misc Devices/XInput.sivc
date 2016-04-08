@@ -1,6 +1,6 @@
 VRPNname: XInput0
 Channels: 7
-Returns[Rotation,Position,Both,None]: None
-Buttons: Y
-Rotation Channels (X,Y,Z,W): 
-Position Channels (X,Y,Z,Scale): 
+Returns[Rotation,Position,Both,None]: Both
+Buttons: 10
+Rotation_Channels(X,Y,Z,W): (1,2,3,4)
+Position_Channels(X,Y,Z,Scale): (1,2,3,4.0)

@@ -23,22 +23,34 @@ struct Mutex2 {
 };
 Mutex2 m2;
 //create a VRPNClient with a device type and a device name to use on the VRPN Server
-VRPNClient::VRPNClient(DevType t, String^ dev)
+VRPNClient::VRPNClient(DevType t, String^ dev,SIVConfig^ cfg)
 {
+
+
 	//VrpnBridge* b = new VrpnBridge(external);
+
+	this->config = cfg;
+
+	Console::WriteLine(this->config->buttons);
+
+	Console::WriteLine(this->config->dataTypes);
+	Console::WriteLine(this->config->VRPNname);
+	
 	s = gcnew String("");
 	this->dName = dev;
 	std::string dn = msclr::interop::marshal_as<std::string>(dev);
 	b = new VrpnBridge(t, dn);
 	this->deviceType = t;
 	Console::WriteLine(dev);
-	if (t == DevType::Gamepad){
+
+	/*
+	if (t == DevType::Misc){
 		startAnalogThread();
 	}
 	else if (t == DevType::Mouse) {
 		startThread();
 	}
-
+	*/
 	
 }
 
@@ -117,7 +129,7 @@ void VRPNClient::enableDevice(DevType t, System::String^ devName) {
 	
 	//const char* cfgPath = (const char*)Marshal::StringToHGlobalAnsi(ProcWorker::configDir()).ToPointer();
 	String^ cfgPath = ProcWorker::configDir();
-	if (t == DevType::Gamepad) {
+	if (t == DevType::Misc) {
 		StreamWriter^ sw = gcnew StreamWriter(cfgPath);
 		sw->Write(DeviceNames::xinput->ToString()+" " + devName->ToString());
 	}

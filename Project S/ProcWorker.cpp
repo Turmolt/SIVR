@@ -59,7 +59,7 @@ SIVConfig^ ProcWorker::GetCfg(System::String ^ c)
 	return Globals::sivc[3];
 }
 
-array<SIVConfig^>^ ProcWorker::readDevices(System::String^ purpose)
+array<System::String^>^ ProcWorker::readDevices(System::String^ purpose)
 {
 	
 	System::String^ folder = System::IO::Directory::GetCurrentDirectory()->ToString();
@@ -77,19 +77,19 @@ array<SIVConfig^>^ ProcWorker::readDevices(System::String^ purpose)
 	}
 
 	array<System::String^>^ file = System::IO::Directory::GetFiles(folder);
-	array<SIVConfig^>^ configArray = gcnew array<SIVConfig^>(file->Length);
+	array<System::String^>^ configArray = gcnew array<System::String^>(file->Length);
 
 	//System::Console::WriteLine("--== Files inside '{0}' ==--", folder);
 	folder += "\\";
 	for (int i = 0; i < file->Length; i++) {
 		System::String^ filename = file[i]->Replace(folder, "");
-		configArray[i] = gcnew SIVConfig(filename->Split('.')[0]);
+		configArray[i] = filename->Split('.')[0];
 	}
 
 	return configArray;
 }
 
-void ProcWorker::readConfig(DevType t, System::String^ devName)
+SIVConfig^ ProcWorker::readConfig(DevType t, System::String^ devName)
 {
 	System::String^ folder = System::IO::Directory::GetCurrentDirectory()->ToString();
 	if (t==DevType::HeadTracker) {
@@ -110,18 +110,79 @@ void ProcWorker::readConfig(DevType t, System::String^ devName)
 	//System::Console::WriteLine("--== Files inside '{0}' ==--", folder);
 	folder += "\\";
 
-	System::String^ filename = folder + devName + ".txt";
-
+	System::String^ filename = folder + devName + ".sivc";
 	//okay time to read the file
+	
 	System::IO::StreamReader^ reader = System::IO::File::OpenText(filename);
 
-	array<System::String^>^ cfgString = gcnew array<System::String^>(6);
+	SIVConfig^ newConfig = gcnew SIVConfig();
+
+	//array<System::String^>^ cfgString = gcnew array<System::String^>(6);
+	System::String^ cfgLine = "";
 
 	for (int i = 0; i < 6; i++) {
-		cfgString[i] = reader->ReadLine();
-		System::Console::WriteLine(cfgString[i]->ToString());
-	}
 
+		//read in the line of text
+		//cfgString[i] = reader->ReadLine();
+		//System::Console::WriteLine(cfgString[i]->ToString());
+		//cfgString[i]->Split(' ');
+
+		//read in the line of text 
+		cfgLine = reader->ReadLine();
+
+		//grab the data we want
+		cfgLine = cfgLine->Split(' ')[1];
+
+		switch (i) {
+		case 0:
+			//VRPN Device Name
+			newConfig->VRPNname = cfgLine;
+			break;
+		case 1:
+			//number of analog channels
+			newConfig->channels = System::Int32::Parse(cfgLine);
+			break;
+		case 2:
+			//what type of data the device returns
+			newConfig->dataTypes = cfgLine;
+			break;
+		case 3:
+			//number of buttons associated with it
+			newConfig->buttons = System::Int32::Parse(cfgLine);
+			break;
+		case 4:
+			//rotation channels (X,Y,Z,W) if quaternion
+			if (newConfig->dataTypes->Equals("Rotation") || newConfig->dataTypes->Equals("Both"))
+			{
+				cfgLine = cfgLine->Replace("(", "");
+				cfgLine = cfgLine->Replace(")", "");
+				array<System::String^>^ parseMe = cfgLine->Split(',');
+
+				newConfig->XRot = System::Int32::Parse(parseMe[0]);
+				newConfig->YRot = System::Int32::Parse(parseMe[1]);
+				newConfig->ZRot = System::Int32::Parse(parseMe[2]);
+				newConfig->WRot = System::Int32::Parse(parseMe[3]);
+			}
+			break;
+		case 5:
+			//position channels (X,Y,Z,Scale)
+			if (newConfig->dataTypes->Equals("Position") || newConfig->dataTypes->Equals("Both")) {
+				cfgLine = cfgLine->Replace("(", "");
+				cfgLine = cfgLine->Replace(")", "");
+				array<System::String^>^ parseMe = cfgLine->Split(',');
+				newConfig->XPos = System::Int32::Parse(parseMe[0]);
+				newConfig->YPos = System::Int32::Parse(parseMe[1]);
+				newConfig->ZPos = System::Int32::Parse(parseMe[2]);
+				newConfig->Scale = System::Double::Parse(parseMe[3]);
+			}
+			break;
+
+		}
+	}
+	
+	reader->Close();
+
+	return newConfig;
 	
 
 

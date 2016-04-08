@@ -16,7 +16,7 @@
 public ref class VRPNClient
 {
 public:
-	VRPNClient(DevType t, System::String^ dn);
+	VRPNClient(DevType t, System::String^ dn, SIVConfig^ cfg);
 	void makeClient();
 	void enableDevice(DevType t, System::String^ dev);
 
@@ -41,8 +41,6 @@ public:
 	DevType deviceType;
 
 	int* external;
-
-	
 
 	bool running;
 	

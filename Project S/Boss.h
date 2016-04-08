@@ -17,13 +17,13 @@ public:
 	VRPNClient^ Hands;
 	VRPNClient^ Head;
 	VRPNClient^ Tracker;
-	VRPNClient^ Gamepad;
+	VRPNClient^ Misc;
 	VRPNClient^ Mouse;
 
 	bool hands;
 	bool head;
 	bool tracker;
-	bool gamepad;
+	bool misc;
 	bool mouse;
 
 
