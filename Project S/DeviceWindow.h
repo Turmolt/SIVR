@@ -634,7 +634,6 @@ private: System::Void refreshDeviceList() {
 	for each (String^ device in spatialArray) {
 		this->SpatialTrackingChoices->Items->Add(device);
 	}
-
 }
 
 
@@ -653,7 +652,7 @@ private: System::Void applyDevicePurposes_Click_1(System::Object^  sender, Syste
 		if (this->MDCheck->Checked) {
 			Console::WriteLine("Go");
 			SIVConfig^ cfg = ProcWorker::readConfig(DevType::Misc, "XInput");
-			ProcWorker::getBoss()->newClient(DevType::Misc,"XInput0", cfg);
+			ProcWorker::getBoss()->newClient(DevType::Misc,"XInput", cfg);
 			
 			//ProcWorker::GetCfg("Misc");
 		}

@@ -13,6 +13,7 @@ public:
 	static System::String^ ConfigDir = "C:/Users/Sam/Desktop/Coding/C++/SIVR/Project S/vrpn.cfg";
 	static Boss^ boss;
 	static array<SIVConfig^>^ sivc = gcnew array<SIVConfig^>(4);
+	static System::String^ mainDir = "";
 };
 
 ProcWorker::ProcWorker()
@@ -49,6 +50,8 @@ void ProcWorker::setBoss(Boss^ b)
 {
 	Globals::boss = b;
 }
+
+
 
 SIVConfig^ ProcWorker::GetCfg(System::String ^ c)
 {

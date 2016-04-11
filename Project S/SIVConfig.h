@@ -1,8 +1,11 @@
 #pragma once
+#include <string>
 
 ref class SIVConfig {
 public:
 	SIVConfig();
+
+
 	System::String^ deviceName;
 	System::String^ VRPNname;
 	System::String^ dataTypes;

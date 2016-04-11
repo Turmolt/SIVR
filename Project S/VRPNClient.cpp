@@ -31,17 +31,17 @@ VRPNClient::VRPNClient(DevType t, String^ dev,SIVConfig^ cfg)
 
 	this->config = cfg;
 
-	Console::WriteLine(this->config->buttons);
+	//Console::WriteLine(this->config->buttons);
 
-	Console::WriteLine(this->config->dataTypes);
-	Console::WriteLine(this->config->VRPNname);
-	
+	//Console::WriteLine(this->config->dataTypes);
+	//Console::WriteLine(this->config->VRPNname);
+	this->config->deviceName = dev;
 	s = gcnew String("");
 	this->dName = dev;
-	std::string dn = msclr::interop::marshal_as<std::string>(dev);
-	b = new VrpnBridge(t, dn);
+
+	b = new VrpnBridge(t, this->config);
 	this->deviceType = t;
-	Console::WriteLine(dev);
+	//Console::WriteLine(dev);
 
 	/*
 	if (t == DevType::Misc){
@@ -79,8 +79,7 @@ void VRPNClient::buttonListen2() {
 		else
 		{
 			Console::Write("Fak");
-			std::string dn = msclr::interop::marshal_as<std::string>(dName->ToString());
-			b = new VrpnBridge(this->deviceType,dn);
+			b = new VrpnBridge(this->deviceType, this->config);
 		}
 		
 		
@@ -113,8 +112,7 @@ void VRPNClient::analogListen2() {
 		else
 		{
 			Console::Write("Oops");
-			std::string dn = msclr::interop::marshal_as<std::string>(dName->ToString());
-			b = new VrpnBridge(this->deviceType, dn);
+			b = new VrpnBridge(this->deviceType, this->config);
 		}
 
 

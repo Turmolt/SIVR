@@ -72,7 +72,7 @@ VRPNClient ^ Boss::newClient(DevType t, String^ devName, SIVConfig^ cfg)
 		}
 		else
 			Console::WriteLine("Hands already has a device assigned.");
-		return this->Mouse;
+		return this->Hands;
 		break;
 	}
 }

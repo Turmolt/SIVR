@@ -2,10 +2,11 @@
 #include "Glob.h"
 #include <string>
 #include "SIVConfig.h"
+#include <array>
 
 class VrpnBridge {
 public:
-	VrpnBridge(DevType x, std::string devName,SIVConfig^ cfg);
+	VrpnBridge(DevType x,SIVConfig^ cfg);
 	void StartButtonHandler(int*);
 	void StartAnalogHandler();
 	void StartGamepadHandler();
@@ -26,8 +27,14 @@ public:
 
 	DevType deviceType;
 
+	std::string path;
+
 	std::string VRPNname;
 	std::string dataTypes;
+
+	std::array<float,4> Rotation;
+	std::array<float, 3> Position;
+
 
 	//set true if marked in config
 	bool rot;
