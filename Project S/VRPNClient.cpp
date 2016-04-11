@@ -78,7 +78,7 @@ void VRPNClient::buttonListen2() {
 		}
 		else
 		{
-			Console::Write("Fak");
+			Console::Write("No Bridge");
 			b = new VrpnBridge(this->deviceType, this->config);
 		}
 		

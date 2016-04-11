@@ -4,6 +4,7 @@
 #include <string>
 #include "ProcWorker.h"
 #include "Glob.h"
+#include "SIVRServer.h"
 
 namespace ProjectS {
 
@@ -645,6 +646,22 @@ private: System::Void miscDeviceChoices_SelectedIndexChanged(System::Object^  se
 
 }
 private: System::Void KillClients_Click(System::Object^  sender, System::EventArgs^  e) {
+	SIVRServer* s = new SIVRServer(7777, false, false, false, true);
+
+	s->miscData.pos = true;
+
+	s->miscData.rot = true;
+
+	s->miscData.positionArray[0] = 0.1;
+	s->miscData.positionArray[1] = 2.0;
+	s->miscData.positionArray[2] = 1.3;
+
+	s->miscData.rotationArray[0] = 0.2;
+	s->miscData.rotationArray[1] = 2.1;
+	s->miscData.rotationArray[2] = 1.4;
+	s->miscData.rotationArray[3] = 33.3;
+
+	Console::WriteLine(s->MakeMsg());
 }
 private: System::Void applyDevicePurposes_Click_1(System::Object^  sender, System::EventArgs^  e) {
 	if (ProcWorker::getBoss()->curMax < ProcWorker::getBoss()->clientArray->Length) {
