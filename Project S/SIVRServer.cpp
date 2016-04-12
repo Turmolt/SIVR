@@ -13,7 +13,7 @@ using namespace std;
 SIVRServer::SIVRServer(int port, bool head, bool hands, bool spatial, bool misc)
 {
 	this->port = port;
-
+	
 	if (head) {
 		this->headData.tracking = true;
 		this->activePurposes++;

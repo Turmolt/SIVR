@@ -40,8 +40,10 @@ public:
 	PurposeData handData;
 	PurposeData spatialData;
 	PurposeData miscData;
-	int port;
 
+
+protected:
+	int port;
 	SOCKET sSock;
 	SOCKET cSock;
 
