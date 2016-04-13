@@ -249,11 +249,13 @@ int SIVRServer::acceptConns() {
 	return 0;
 }
 
+//This is the loop that the server runs
+//TODO: Launch listener, spit out data to listener when the time is right
 void SIVRServer::ServerLoop() {
 	while (1) {
-		Sleep(1000.0);
+		Sleep(10.0);
 		char* st = MakeMsg();
-		Sleep(1000.0);
+		Sleep(10.0);
 		float pos1[3];
 		float rotation[4];
 		float position[3];
@@ -265,9 +267,9 @@ void SIVRServer::ServerLoop() {
 		memcpy(rotation, st + psize, rsize);
 		String^ strng = "";
 		for (int i = 0; i < 3; i++)
-			strng += position[i].ToString() + " p ";
+			strng += position[i].ToString() + "  ";
 		for (int i = 0; i < 4; i++)
-			strng += rotation[i].ToString() + " r ";
+			strng += rotation[i].ToString() + "  ";
 
 		Console::WriteLine(strng);
 	}
@@ -278,6 +280,7 @@ void SIVRServer::SetData(DevType)
 
 }
 
+//Spawn thread to run the server toop
 void SIVRServer::StartServer()
 {
 	System::Console::WriteLine("Server!");
@@ -312,17 +315,6 @@ void SIVRServer::StartServer()
 		Console::WriteLine(strng);
 	}*/
 }
-
-//float * SIVRServer::MarshalData(cli::array < cli::interior_ptr<float>>^ pData)
-//{
-//	float* output = new float[pData->Length];
-//
-//	for (int i = 0; i < pData->Length;i++) {
-//		output[i] = *pData[i];
-//	}
-//
-//	return output;
-//}
 
 
 

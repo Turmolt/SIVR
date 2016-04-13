@@ -124,12 +124,6 @@ SIVConfig^ ProcWorker::readConfig(DevType t, System::String^ devName)
 	System::String^ cfgLine = "";
 
 	for (int i = 0; i < 6; i++) {
-
-		//read in the line of text
-		//cfgString[i] = reader->ReadLine();
-		//System::Console::WriteLine(cfgString[i]->ToString());
-		//cfgString[i]->Split(' ');
-
 		//read in the line of text 
 		cfgLine = reader->ReadLine();
 

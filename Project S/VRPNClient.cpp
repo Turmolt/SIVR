@@ -30,14 +30,8 @@ VRPNClient::VRPNClient(DevType t, String^ dev,SIVConfig^ cfg)
 	this->Rotation = gcnew cli::array<float>(4);
 	this->Position = gcnew cli::array<float>(3);
 
-	//VrpnBridge* b = new VrpnBridge(external);
-
 	this->config = cfg;
 
-	//Console::WriteLine(this->config->buttons);
-
-	//Console::WriteLine(this->config->dataTypes);
-	//Console::WriteLine(this->config->VRPNname);
 	this->config->deviceName = dev;
 	s = gcnew String("");
 	this->dName = dev;
@@ -47,12 +41,6 @@ VRPNClient::VRPNClient(DevType t, String^ dev,SIVConfig^ cfg)
 
 
 	Console::WriteLine("End VRPN Construct");
-
-	
-
-	//startAnalogThread();
-
-	
 }
 
 //idk?
@@ -108,15 +96,15 @@ void VRPNClient::analogListen2() {
 			if (b != NULL) {
 				if (b->changed) {
 					if (this->config->rot) {
-						server->headData.rotationArray[0] = b->analogArray[b->XRot];
-						server->headData.rotationArray[1] = b->analogArray[b->YRot];
-						server->headData.rotationArray[2] = b->analogArray[b->ZRot];
-						server->headData.rotationArray[3] = b->analogArray[b->WRot];
+						server->headData.rotationArray[0] = b->Rotation[0];
+						server->headData.rotationArray[1] = b->Rotation[1];
+						server->headData.rotationArray[2] = b->Rotation[2];
+						server->headData.rotationArray[3] = b->Rotation[3];
 					}
 					if (this->config->pos) {
-						server->headData.positionArray[0] = b->analogArray[b->XPos];
-						server->headData.positionArray[1] = b->analogArray[b->YPos];
-						server->headData.positionArray[2] = b->analogArray[b->ZPos];
+						server->headData.positionArray[0] = b->Position[0];
+						server->headData.positionArray[1] = b->Position[1];
+						server->headData.positionArray[2] = b->Position[2];
 					}
 					b->changed = false;
 				}
@@ -138,15 +126,15 @@ void VRPNClient::analogListen2() {
 			if (b != NULL) {
 				if (b->changed) {
 					if (this->config->rot) {
-						this->server->handData.rotationArray[0] = b->analogArray[b->XRot];
-						this->server->handData.rotationArray[1] = b->analogArray[b->YRot];
-						this->server->handData.rotationArray[2] = b->analogArray[b->ZRot];
-						this->server->handData.rotationArray[3] = b->analogArray[b->WRot];
+						this->server->handData.rotationArray[0] = b->Rotation[0];
+						this->server->handData.rotationArray[1] = b->Rotation[1];
+						this->server->handData.rotationArray[2] = b->Rotation[2];
+						this->server->handData.rotationArray[3] = b->Rotation[3];
 					}
 					if (this->config->pos) {
-						this->server->handData.positionArray[0] = b->analogArray[b->XPos];
-						this->server->handData.positionArray[1] = b->analogArray[b->YPos];
-						this->server->handData.positionArray[2] = b->analogArray[b->ZPos];
+						this->server->handData.positionArray[0] = b->Position[0];
+						this->server->handData.positionArray[1] = b->Position[1];
+						this->server->handData.positionArray[2] = b->Position[2];
 					}
 					b->changed = false;
 				}
@@ -167,15 +155,15 @@ void VRPNClient::analogListen2() {
 			if (b != NULL) {
 				if (b->changed) {
 					if (this->config->rot) {
-						this->server->spatialData.rotationArray[0] = b->analogArray[b->XRot];
-						this->server->spatialData.rotationArray[1] = b->analogArray[b->YRot];
-						this->server->spatialData.rotationArray[2] = b->analogArray[b->ZRot];
-						this->server->spatialData.rotationArray[3] = b->analogArray[b->WRot];
+						this->server->spatialData.rotationArray[0] = b->Rotation[0];
+						this->server->spatialData.rotationArray[1] = b->Rotation[1];
+						this->server->spatialData.rotationArray[2] = b->Rotation[2];
+						this->server->spatialData.rotationArray[3] = b->Rotation[3];
 					}
 					if (this->config->pos) {
-						this->server->spatialData.positionArray[0] = b->analogArray[b->XPos];
-						this->server->spatialData.positionArray[1] = b->analogArray[b->YPos];
-						this->server->spatialData.positionArray[2] = b->analogArray[b->ZPos];
+						this->server->spatialData.positionArray[0] = b->Position[0];
+						this->server->spatialData.positionArray[1] = b->Position[1];
+						this->server->spatialData.positionArray[2] = b->Position[2];
 					}
 					b->changed = false;
 				}
@@ -241,7 +229,6 @@ void VRPNClient::enableDevice(DevType t, System::String^ devName) {
 }
 
 //start a thread for listening information
-
 void VRPNClient::startThread()
 {
 	//ThreadWork^ tw = gcnew ThreadWork();
@@ -292,22 +279,3 @@ void VRPNClient::stopThread()
 	*/
 }
 
-/*
-
-ref class ThreadWork {
-public:
-	ThreadWork();
-	void ThreadProc(System::String s);
-};
-
-ThreadWork::ThreadWork() {
-
-}
-
-void ThreadWork::ThreadProc(System::String s) {
-	char* cs = s.ToCharArray();
-	for (int i = 0; i < 100; i++) {
-		printf();
-	}
-}
-*/
