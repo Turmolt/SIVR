@@ -11,6 +11,7 @@
 #include <Xinput.h>
 #include "SIVConfig.h"
 
+ref class SIVRServer;
 
 
 public ref class VRPNClient
@@ -25,6 +26,10 @@ public:
 
 	void startAnalogThread();
 	
+	array<float>^ Position;
+	array<float>^ Rotation;
+	
+
 	//thread functions
 	void buttonListen();
 	void buttonListen2();
@@ -33,6 +38,8 @@ public:
 	void analogListen2();
 
 	SIVConfig^ config;
+
+	SIVRServer^ server;
 
 	System::String^ dName;
 	System::String^ s;

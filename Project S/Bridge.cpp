@@ -95,9 +95,9 @@ VrpnBridge::VrpnBridge(DevType x, SIVConfig^ cfg)
 		cout << "Position: (" << this->XPos << "," << this->YPos << "," << this->ZPos << "," << this->Scale << ")" << endl;
 	
 
-	if (this->buttons > 0 && this->channels > 0) {
+	/*if (this->buttons > 0 && this->channels > 0) {
 		StartGamepadHandler();
-	}
+	}*/
 	
 }
 
@@ -214,10 +214,10 @@ void VrpnBridge::StartGamepadHandler() {
 			}
 			
 		}
-		SIVRData << this->Position.at(0) << " " << this->Position.at(1) << " " << this->Position.at(2) << endl;
-		SIVRData << this->Rotation.at(0) << " " << this->Rotation.at(1) << " " << this->Rotation.at(2) << " " << this->Rotation.at(3) <<endl;
-		
-		SIVRData.flush();
+		//SIVRData << this->Position.at(0) << " " << this->Position.at(1) << " " << this->Position.at(2) << endl;
+		//SIVRData << this->Rotation.at(0) << " " << this->Rotation.at(1) << " " << this->Rotation.at(2) << " " << this->Rotation.at(3) <<endl;
+		//
+		//SIVRData.flush();
 		Sleep(50.0);
 		try {
 			if (this->running == false)

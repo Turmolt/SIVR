@@ -27,6 +27,9 @@ VRPNClient::VRPNClient(DevType t, String^ dev,SIVConfig^ cfg)
 {
 
 
+	this->Rotation = gcnew cli::array<float>(4);
+	this->Position = gcnew cli::array<float>(3);
+
 	//VrpnBridge* b = new VrpnBridge(external);
 
 	this->config = cfg;
@@ -41,16 +44,14 @@ VRPNClient::VRPNClient(DevType t, String^ dev,SIVConfig^ cfg)
 
 	b = new VrpnBridge(t, this->config);
 	this->deviceType = t;
-	//Console::WriteLine(dev);
 
-	/*
-	if (t == DevType::Misc){
-		startAnalogThread();
-	}
-	else if (t == DevType::Mouse) {
-		startThread();
-	}
-	*/
+
+	Console::WriteLine("End VRPN Construct");
+
+	
+
+	//startAnalogThread();
+
 	
 }
 
@@ -98,26 +99,129 @@ void VRPNClient::analogListen() {
 void VRPNClient::analogListen2() {
 	this->running = true;
 	//device specific stuff here
-	while (this->running) {
-		if (b != NULL) {
-			if (b->changed) {
-				for (int i = 0; i < 7;i++)
-					Console::Write(b->analogArray[i]+" ");
-				Console::WriteLine();
-				//Console::WriteLine(b->buttonNumber + " : " + b->buttonState);
-				b->changed = false;
+	Console::WriteLine("Analog Listen");
+	switch (this->deviceType) {
+
+		//write to head if device type is head
+	case DevType::HeadTracker:
+		while (this->running) {
+			if (b != NULL) {
+				if (b->changed) {
+					if (this->config->rot) {
+						server->headData.rotationArray[0] = b->analogArray[b->XRot];
+						server->headData.rotationArray[1] = b->analogArray[b->YRot];
+						server->headData.rotationArray[2] = b->analogArray[b->ZRot];
+						server->headData.rotationArray[3] = b->analogArray[b->WRot];
+					}
+					if (this->config->pos) {
+						server->headData.positionArray[0] = b->analogArray[b->XPos];
+						server->headData.positionArray[1] = b->analogArray[b->YPos];
+						server->headData.positionArray[2] = b->analogArray[b->ZPos];
+					}
+					b->changed = false;
+				}
 			}
-			//Console::WriteLine(b->buttonNumber);
-		}
-		else
-		{
-			Console::Write("Oops");
-			b = new VrpnBridge(this->deviceType, this->config);
-		}
+			else
+			{
+				Console::Write("Oops");
+				b = new VrpnBridge(this->deviceType, this->config);
+			}
 
 
-		Sleep(5.0);
+			Sleep(5.0);
+		}
+		break;
+
+		//if the device is hand then write to hand
+	case DevType::HandTracker:
+		while (this->running) {
+			if (b != NULL) {
+				if (b->changed) {
+					if (this->config->rot) {
+						this->server->handData.rotationArray[0] = b->analogArray[b->XRot];
+						this->server->handData.rotationArray[1] = b->analogArray[b->YRot];
+						this->server->handData.rotationArray[2] = b->analogArray[b->ZRot];
+						this->server->handData.rotationArray[3] = b->analogArray[b->WRot];
+					}
+					if (this->config->pos) {
+						this->server->handData.positionArray[0] = b->analogArray[b->XPos];
+						this->server->handData.positionArray[1] = b->analogArray[b->YPos];
+						this->server->handData.positionArray[2] = b->analogArray[b->ZPos];
+					}
+					b->changed = false;
+				}
+				//Console::WriteLine(b->buttonNumber);
+			}
+			else
+			{
+				Console::Write("Oops");
+				b = new VrpnBridge(this->deviceType, this->config);
+			}
+
+
+			Sleep(5.0);
+		}
+		break;
+	case DevType::Spatial:
+		while (this->running) {
+			if (b != NULL) {
+				if (b->changed) {
+					if (this->config->rot) {
+						this->server->spatialData.rotationArray[0] = b->analogArray[b->XRot];
+						this->server->spatialData.rotationArray[1] = b->analogArray[b->YRot];
+						this->server->spatialData.rotationArray[2] = b->analogArray[b->ZRot];
+						this->server->spatialData.rotationArray[3] = b->analogArray[b->WRot];
+					}
+					if (this->config->pos) {
+						this->server->spatialData.positionArray[0] = b->analogArray[b->XPos];
+						this->server->spatialData.positionArray[1] = b->analogArray[b->YPos];
+						this->server->spatialData.positionArray[2] = b->analogArray[b->ZPos];
+					}
+					b->changed = false;
+				}
+				//Console::WriteLine(b->buttonNumber);
+			}
+			else
+			{
+				Console::Write("Oops");
+				b = new VrpnBridge(this->deviceType, this->config);
+			}
+
+
+			Sleep(5.0);
+		}
+		break;
+	case DevType::Misc:
+		while (this->running) {
+			if (b != NULL) {
+				if (b->changed) {
+					if (this->server->miscData.rot) {
+						this->server->miscData.rotationArray[0] = b->Rotation[0];
+						this->server->miscData.rotationArray[1] = b->Rotation[1];
+						this->server->miscData.rotationArray[2] = b->Rotation[2];
+						this->server->miscData.rotationArray[3] = b->Rotation[3];
+					}
+					if (this->server->miscData.pos) {
+						this->server->miscData.positionArray[0] = b->Position[0];
+						this->server->miscData.positionArray[1] = b->Position[1];
+						this->server->miscData.positionArray[2] = b->Position[2];
+					}
+					b->changed = false;
+				}
+				//Console::WriteLine(b->buttonNumber);
+			}
+			else
+			{
+				Console::Write("Oops");
+				b = new VrpnBridge(this->deviceType, this->config);
+			}
+
+
+			Sleep(5.0);
+		}
+		break;
 	}
+	
 
 	b->running = false;
 }
@@ -154,6 +258,8 @@ void VRPNClient::startThread()
 void VRPNClient::startAnalogThread()
 {	
 	//ThreadWork^ tw = gcnew ThreadWork();
+	this->server = ProcWorker::getBoss()->server;
+	Console::WriteLine(this->server->miscData.pos + "O boy");
 	this->running = true;
 	this->aThread = gcnew Thread(gcnew ThreadStart(this, &VRPNClient::analogListen));
 	this->a2Thread = gcnew Thread(gcnew ThreadStart(this, &VRPNClient::analogListen2));

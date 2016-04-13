@@ -4,7 +4,6 @@
 #include <string>
 #include "ProcWorker.h"
 #include "Glob.h"
-#include "SIVRServer.h"
 
 namespace ProjectS {
 
@@ -154,7 +153,7 @@ namespace ProjectS {
 			this->devTypeBox->FormattingEnabled = true;
 			this->devTypeBox->Items->AddRange(gcnew cli::array< System::Object^  >(4) { L"HMD", L"Tracker", L"Gamepad", L"Misc Devices" });
 			this->devTypeBox->Location = System::Drawing::Point(9, 40);
-			this->devTypeBox->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->devTypeBox->Margin = System::Windows::Forms::Padding(2);
 			this->devTypeBox->Name = L"devTypeBox";
 			this->devTypeBox->Size = System::Drawing::Size(117, 21);
 			this->devTypeBox->TabIndex = 0;
@@ -178,7 +177,7 @@ namespace ProjectS {
 			this->flowLayoutPanel1->Controls->Add(this->GamepadBox);
 			this->flowLayoutPanel1->Controls->Add(this->HMDbox);
 			this->flowLayoutPanel1->Location = System::Drawing::Point(32, 64);
-			this->flowLayoutPanel1->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->flowLayoutPanel1->Margin = System::Windows::Forms::Padding(2);
 			this->flowLayoutPanel1->Name = L"flowLayoutPanel1";
 			this->flowLayoutPanel1->Size = System::Drawing::Size(506, 383);
 			this->flowLayoutPanel1->TabIndex = 2;
@@ -194,7 +193,7 @@ namespace ProjectS {
 					L"Joystick"
 			});
 			this->MiscDevicesBox->Location = System::Drawing::Point(2, 2);
-			this->MiscDevicesBox->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->MiscDevicesBox->Margin = System::Windows::Forms::Padding(2);
 			this->MiscDevicesBox->Name = L"MiscDevicesBox";
 			this->MiscDevicesBox->Size = System::Drawing::Size(243, 148);
 			this->MiscDevicesBox->TabIndex = 3;
@@ -208,7 +207,7 @@ namespace ProjectS {
 			this->TrackerBox->FormattingEnabled = true;
 			this->TrackerBox->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Phasespace", L"PPT System" });
 			this->TrackerBox->Location = System::Drawing::Point(249, 2);
-			this->TrackerBox->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->TrackerBox->Margin = System::Windows::Forms::Padding(2);
 			this->TrackerBox->Name = L"TrackerBox";
 			this->TrackerBox->Size = System::Drawing::Size(243, 148);
 			this->TrackerBox->TabIndex = 2;
@@ -225,7 +224,7 @@ namespace ProjectS {
 					L"Xbox One", L"Logitech", L"Mayflash Gamecube", L"Wiimote"
 			});
 			this->GamepadBox->Location = System::Drawing::Point(2, 154);
-			this->GamepadBox->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->GamepadBox->Margin = System::Windows::Forms::Padding(2);
 			this->GamepadBox->Name = L"GamepadBox";
 			this->GamepadBox->Size = System::Drawing::Size(243, 148);
 			this->GamepadBox->TabIndex = 1;
@@ -239,7 +238,7 @@ namespace ProjectS {
 			this->HMDbox->FormattingEnabled = true;
 			this->HMDbox->Items->AddRange(gcnew cli::array< System::Object^  >(5) { L"Oculus Rift", L"zSight", L"dSight", L"SX111", L"Hololense" });
 			this->HMDbox->Location = System::Drawing::Point(249, 154);
-			this->HMDbox->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->HMDbox->Margin = System::Windows::Forms::Padding(2);
 			this->HMDbox->Name = L"HMDbox";
 			this->HMDbox->Size = System::Drawing::Size(243, 148);
 			this->HMDbox->TabIndex = 0;
@@ -249,7 +248,7 @@ namespace ProjectS {
 			// 
 			this->panel1->BackColor = System::Drawing::SystemColors::InactiveCaptionText;
 			this->panel1->Location = System::Drawing::Point(14, 64);
-			this->panel1->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->panel1->Margin = System::Windows::Forms::Padding(2);
 			this->panel1->Name = L"panel1";
 			this->panel1->Size = System::Drawing::Size(14, 383);
 			this->panel1->TabIndex = 3;
@@ -257,7 +256,7 @@ namespace ProjectS {
 			// applyDevices
 			// 
 			this->applyDevices->Location = System::Drawing::Point(96, 464);
-			this->applyDevices->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->applyDevices->Margin = System::Windows::Forms::Padding(2);
 			this->applyDevices->Name = L"applyDevices";
 			this->applyDevices->Size = System::Drawing::Size(66, 21);
 			this->applyDevices->TabIndex = 4;
@@ -270,7 +269,7 @@ namespace ProjectS {
 			this->appliedRB->AutoCheck = false;
 			this->appliedRB->AutoSize = true;
 			this->appliedRB->Location = System::Drawing::Point(167, 467);
-			this->appliedRB->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->appliedRB->Margin = System::Windows::Forms::Padding(2);
 			this->appliedRB->Name = L"appliedRB";
 			this->appliedRB->Size = System::Drawing::Size(14, 13);
 			this->appliedRB->TabIndex = 5;
@@ -346,7 +345,7 @@ namespace ProjectS {
 			this->applyDevicePurposes->Name = L"applyDevicePurposes";
 			this->applyDevicePurposes->Size = System::Drawing::Size(75, 23);
 			this->applyDevicePurposes->TabIndex = 17;
-			this->applyDevicePurposes->Text = L"Apply";
+			this->applyDevicePurposes->Text = L"Launch";
 			this->applyDevicePurposes->UseVisualStyleBackColor = true;
 			this->applyDevicePurposes->Click += gcnew System::EventHandler(this, &DeviceWindow::applyDevicePurposes_Click_1);
 			// 
@@ -463,7 +462,7 @@ namespace ProjectS {
 			// 
 			this->panel3->BackColor = System::Drawing::SystemColors::InactiveCaptionText;
 			this->panel3->Location = System::Drawing::Point(21, 37);
-			this->panel3->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->panel3->Margin = System::Windows::Forms::Padding(2);
 			this->panel3->Name = L"panel3";
 			this->panel3->Size = System::Drawing::Size(5, 254);
 			this->panel3->TabIndex = 4;
@@ -494,7 +493,7 @@ namespace ProjectS {
 			this->Controls->Add(this->flowLayoutPanel1);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->devTypeBox);
-			this->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->Margin = System::Windows::Forms::Padding(2);
 			this->Name = L"DeviceWindow";
 			this->Text = L"DeviceWindow";
 			this->Load += gcnew System::EventHandler(this, &DeviceWindow::DeviceWindow_Load);
@@ -544,15 +543,20 @@ namespace ProjectS {
 
 private: System::Void applyDevices_Click(System::Object^  sender, System::EventArgs^  e) {
 
-		
 	if (ProcWorker::getBoss()->curMax < ProcWorker::getBoss()->clientArray->Length){
 
 		if (this->MDCheck->Checked) {
 			Console::WriteLine("Go");
-			ProcWorker::readConfig(DevType::Misc, "XInput");
-			//ProcWorker::getBoss()->newClient(DevType::Gamepad,"XInput0", ProcWorker::GetCfg("Misc"));
-			ProcWorker::GetCfg("Misc");
+			SIVConfig^ miscConfig = ProcWorker::readConfig(DevType::Misc, this->miscDeviceChoices->SelectedItem->ToString());
+			Console::WriteLine("Master");
+			ProcWorker::getBoss()->newClient(DevType::Misc, this->miscDeviceChoices->SelectedItem->ToString(), miscConfig);
+			
 		}
+
+		Console::WriteLine("Start");
+
+		ProcWorker::getBoss()->startServer();
+
 		/*
 		switch (this->devTypeBox->SelectedIndex) {
 			//hmds
@@ -646,33 +650,62 @@ private: System::Void miscDeviceChoices_SelectedIndexChanged(System::Object^  se
 
 }
 private: System::Void KillClients_Click(System::Object^  sender, System::EventArgs^  e) {
-	SIVRServer* s = new SIVRServer(7777, false, false, false, true);
+	
 
-	s->miscData.pos = true;
 
-	s->miscData.rot = true;
+	
+	//SIVRServer* s = new SIVRServer(7777, "n", "n", "p", "b");
 
-	s->miscData.positionArray[0] = 0.1;
-	s->miscData.positionArray[1] = 2.0;
-	s->miscData.positionArray[2] = 1.3;
+	//s->spatialData.positionArray[0] = 2.5;
+	//s->spatialData.positionArray[1] = 5.12;
+	//s->spatialData.positionArray[2] = 3.5;
 
-	s->miscData.rotationArray[0] = 0.2;
-	s->miscData.rotationArray[1] = 2.1;
-	s->miscData.rotationArray[2] = 1.4;
-	s->miscData.rotationArray[3] = 33.3;
+	//s->miscData.positionArray[0] = 0.1;
+	//s->miscData.positionArray[1] = 2.0;
+	//s->miscData.positionArray[2] = 1.3;
 
-	Console::WriteLine(s->MakeMsg());
+	//s->miscData.rotationArray[0] = 0.2;
+	//s->miscData.rotationArray[1] = 2.1;
+	//s->miscData.rotationArray[2] = 1.4;
+	//s->miscData.rotationArray[3] = 33.3;
+	//Console::WriteLine("Oy");
+	//char* st = s->MakeMsg();
+	//Console::WriteLine(st);
+	//
+	//float pos1[3];
+	//float rotation[4];
+	//float position[3];
+
+	//int psize = (sizeof(float)) * 3;
+	//int rsize = (sizeof(float)) * 4;
+
+	//memcpy(pos1, st, psize);
+	//memcpy(position, st+psize, psize);
+	//memcpy(rotation, st + psize+psize, rsize);
+	//String^ strng = "";
+	//for (int i = 0; i < 3; i++)
+	//	strng += pos1[i].ToString() + " p1 ";
+	//for (int i = 0; i < 3; i++)
+	//	strng += position[i].ToString() + " p ";
+	//for (int i = 0; i < 4; i++)
+	//	strng += rotation[i].ToString() + " r ";
+
+	//Console::WriteLine(strng);
 }
 private: System::Void applyDevicePurposes_Click_1(System::Object^  sender, System::EventArgs^  e) {
 	if (ProcWorker::getBoss()->curMax < ProcWorker::getBoss()->clientArray->Length) {
 
 		if (this->MDCheck->Checked) {
 			Console::WriteLine("Go");
-			SIVConfig^ cfg = ProcWorker::readConfig(DevType::Misc, "XInput");
-			ProcWorker::getBoss()->newClient(DevType::Misc,"XInput", cfg);
-			
-			//ProcWorker::GetCfg("Misc");
+			SIVConfig^ miscConfig = ProcWorker::readConfig(DevType::Misc, this->miscDeviceChoices->SelectedItem->ToString());
+			Console::WriteLine("Master");
+			ProcWorker::getBoss()->newClient(DevType::Misc, this->miscDeviceChoices->SelectedItem->ToString(), miscConfig);
+
 		}
+
+		Console::WriteLine("Start");
+
+		ProcWorker::getBoss()->startServer();
 		/*
 		switch (this->devTypeBox->SelectedIndex) {
 		//hmds

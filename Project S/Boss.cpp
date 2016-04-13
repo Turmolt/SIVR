@@ -3,6 +3,7 @@
 #include "MainWindow.h"
 
 
+
 using namespace System::Windows::Forms;
 using namespace System;
 using namespace System::Runtime::InteropServices;
@@ -22,59 +23,60 @@ Boss::Boss()
 }
 
 //create new client for VRPN based on type fed in
-VRPNClient ^ Boss::newClient(DevType t, String^ devName, SIVConfig^ cfg)
+void Boss::newClient(DevType t, String^ devName, SIVConfig^ cfg)
 {
 	switch (t) {
 	case DevType::HMD:
 		if (!this->head)
 		{
 			this->Head = gcnew VRPNClient(t, devName,cfg);
+			this->headCfg = cfg;
 			//this->Head->config = cfg;
 			this->head = true;
 		}
 		else
 			Console::WriteLine("Head already has a device assigned.");
-		return this->Head;
 		break;
 	case DevType::Misc:
 		if (!this->misc){
 			this->Misc = gcnew VRPNClient(t, devName,cfg);
+			this->miscCfg = cfg;
 			//this->Misc->config = cfg;
 			this->misc = true;
 		}
 		else
 			Console::WriteLine("Gamepad already has a device assigned.");
-		return this->Misc;
 		break;
 	case DevType::Spatial:
 		if (!this->tracker){
 			this->Tracker = gcnew VRPNClient(t, devName, cfg);
+			this->spatialCfg = cfg;
 			//this->Tracker->config = cfg;
 			this->tracker = true;
 		}
 		else
 			Console::WriteLine("Spatial already has a device assigned.");
-		return this->Tracker;
 		break;
 	case DevType::Mouse:
 		if (!this->mouse){
 			this->Mouse = gcnew VRPNClient(t, devName, cfg);
+			this->miscCfg = cfg;
 			this->mouse = true;
 		}
 		else
 			Console::WriteLine("Mouse already has a device assigned.");
-		return this->Mouse;
 		break;
 	case DevType::HandTracker:
 		if (!this->hands) {
 			this->Hands = gcnew VRPNClient(t, devName, cfg);
+			this->handCfg = cfg;
 			this->hands = true;
 		}
 		else
 			Console::WriteLine("Hands already has a device assigned.");
-		return this->Hands;
 		break;
 	}
+	Console::WriteLine("End New Client");
 }
 
 //return the client of selected type
@@ -98,6 +100,7 @@ VRPNClient ^ Boss::getClient(DevType type)
 		break;
 	}
 }
+
 
 //kill client of type t, swap the bool related to it.
 void Boss::killClient(DevType t) {
@@ -129,6 +132,117 @@ void Boss::killClient(DevType t) {
 	catch (System::NullReferenceException^) {
 		Console::WriteLine("No client available");
 	}
+}
+
+//Assign the Reference of the VRPN Client arrays
+//to the Server array so that it can access it
+void Boss::AssignServerReferences() {
+	
+	if (this->server->miscData.tracking) {
+		if (this->server->miscData.pos) {
+			for (int i = 0; i < 3; i++) {
+				//this->server->miscData.positionArray[i] = &this->Misc->Position[i];
+			}
+		}
+		if (this->server->miscData.rot) {
+			for (int i = 0; i < 4; i++) {
+				//this->server->miscData.rotationArray[i] = &this->Misc->Rotation[i];
+			}
+		}
+	}
+}
+
+SIVRServer^ Boss::startServer()
+{
+	String^ head = "n";
+	String^ hands = "n";
+	String^ spatial = "n";
+	String^ misc = "n";
+
+	System::Console::WriteLine("startServer()");
+
+	//DETERMINE DATA TYPES TO SEND HAND
+	if (this->hands) {
+		if (this->handCfg->dataTypes->Equals("Rotation")) {
+			hands = "r";
+		}
+		else if (this->handCfg->dataTypes->Equals("Position")) {
+			hands = "p";
+		}
+		else if (this->handCfg->dataTypes->Equals("Both")) {
+			hands = "b";
+		}
+		else if (this->handCfg->dataTypes->Equals("None")) {
+			hands = "n";
+		}
+	}
+	//DETERMINE DATA TYPES TO SEND HEAD
+	if (this->head) {
+		if (this->headCfg->dataTypes->Equals("Rotation")) {
+			head = "r";
+		}
+		else if (this->headCfg->dataTypes->Equals("Position")) {
+			head = "p";
+		}
+		else if (this->headCfg->dataTypes->Equals("Both")) {
+			head = "b";
+		}
+		else if (this->headCfg->dataTypes->Equals("None")) {
+			head = "n";
+		}
+	}
+	//DETERMINE DATA TYPES TO SEND SPATIAL
+	if (this->tracker) {
+		if (this->spatialCfg->dataTypes->Equals("Rotation")) {
+			spatial = "r";
+		}
+		else if (this->spatialCfg->dataTypes->Equals("Position")) {
+			spatial = "p";
+		}
+		else if (this->spatialCfg->dataTypes->Equals("Both")) {
+			spatial = "b";
+		}
+		else if (this->spatialCfg->dataTypes->Equals("None")) {
+			spatial = "n";
+		}
+	}
+	//DETERMINE DATA TYPES TO SEND MISC
+	if (this->misc) {
+		if (this->miscCfg->dataTypes->Equals("Rotation")) {
+			misc = "r";
+		}
+		else if (this->miscCfg->dataTypes->Equals("Position")) {
+			misc = "p";
+		}
+		else if (this->miscCfg->dataTypes->Equals("Both")) {
+			misc = "b";
+		}
+		else if (this->miscCfg->dataTypes->Equals("None")) {
+			misc = "n";
+		}
+	}
+
+	this->server = gcnew SIVRServer(7777, head, hands, spatial, misc);
+
+	System::Console::WriteLine(this->server->activePurposes);
+
+	this->server->StartServer();
+
+	this->Misc->server = this->server;
+
+	this->Misc->startAnalogThread();
+
+	return this->server;
+}
+
+SIVRServer^ Boss::getServer()
+{
+	return this->server;
+}
+
+void Boss::stopServer()
+{
+	throw gcnew System::NotImplementedException();
 }
 
 [STAThread]
