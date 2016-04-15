@@ -14,9 +14,8 @@ public:
 	void newClient(DevType t, System::String^,SIVConfig^ cfg);
 	VRPNClient^ getClient(DevType type);
 	void killClient(DevType t);
-	cli::array<VRPNClient^>^ clientArray;
-
-	void AssignServerReferences();
+	//cli::array<VRPNClient^>^ clientArray;
+	void killServer();
 
 	//SERVER FUNCTIONS
 	SIVRServer^ getServer();
@@ -29,7 +28,7 @@ public:
 	//Client references
 	VRPNClient^ Hands;
 	VRPNClient^ Head;
-	VRPNClient^ Tracker;
+	VRPNClient^ Spatial;
 	VRPNClient^ Misc;
 	VRPNClient^ Mouse;
 

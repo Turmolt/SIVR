@@ -102,7 +102,7 @@ char* SIVRServer::MakeMsg()
 	int hsize = 3 + 4;
 
 	int size = (rsize*this->activeRot) + (psize* this->activePos);
-	System::Console::WriteLine(size);
+	//System::Console::WriteLine(size);
 	char* newbuffer = new char[size];
 
 
@@ -116,7 +116,6 @@ char* SIVRServer::MakeMsg()
 		if (this->headData.rot) {
 			memcpy(newbuffer + (rotIndex*rsize) + (posIndex * psize), (this->headData.rotationArray), (int)sizeof(float) * 4);
 			rotIndex++;
-			
 		}
 	}
 	if (this->handData.tracking) {
@@ -252,26 +251,155 @@ int SIVRServer::acceptConns() {
 //This is the loop that the server runs
 //TODO: Launch listener, spit out data to listener when the time is right
 void SIVRServer::ServerLoop() {
-	while (1) {
-		Sleep(10.0);
-		char* st = MakeMsg();
-		Sleep(10.0);
-		float pos1[3];
-		float rotation[4];
-		float position[3];
+	
 
-		int psize = (sizeof(float)) * 3;
-		int rsize = (sizeof(float)) * 4;
+	while (this->running) {
+		TcpListener^ listener = gcnew TcpListener(IPAddress::Loopback, this->port);
 
-		memcpy(position, st, psize);
-		memcpy(rotation, st + psize, rsize);
-		String^ strng = "";
-		for (int i = 0; i < 3; i++)
-			strng += position[i].ToString() + "  ";
-		for (int i = 0; i < 4; i++)
-			strng += rotation[i].ToString() + "  ";
+		Console::Write("Waiting for client...");
+		listener->Start();
 
-		Console::WriteLine(strng);
+		TcpClient^ client = listener->AcceptTcpClient();
+		Console::WriteLine(" Client connected!");
+		NetworkStream^ stream = client->GetStream();
+		StreamWriter^ writer = gcnew StreamWriter(stream, Encoding::ASCII);
+		try{
+			while (this->running) {
+
+				/*Sleep(5.0);
+				char* st = MakeMsg();
+				Sleep(5.0);
+
+				float headRotation[4];
+				float headPosition[3];
+
+				float handRotation[4];
+				float handPosition[3];
+
+				float spatialRotation[4];
+				float spatialPosition[3];
+
+				float miscRotation[4];
+				float miscPosition[3];
+
+				int psize = (sizeof(float)) * 3;
+				int rsize = (sizeof(float)) * 4;
+
+				int ps = 0;
+				int rs = 0;
+
+				String^ strng = "";
+
+				if (this->headData.tracking) {
+					if (this->headData.pos) {
+						memcpy(headPosition, st + (ps++*psize) + (rsize*rs), psize);
+						for (int i = 0; i < 3; i++)
+							strng += headPosition[i].ToString() + "  ";
+					}
+					if (this->headData.rot){
+						memcpy(headRotation, st + (ps*psize) + (rsize*rs++), rsize);
+						for (int i = 0; i < 4; i++)
+							strng += headRotation[i].ToString() + "  ";
+					}
+				}
+				if (this->handData.tracking) {
+					if (this->handData.pos){
+						memcpy(handPosition, st + (ps++*psize) + (rsize*rs), psize);
+						for (int i = 0; i < 3; i++)
+							strng += handPosition[i].ToString() + "  ";
+					}
+					if (this->handData.rot) {
+						memcpy(handRotation, st + (ps*psize) + (rsize*rs++), rsize);
+						for (int i = 0; i < 4; i++)
+							strng += handRotation[i].ToString() + "  ";
+					}
+				}
+				if (this->spatialData.tracking) {
+					if (this->spatialData.pos){
+						memcpy(spatialPosition, st + (ps++*psize) + (rsize*rs), psize);
+						for (int i = 0; i < 3; i++)
+							strng += spatialPosition[i].ToString() + "  ";
+					}
+					if (this->spatialData.rot) {
+						memcpy(spatialRotation, st + (ps*psize) + (rsize*rs++), rsize);
+						for (int i = 0; i < 4; i++)
+							strng += spatialRotation[i].ToString() + "  ";
+					}
+				}
+				if (this->miscData.tracking) {
+					if (this->miscData.pos) {
+						memcpy(miscPosition, st + (ps++*psize) + (rsize*rs), psize);
+						for (int i = 0; i < 3; i++)
+							strng += miscPosition[i].ToString() + "  ";
+					}
+					if (this->miscData.rot) {
+						memcpy(miscRotation, st + (ps*psize) + (rsize*rs++), rsize);
+						for (int i = 0; i < 4; i++)
+							strng += miscRotation[i].ToString() + "  ";
+					}
+				}
+
+
+
+				*/
+				String^ strng = "";
+
+				if (this->headData.tracking) {
+					if (this->headData.pos)
+						for (int i = 0; i < 3; i++)
+							strng += this->headData.positionArray[i] + " ";
+
+					if (this->headData.rot)
+						for (int i = 0; i < 4; i++)
+							strng += this->headData.rotationArray[i] + " ";
+
+					strng += " ## ";
+				}
+				if (this->handData.tracking) {
+					if (this->handData.pos)
+						for (int i = 0; i < 3; i++)
+							strng += this->handData.positionArray[i] + " ";
+
+					if (this->handData.rot)
+						for (int i = 0; i < 4; i++)
+							strng += this->handData.rotationArray[i] + " ";
+
+					strng += " ## ";
+				}
+				if (this->spatialData.tracking) {
+					if (this->spatialData.pos)
+						for (int i = 0; i < 3; i++)
+							strng += this->spatialData.positionArray[i] + " ";
+					
+					if (this->spatialData.rot)
+						for (int i = 0; i < 4; i++)
+							strng += this->spatialData.rotationArray[i] + " ";
+
+					strng += " ## ";
+					
+				}
+				if (this->miscData.tracking) {
+					if (this->miscData.pos)
+						for (int i = 0; i < 3; i++)
+							strng += this->miscData.positionArray[i] + " ";
+
+					if (this->miscData.rot)
+						for (int i = 0; i < 4; i++)
+							strng += this->miscData.rotationArray[i] + " ";
+
+					strng += " ## ";
+				}
+				//strng += "\0";
+				Sleep(5);
+				writer->WriteLine(strng);
+				writer->Flush();
+			}
+		}
+		catch (Exception^ e) {
+			Console::WriteLine("Client Quit.");
+			listener->Stop();
+			
+		}
 	}
 }
 
@@ -283,7 +411,7 @@ void SIVRServer::SetData(DevType)
 //Spawn thread to run the server toop
 void SIVRServer::StartServer()
 {
-	System::Console::WriteLine("Server!");
+	//System::Console::WriteLine("Server!");
 
 	this->serverThread = gcnew Thread(gcnew ThreadStart(this, &SIVRServer::ServerLoop));
 	this->serverThread->Start();

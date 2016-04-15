@@ -262,7 +262,6 @@ namespace ProjectS {
 			this->applyDevices->TabIndex = 4;
 			this->applyDevices->Text = L"Apply";
 			this->applyDevices->UseVisualStyleBackColor = true;
-			this->applyDevices->Click += gcnew System::EventHandler(this, &DeviceWindow::applyDevices_Click);
 			// 
 			// appliedRB
 			// 
@@ -541,55 +540,6 @@ namespace ProjectS {
 		}
 	}
 
-private: System::Void applyDevices_Click(System::Object^  sender, System::EventArgs^  e) {
-
-	if (ProcWorker::getBoss()->curMax < ProcWorker::getBoss()->clientArray->Length){
-
-		if (this->MDCheck->Checked) {
-			Console::WriteLine("Go");
-			SIVConfig^ miscConfig = ProcWorker::readConfig(DevType::Misc, this->miscDeviceChoices->SelectedItem->ToString());
-			Console::WriteLine("Master");
-			ProcWorker::getBoss()->newClient(DevType::Misc, this->miscDeviceChoices->SelectedItem->ToString(), miscConfig);
-			
-		}
-
-		Console::WriteLine("Start");
-
-		ProcWorker::getBoss()->startServer();
-
-		/*
-		switch (this->devTypeBox->SelectedIndex) {
-			//hmds
-		case 0:
-			break;
-			//trackers
-		case 1:
-			break;
-			//gamepads
-		case 2:
-			if (this->miscDeviceChoices->Items[this->miscDeviceChoices->SelectedIndex]->ToString()=="XInput") {
-				Console::WriteLine("Go");
-				ProcWorker::readConfig(DevType::Gamepad, "XInput");
-				//ProcWorker::getBoss()->newClient(DevType::Gamepad,"XInput0", ProcWorker::GetCfg("Misc"));
-				ProcWorker::GetCfg("Misc");
-		}	
-			break;
-			//misc devices
-		case 3:
-			Console::Write("Mouse");
-			if (this->MiscDevicesBox->CheckedItems->Contains("Mouse")) {
-				Console::Write("Mouse");
-				//ProcWorker::getBoss()->newClient(DevType::Mouse, "Mouse0");
-			}
-			break;
-		default:
-			break;
-			*/
-		}
-	else
-		printf("Max Number of Devices achieved\n");
-		
-}
 
 private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
 	switch (this->comboBox1->SelectedIndex) {
@@ -651,7 +601,18 @@ private: System::Void miscDeviceChoices_SelectedIndexChanged(System::Object^  se
 }
 private: System::Void KillClients_Click(System::Object^  sender, System::EventArgs^  e) {
 	
+	if(this->MDCheck->Checked)
+		ProcWorker::getBoss()->killClient(DevType::Misc);
+	if(this->HMDCheck->Checked)
+		ProcWorker::getBoss()->killClient(DevType::HeadTracker);
+	if(this->HTCheck->Checked)
+		ProcWorker::getBoss()->killClient(DevType::HandTracker);
+	if(this->STCheck->Checked)
+		ProcWorker::getBoss()->killClient(DevType::Spatial);
 
+	if (ProcWorker::getBoss()->server->running) {
+		ProcWorker::getBoss()->killServer();
+	}
 
 	
 	//SIVRServer* s = new SIVRServer(7777, "n", "n", "p", "b");
@@ -693,19 +654,46 @@ private: System::Void KillClients_Click(System::Object^  sender, System::EventAr
 	//Console::WriteLine(strng);
 }
 private: System::Void applyDevicePurposes_Click_1(System::Object^  sender, System::EventArgs^  e) {
-	if (ProcWorker::getBoss()->curMax < ProcWorker::getBoss()->clientArray->Length) {
+//	if (ProcWorker::getBoss()->curMax < ProcWorker::getBoss()->clientArray->Length) {
 
-		if (this->MDCheck->Checked) {
-			Console::WriteLine("Go");
-			SIVConfig^ miscConfig = ProcWorker::readConfig(DevType::Misc, this->miscDeviceChoices->SelectedItem->ToString());
-			Console::WriteLine("Master");
-			ProcWorker::getBoss()->newClient(DevType::Misc, this->miscDeviceChoices->SelectedItem->ToString(), miscConfig);
+	int clientCount = 0;
 
-		}
+	if (this->HMDCheck->Checked&&!this->headDeviceChoices->SelectedItem->ToString()->Equals("")) {
+		//Console::WriteLine("Go");
+		SIVConfig^ headConfig = ProcWorker::readConfig(DevType::HeadTracker, this->headDeviceChoices->SelectedItem->ToString());
+		//Console::WriteLine("Master");
+		ProcWorker::getBoss()->newClient(DevType::HeadTracker, this->headDeviceChoices->SelectedItem->ToString(), headConfig);
+		clientCount++;
+	}
+	if (this->HTCheck->Checked&&!this->handDeviceChoices->SelectedItem->ToString()->Equals("")) {
+		//Console::WriteLine("Go");
+		SIVConfig^ handConfig = ProcWorker::readConfig(DevType::HandTracker, this->handDeviceChoices->SelectedItem->ToString());
+		//Console::WriteLine("Master");
+		ProcWorker::getBoss()->newClient(DevType::HandTracker, this->handDeviceChoices->SelectedItem->ToString(), handConfig);
+		clientCount++;
+	}
+	if (this->STCheck->Checked&&!this->SpatialTrackingChoices->SelectedItem->ToString()->Equals("")) {
+		//Console::WriteLine("Go");
+		SIVConfig^ spatialConfig = ProcWorker::readConfig(DevType::Spatial, this->SpatialTrackingChoices->SelectedItem->ToString());
+		//Console::WriteLine("Master");
+		ProcWorker::getBoss()->newClient(DevType::Spatial, this->SpatialTrackingChoices->SelectedItem->ToString(), spatialConfig);
+		clientCount++;
+	}
+	if (this->MDCheck->Checked&&!this->miscDeviceChoices->SelectedItem->ToString()->Equals("")) {
+		//Console::WriteLine("Go");
+		SIVConfig^ miscConfig = ProcWorker::readConfig(DevType::Misc, this->miscDeviceChoices->SelectedItem->ToString());
+		//Console::WriteLine("Master");
+		ProcWorker::getBoss()->newClient(DevType::Misc, this->miscDeviceChoices->SelectedItem->ToString(), miscConfig);
+		clientCount++;
+	}
 
+	if (clientCount > 0) {
 		Console::WriteLine("Start");
 
 		ProcWorker::getBoss()->startServer();
+	}
+	else
+		Console::WriteLine("No clients selected to launch.");
 		/*
 		switch (this->devTypeBox->SelectedIndex) {
 		//hmds
@@ -734,9 +722,9 @@ private: System::Void applyDevicePurposes_Click_1(System::Object^  sender, Syste
 		default:
 		break;
 		*/
-	}
-	else
-		printf("Max Number of Devices achieved\n");
+//	}
+	//else
+	//	printf("Max Number of Devices achieved\n");
 }
 };
 }

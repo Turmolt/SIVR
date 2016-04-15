@@ -44,7 +44,7 @@ VrpnBridge::VrpnBridge(DevType x, SIVConfig^ cfg)
 		this->path = string(pth) + "/Purposes/Misc.sivd";
 		break;
 	}
-	cout << this->path<<endl;
+	//cout << this->path<<endl;
 
 	//ex = external;
 	this->deviceType = x;
@@ -157,7 +157,7 @@ void VrpnBridge::StartAnalogHandler() {
 	vrpnAnalog->register_change_handler(0, AnalogHandler);
 	while (this->running != NULL) {
 		vrpnAnalog->mainloop();
-		Sleep(50.0);
+		Sleep(20.0);
 		try {
 			if (this->running == false)
 				break;
@@ -169,9 +169,9 @@ void VrpnBridge::StartAnalogHandler() {
 }
 // TODO: write handlers to write data to specific spots
 void VrpnBridge::StartGamepadHandler() {
-	cout << "Starting " << this->deviceName << " handler" << endl;
-	ofstream SIVRData;
-	SIVRData.open(this->path, std::ofstream::trunc);
+	//cout << "Starting " << this->deviceName << " handler" << endl;
+	//ofstream SIVRData;
+	//SIVRData.open(this->path, std::ofstream::trunc);
 	std::string m = this->VRPNname + "@localhost";
 	const char* host = m.c_str();
 	vrpn_Analog_Remote* vrpnAnalog = new vrpn_Analog_Remote(host);
@@ -183,7 +183,7 @@ void VrpnBridge::StartGamepadHandler() {
 		
 		vrpnAnalog->mainloop();
 		//vrpnButton->mainloop();
-		SIVRData.seekp(0);
+		//SIVRData.seekp(0);
 		for (int i = 0; i < this->channels; i++)
 		{
 			
@@ -218,7 +218,7 @@ void VrpnBridge::StartGamepadHandler() {
 		//SIVRData << this->Rotation.at(0) << " " << this->Rotation.at(1) << " " << this->Rotation.at(2) << " " << this->Rotation.at(3) <<endl;
 		//
 		//SIVRData.flush();
-		Sleep(50.0);
+		Sleep(550.0);
 		try {
 			if (this->running == false)
 				break;
@@ -227,7 +227,7 @@ void VrpnBridge::StartGamepadHandler() {
 			cout << "Running null value" << endl;
 		}
 	}
-	SIVRData.close();
+	//SIVRData.close();
 	cout << "Closing Time~~\n";
 
 }

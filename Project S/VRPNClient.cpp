@@ -40,7 +40,7 @@ VRPNClient::VRPNClient(DevType t, String^ dev,SIVConfig^ cfg)
 	this->deviceType = t;
 
 
-	Console::WriteLine("End VRPN Construct");
+	//Console::WriteLine("End VRPN Construct");
 }
 
 //idk?
@@ -87,21 +87,27 @@ void VRPNClient::analogListen() {
 void VRPNClient::analogListen2() {
 	this->running = true;
 	//device specific stuff here
-	Console::WriteLine("Analog Listen");
+	//Console::WriteLine("Analog Listen");
 	switch (this->deviceType) {
 
 		//write to head if device type is head
 	case DevType::HeadTracker:
+		//set data ahead of being changed
+		for (int k = 0; k <= 3; k++) {
+			if(k!=3)
+				server->headData.positionArray[k] = b->Position[k];
+			server->headData.rotationArray[k] = b->Rotation[k];
+		}
 		while (this->running) {
 			if (b != NULL) {
 				if (b->changed) {
-					if (this->config->rot) {
+					if (this->server->headData.rot) {
 						server->headData.rotationArray[0] = b->Rotation[0];
 						server->headData.rotationArray[1] = b->Rotation[1];
 						server->headData.rotationArray[2] = b->Rotation[2];
 						server->headData.rotationArray[3] = b->Rotation[3];
 					}
-					if (this->config->pos) {
+					if (this->server->headData.pos) {
 						server->headData.positionArray[0] = b->Position[0];
 						server->headData.positionArray[1] = b->Position[1];
 						server->headData.positionArray[2] = b->Position[2];
@@ -122,22 +128,29 @@ void VRPNClient::analogListen2() {
 
 		//if the device is hand then write to hand
 	case DevType::HandTracker:
+		//set data ahead of being changed
+
+		for (int k = 0; k <= 3; k++) {
+			if (k != 3)
+				server->handData.positionArray[k] = b->Position[k];
+			server->handData.rotationArray[k] = b->Rotation[k];
+		}
 		while (this->running) {
 			if (b != NULL) {
-				if (b->changed) {
-					if (this->config->rot) {
+				//if (b->changed) {
+					if (this->server->handData.rot) {
 						this->server->handData.rotationArray[0] = b->Rotation[0];
 						this->server->handData.rotationArray[1] = b->Rotation[1];
 						this->server->handData.rotationArray[2] = b->Rotation[2];
 						this->server->handData.rotationArray[3] = b->Rotation[3];
 					}
-					if (this->config->pos) {
+					if (this->server->handData.pos) {
 						this->server->handData.positionArray[0] = b->Position[0];
 						this->server->handData.positionArray[1] = b->Position[1];
 						this->server->handData.positionArray[2] = b->Position[2];
 					}
-					b->changed = false;
-				}
+					//b->changed = false;
+				//}
 				//Console::WriteLine(b->buttonNumber);
 			}
 			else
@@ -151,22 +164,28 @@ void VRPNClient::analogListen2() {
 		}
 		break;
 	case DevType::Spatial:
+		//set data ahead of being changed
+		for (int k = 0; k <= 3; k++) {
+			if (k != 3)
+				server->spatialData.positionArray[k] = b->Position[k];
+			server->spatialData.rotationArray[k] = b->Rotation[k];
+		}
 		while (this->running) {
 			if (b != NULL) {
-				if (b->changed) {
-					if (this->config->rot) {
+				//if (b->changed) {
+					if (this->server->spatialData.rot) {
 						this->server->spatialData.rotationArray[0] = b->Rotation[0];
 						this->server->spatialData.rotationArray[1] = b->Rotation[1];
 						this->server->spatialData.rotationArray[2] = b->Rotation[2];
 						this->server->spatialData.rotationArray[3] = b->Rotation[3];
 					}
-					if (this->config->pos) {
+					if (this->server->spatialData.pos) {
 						this->server->spatialData.positionArray[0] = b->Position[0];
 						this->server->spatialData.positionArray[1] = b->Position[1];
 						this->server->spatialData.positionArray[2] = b->Position[2];
 					}
-					b->changed = false;
-				}
+					//b->changed = false;
+				//}
 				//Console::WriteLine(b->buttonNumber);
 			}
 			else
@@ -180,9 +199,15 @@ void VRPNClient::analogListen2() {
 		}
 		break;
 	case DevType::Misc:
+		//set data amisc of being changed
+		for (int k = 0; k <= 3; k++) {
+			if (k != 3)
+				server->miscData.positionArray[k] = b->Position[k];
+			server->miscData.rotationArray[k] = b->Rotation[k];
+		}
 		while (this->running) {
 			if (b != NULL) {
-				if (b->changed) {
+				//if (b->changed) {
 					if (this->server->miscData.rot) {
 						this->server->miscData.rotationArray[0] = b->Rotation[0];
 						this->server->miscData.rotationArray[1] = b->Rotation[1];
@@ -194,8 +219,8 @@ void VRPNClient::analogListen2() {
 						this->server->miscData.positionArray[1] = b->Position[1];
 						this->server->miscData.positionArray[2] = b->Position[2];
 					}
-					b->changed = false;
-				}
+					//b->changed = false;
+				//}
 				//Console::WriteLine(b->buttonNumber);
 			}
 			else

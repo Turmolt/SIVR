@@ -7,7 +7,7 @@
 using namespace System::Windows::Forms;
 using namespace System;
 using namespace System::Runtime::InteropServices;
-#define ARRAY_SIZE 15
+//#define ARRAY_SIZE 15
 
 
 Boss::Boss()
@@ -19,7 +19,7 @@ Boss::Boss()
 	this->mouse = false;
 
 	curMax = 0;
-	clientArray = gcnew cli::array<VRPNClient^>(ARRAY_SIZE);
+	//clientArray = gcnew cli::array<VRPNClient^>(ARRAY_SIZE);
 }
 
 //create new client for VRPN based on type fed in
@@ -49,7 +49,7 @@ void Boss::newClient(DevType t, String^ devName, SIVConfig^ cfg)
 		break;
 	case DevType::Spatial:
 		if (!this->tracker){
-			this->Tracker = gcnew VRPNClient(t, devName, cfg);
+			this->Spatial = gcnew VRPNClient(t, devName, cfg);
 			this->spatialCfg = cfg;
 			//this->Tracker->config = cfg;
 			this->tracker = true;
@@ -90,7 +90,7 @@ VRPNClient ^ Boss::getClient(DevType type)
 		return this->Misc;
 		break;
 	case DevType::Spatial:
-		return this->Tracker;
+		return this->Spatial;
 		break;
 	case DevType::Mouse:
 		return this->Mouse;
@@ -101,7 +101,11 @@ VRPNClient ^ Boss::getClient(DevType type)
 	}
 }
 
-
+void Boss::killServer() {
+	if (this->server->running) {
+		this->server->running = false;
+	}
+}
 //kill client of type t, swap the bool related to it.
 void Boss::killClient(DevType t) {
 	try{
@@ -116,7 +120,7 @@ void Boss::killClient(DevType t) {
 			this->misc = false;
 			break;
 		case DevType::Spatial:
-			this->Tracker->stopThread();
+			this->Spatial->stopThread();
 			this->tracker = false;
 			break;
 		case DevType::Mouse:
@@ -134,23 +138,6 @@ void Boss::killClient(DevType t) {
 	}
 }
 
-//Assign the Reference of the VRPN Client arrays
-//to the Server array so that it can access it
-void Boss::AssignServerReferences() {
-	
-	if (this->server->miscData.tracking) {
-		if (this->server->miscData.pos) {
-			for (int i = 0; i < 3; i++) {
-				//this->server->miscData.positionArray[i] = &this->Misc->Position[i];
-			}
-		}
-		if (this->server->miscData.rot) {
-			for (int i = 0; i < 4; i++) {
-				//this->server->miscData.rotationArray[i] = &this->Misc->Rotation[i];
-			}
-		}
-	}
-}
 
 SIVRServer^ Boss::startServer()
 {
@@ -224,13 +211,30 @@ SIVRServer^ Boss::startServer()
 
 	this->server = gcnew SIVRServer(7777, head, hands, spatial, misc);
 
-	System::Console::WriteLine(this->server->activePurposes);
+	//System::Console::WriteLine(this->server->activePurposes);
 
+	//assign server reference toe ach client
 	this->server->StartServer();
+	if (this->head) {
+		this->Head->server = this->server;
 
-	this->Misc->server = this->server;
+		this->Head->startAnalogThread();
+	}
+	if (this->hands) {
+		this->Hands->server = this->server;
 
-	this->Misc->startAnalogThread();
+		this->Hands->startAnalogThread();
+	}
+	if (this->tracker) {
+		this->Spatial->server = this->server;
+
+		this->Spatial->startAnalogThread();
+	}
+	if (this->misc) {
+		this->Misc->server = this->server;
+
+		this->Misc->startAnalogThread();
+	}
 
 	return this->server;
 }
