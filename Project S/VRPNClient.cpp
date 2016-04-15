@@ -16,7 +16,7 @@ using namespace System::Threading;
 using namespace System::IO;
 //using namespace System::ServiceModel;
 
-VrpnBridge* b;
+
 
 struct Mutex2 {
 	int taken = 0;
@@ -36,7 +36,7 @@ VRPNClient::VRPNClient(DevType t, String^ dev,SIVConfig^ cfg)
 	s = gcnew String("");
 	this->dName = dev;
 
-	b = new VrpnBridge(t, this->config);
+	this->b = new VrpnBridge(t, this->config);
 	this->deviceType = t;
 
 
@@ -59,29 +59,29 @@ void VRPNClient::buttonListen2() {
 	this->running = true;
 	//device specific stuff here
 	while(this->running) {
-		if (b != NULL) {
-			if (b->changed) {
-				Console::WriteLine(b->buttonNumber + " : " + b->buttonState);
-				b->changed = false;
+		if (this->b != NULL) {
+			if (this->b->changed) {
+				//Console::WriteLine(b->buttonNumber + " : " + b->buttonState);
+				this->b->changed = false;
 			}
 		}
 		else
 		{
 			Console::Write("No Bridge");
-			b = new VrpnBridge(this->deviceType, this->config);
+			this->b = new VrpnBridge(this->deviceType, this->config);
 		}
 		
 		
 		Sleep(5.0);
 	}
 
-	b->running = false;
+	this->b->running = false;
 }
 
 //Listen is the function in which the thread runs, when this ends the thread ends.
 //TODO: Create a "listen" func for each device
 void VRPNClient::analogListen() {
-	b->StartGamepadHandler();
+	this->b->StartGamepadHandler();
 }
 
 void VRPNClient::analogListen2() {
@@ -99,26 +99,26 @@ void VRPNClient::analogListen2() {
 			server->headData.rotationArray[k] = b->Rotation[k];
 		}
 		while (this->running) {
-			if (b != NULL) {
-				if (b->changed) {
+			if (this->b != NULL) {
+				if (this->b->changed) {
 					if (this->server->headData.rot) {
-						server->headData.rotationArray[0] = b->Rotation[0];
-						server->headData.rotationArray[1] = b->Rotation[1];
-						server->headData.rotationArray[2] = b->Rotation[2];
-						server->headData.rotationArray[3] = b->Rotation[3];
+						server->headData.rotationArray[1] = this->b->Rotation[1];
+						server->headData.rotationArray[2] = this->b->Rotation[2];
+						server->headData.rotationArray[0] = this->b->Rotation[0];
+						server->headData.rotationArray[3] = this->b->Rotation[3];
 					}
 					if (this->server->headData.pos) {
-						server->headData.positionArray[0] = b->Position[0];
-						server->headData.positionArray[1] = b->Position[1];
-						server->headData.positionArray[2] = b->Position[2];
+						server->headData.positionArray[0] = this->b->Position[0];
+						server->headData.positionArray[1] = this->b->Position[1];
+						server->headData.positionArray[2] = this->b->Position[2];
 					}
-					b->changed = false;
+					this->b->changed = false;
 				}
 			}
 			else
 			{
 				Console::Write("Oops");
-				b = new VrpnBridge(this->deviceType, this->config);
+				this->b = new VrpnBridge(this->deviceType, this->config);
 			}
 
 
@@ -129,25 +129,25 @@ void VRPNClient::analogListen2() {
 		//if the device is hand then write to hand
 	case DevType::HandTracker:
 		//set data ahead of being changed
-
+		Console::WriteLine("hand data logging started\n");
 		for (int k = 0; k <= 3; k++) {
 			if (k != 3)
-				server->handData.positionArray[k] = b->Position[k];
-			server->handData.rotationArray[k] = b->Rotation[k];
+				server->handData.positionArray[k] = this->b->Position[k];
+			server->handData.rotationArray[k] = this->b->Rotation[k];
 		}
 		while (this->running) {
-			if (b != NULL) {
+			if (this->b != NULL) {
 				//if (b->changed) {
 					if (this->server->handData.rot) {
-						this->server->handData.rotationArray[0] = b->Rotation[0];
-						this->server->handData.rotationArray[1] = b->Rotation[1];
-						this->server->handData.rotationArray[2] = b->Rotation[2];
-						this->server->handData.rotationArray[3] = b->Rotation[3];
+						this->server->handData.rotationArray[0] = this->b->Rotation[0];
+						this->server->handData.rotationArray[1] = this->b->Rotation[1];
+						this->server->handData.rotationArray[2] = this->b->Rotation[2];
+						this->server->handData.rotationArray[3] = this->b->Rotation[3];
 					}
 					if (this->server->handData.pos) {
-						this->server->handData.positionArray[0] = b->Position[0];
-						this->server->handData.positionArray[1] = b->Position[1];
-						this->server->handData.positionArray[2] = b->Position[2];
+						this->server->handData.positionArray[0] = this->b->Position[0];
+						this->server->handData.positionArray[1] = this->b->Position[1];
+						this->server->handData.positionArray[2] = this->b->Position[2];
 					}
 					//b->changed = false;
 				//}
@@ -156,7 +156,7 @@ void VRPNClient::analogListen2() {
 			else
 			{
 				Console::Write("Oops");
-				b = new VrpnBridge(this->deviceType, this->config);
+				this->b = new VrpnBridge(this->deviceType, this->config);
 			}
 
 
@@ -167,22 +167,22 @@ void VRPNClient::analogListen2() {
 		//set data ahead of being changed
 		for (int k = 0; k <= 3; k++) {
 			if (k != 3)
-				server->spatialData.positionArray[k] = b->Position[k];
-			server->spatialData.rotationArray[k] = b->Rotation[k];
+				server->spatialData.positionArray[k] = this->b->Position[k];
+			server->spatialData.rotationArray[k] = this->b->Rotation[k];
 		}
 		while (this->running) {
-			if (b != NULL) {
+			if (this->b != NULL) {
 				//if (b->changed) {
 					if (this->server->spatialData.rot) {
-						this->server->spatialData.rotationArray[0] = b->Rotation[0];
-						this->server->spatialData.rotationArray[1] = b->Rotation[1];
-						this->server->spatialData.rotationArray[2] = b->Rotation[2];
-						this->server->spatialData.rotationArray[3] = b->Rotation[3];
+						this->server->spatialData.rotationArray[0] = this->b->Rotation[0];
+						this->server->spatialData.rotationArray[1] = this->b->Rotation[1];
+						this->server->spatialData.rotationArray[2] = this->b->Rotation[2];
+						this->server->spatialData.rotationArray[3] = this->b->Rotation[3];
 					}
 					if (this->server->spatialData.pos) {
-						this->server->spatialData.positionArray[0] = b->Position[0];
-						this->server->spatialData.positionArray[1] = b->Position[1];
-						this->server->spatialData.positionArray[2] = b->Position[2];
+						this->server->spatialData.positionArray[0] = this->b->Position[0];
+						this->server->spatialData.positionArray[1] = this->b->Position[1];
+						this->server->spatialData.positionArray[2] = this->b->Position[2];
 					}
 					//b->changed = false;
 				//}
@@ -191,7 +191,7 @@ void VRPNClient::analogListen2() {
 			else
 			{
 				Console::Write("Oops");
-				b = new VrpnBridge(this->deviceType, this->config);
+				this->b = new VrpnBridge(this->deviceType, this->config);
 			}
 
 
@@ -202,22 +202,22 @@ void VRPNClient::analogListen2() {
 		//set data amisc of being changed
 		for (int k = 0; k <= 3; k++) {
 			if (k != 3)
-				server->miscData.positionArray[k] = b->Position[k];
-			server->miscData.rotationArray[k] = b->Rotation[k];
+				server->miscData.positionArray[k] = this->b->Position[k];
+			server->miscData.rotationArray[k] = this->b->Rotation[k];
 		}
 		while (this->running) {
 			if (b != NULL) {
 				//if (b->changed) {
 					if (this->server->miscData.rot) {
-						this->server->miscData.rotationArray[0] = b->Rotation[0];
-						this->server->miscData.rotationArray[1] = b->Rotation[1];
-						this->server->miscData.rotationArray[2] = b->Rotation[2];
-						this->server->miscData.rotationArray[3] = b->Rotation[3];
+						this->server->miscData.rotationArray[0] = this->b->Rotation[0];
+						this->server->miscData.rotationArray[1] = this->b->Rotation[1];
+						this->server->miscData.rotationArray[2] = this->b->Rotation[2];
+						this->server->miscData.rotationArray[3] = this->b->Rotation[3];
 					}
 					if (this->server->miscData.pos) {
-						this->server->miscData.positionArray[0] = b->Position[0];
-						this->server->miscData.positionArray[1] = b->Position[1];
-						this->server->miscData.positionArray[2] = b->Position[2];
+						this->server->miscData.positionArray[0] = this->b->Position[0];
+						this->server->miscData.positionArray[1] = this->b->Position[1];
+						this->server->miscData.positionArray[2] = this->b->Position[2];
 					}
 					//b->changed = false;
 				//}
@@ -226,7 +226,7 @@ void VRPNClient::analogListen2() {
 			else
 			{
 				Console::Write("Oops");
-				b = new VrpnBridge(this->deviceType, this->config);
+				this->b = new VrpnBridge(this->deviceType, this->config);
 			}
 
 
@@ -236,7 +236,7 @@ void VRPNClient::analogListen2() {
 	}
 	
 
-	b->running = false;
+	this->b->running = false;
 }
 
 //ensure that the device type is enabled in the config file

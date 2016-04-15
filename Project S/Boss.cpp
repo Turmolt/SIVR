@@ -150,6 +150,7 @@ SIVRServer^ Boss::startServer()
 
 	//DETERMINE DATA TYPES TO SEND HAND
 	if (this->hands) {
+		Console::WriteLine(this->handCfg->dataTypes->ToString() + " chosen for hand\n");
 		if (this->handCfg->dataTypes->Equals("Rotation")) {
 			hands = "r";
 		}
@@ -195,6 +196,7 @@ SIVRServer^ Boss::startServer()
 	}
 	//DETERMINE DATA TYPES TO SEND MISC
 	if (this->misc) {
+		Console::WriteLine(this->miscCfg->dataTypes->ToString() + " chosen for misc\n");
 		if (this->miscCfg->dataTypes->Equals("Rotation")) {
 			misc = "r";
 		}

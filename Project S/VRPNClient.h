@@ -11,6 +11,8 @@
 #include <Xinput.h>
 #include "SIVConfig.h"
 
+class VrpnBridge;
+
 ref class SIVRServer;
 
 
@@ -29,6 +31,8 @@ public:
 	array<float>^ Position;
 	array<float>^ Rotation;
 	
+
+	VrpnBridge* b;
 
 	//thread functions
 	void buttonListen();
