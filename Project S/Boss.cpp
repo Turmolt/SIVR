@@ -26,7 +26,7 @@ Boss::Boss()
 void Boss::newClient(DevType t, String^ devName, SIVConfig^ cfg)
 {
 	switch (t) {
-	case DevType::HMD:
+	case DevType::HeadTracker:
 		if (!this->head)
 		{
 			this->Head = gcnew VRPNClient(t, devName,cfg);
@@ -83,7 +83,7 @@ void Boss::newClient(DevType t, String^ devName, SIVConfig^ cfg)
 VRPNClient ^ Boss::getClient(DevType type)
 {
 	switch (type) {
-	case DevType::HMD:
+	case DevType::HeadTracker:
 		return this->Head;
 		break;
 	case DevType::Misc:
@@ -110,9 +110,9 @@ void Boss::killServer() {
 void Boss::killClient(DevType t) {
 	try{
 		switch (t) {
-		case DevType::HMD:
+		case DevType::HeadTracker:
 			this->Head->stopThread();
-			delete this->Head;
+			//delete this->Head;
 			this->head = false;
 			break;
 		case DevType::Misc:

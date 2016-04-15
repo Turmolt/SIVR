@@ -353,7 +353,7 @@ void SIVRServer::ServerLoop() {
 						for (int i = 0; i < 4; i++)
 							strng += this->headData.rotationArray[i] + " ";
 
-					strng += " ## ";
+					strng += "#";
 				}
 				if (this->handData.tracking) {
 					if (this->handData.pos)
@@ -364,7 +364,7 @@ void SIVRServer::ServerLoop() {
 						for (int i = 0; i < 4; i++)
 							strng += this->handData.rotationArray[i] + " ";
 
-					strng += " ## ";
+					strng += "#";
 				}
 				if (this->spatialData.tracking) {
 					if (this->spatialData.pos)
@@ -375,7 +375,7 @@ void SIVRServer::ServerLoop() {
 						for (int i = 0; i < 4; i++)
 							strng += this->spatialData.rotationArray[i] + " ";
 
-					strng += " ## ";
+					strng += "#";
 					
 				}
 				if (this->miscData.tracking) {
@@ -387,7 +387,7 @@ void SIVRServer::ServerLoop() {
 						for (int i = 0; i < 4; i++)
 							strng += this->miscData.rotationArray[i] + " ";
 
-					strng += " ## ";
+					strng += "#";
 				}
 				//strng += "\0";
 				Sleep(5);

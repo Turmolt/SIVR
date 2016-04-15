@@ -1,6 +1,6 @@
-VRPNname: XInput0
+VRPNname: Tracker0
 Channels: 7
 Returns[Rotation,Position,Both,None]: Rotation
-Buttons: N
-Rotation Channels (X,Y,Z,W): 
-Position Channels (X,Y,Z,Scale): 
+Buttons: 0
+Rotation_Channels(X,Y,Z,W): (-2,3,-1,4)
+Position_Channels(X,Y,Z,Scale): (1,2,3,4)

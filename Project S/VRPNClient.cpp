@@ -35,7 +35,7 @@ VRPNClient::VRPNClient(DevType t, String^ dev,SIVConfig^ cfg)
 	this->config->deviceName = dev;
 	s = gcnew String("");
 	this->dName = dev;
-
+	Console::WriteLine("Start Bridge");
 	this->b = new VrpnBridge(t, this->config);
 	this->deviceType = t;
 
@@ -92,6 +92,7 @@ void VRPNClient::analogListen2() {
 
 		//write to head if device type is head
 	case DevType::HeadTracker:
+		Console::WriteLine(this->config->dataTypes + " is the type");
 		//set data ahead of being changed
 		for (int k = 0; k <= 3; k++) {
 			if(k!=3)
@@ -100,11 +101,11 @@ void VRPNClient::analogListen2() {
 		}
 		while (this->running) {
 			if (this->b != NULL) {
-				if (this->b->changed) {
+				//if (this->b->changed) {
 					if (this->server->headData.rot) {
+						server->headData.rotationArray[0] = this->b->Rotation[0];
 						server->headData.rotationArray[1] = this->b->Rotation[1];
 						server->headData.rotationArray[2] = this->b->Rotation[2];
-						server->headData.rotationArray[0] = this->b->Rotation[0];
 						server->headData.rotationArray[3] = this->b->Rotation[3];
 					}
 					if (this->server->headData.pos) {
@@ -112,8 +113,8 @@ void VRPNClient::analogListen2() {
 						server->headData.positionArray[1] = this->b->Position[1];
 						server->headData.positionArray[2] = this->b->Position[2];
 					}
-					this->b->changed = false;
-				}
+					//this->b->changed = false;
+				//}
 			}
 			else
 			{
@@ -271,7 +272,7 @@ void VRPNClient::startAnalogThread()
 {	
 	//ThreadWork^ tw = gcnew ThreadWork();
 	this->server = ProcWorker::getBoss()->server;
-	Console::WriteLine(this->server->miscData.pos + "O boy");
+	//Console::WriteLine(this->server->miscData.pos + "O boy");
 	this->running = true;
 	this->aThread = gcnew Thread(gcnew ThreadStart(this, &VRPNClient::analogListen));
 	this->a2Thread = gcnew Thread(gcnew ThreadStart(this, &VRPNClient::analogListen2));
@@ -279,6 +280,7 @@ void VRPNClient::startAnalogThread()
 	this->a2Thread->Start();
 	while (!this->aThread->IsAlive); //waiting for the thread to start
 	Thread::Sleep(100);
+	Console::WriteLine("Running");
 	//this->running = false;
 }
 

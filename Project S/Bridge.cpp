@@ -4,6 +4,7 @@
 #include <fstream>
 #include <vrpn_Button.h>
 #include <vrpn_Tracker.h>
+#include <vrpn_Tracker_isense.h>
 #include <vrpn_Analog.h>
 #include <vrpn_XInputGamepad.h>
 #include "Bridge.h"
@@ -29,12 +30,13 @@ VrpnBridge::VrpnBridge(DevType x, SIVConfig^ cfg)
 {
 	char pth[MAX_PATH];
 	GetCurrentDirectory(MAX_PATH, pth);
-
+	/*
 	switch (x) {
 	case DevType::HandTracker:
 		this->path = string(pth)+"/Purposes/Hands.sivd";
 		break;
 	case DevType::HeadTracker:
+		cout << "head" << endl;
 		this->path = string(pth) + "/Purposes/Head.sivd";
 		break;
 	case DevType::Spatial:
@@ -43,7 +45,7 @@ VrpnBridge::VrpnBridge(DevType x, SIVConfig^ cfg)
 	case DevType::Misc:
 		this->path = string(pth) + "/Purposes/Misc.sivd";
 		break;
-	}
+	}*/
 	//cout << this->path<<endl;
 
 	//ex = external;
@@ -114,12 +116,33 @@ void VRPN_CALLBACK AnalogHandler(void* userData, const vrpn_ANALOGCB a) {
 	for (int i = 0; i < a.num_channel; i++) {
 		//cout << a.channel[i]<<" ";
 		analogState[i] = a.channel[i];
+		//cout << a.channel[i] << " ";
 	}
+	//cout << "end"<<endl;
 	//cout << endl;
 	chng = true;
 }
 
+void VRPN_CALLBACK TrackerRotHandler(void* userData, const vrpn_TRACKERCB t) {
+	//for (int i = 0; i < 4; i++) {
+		//cout << "Tracker '" << t.sensor << "' : " << t.quat[0] << "," << t.quat[1] << "," << t.quat[2] << ","<<t.quat[3]<<endl;
+	//}
+	for (int i = 0; i < 4; i++) {
+		analogState[i] = t.quat[i];
+		//cout << analogState[i];
+	}
+	//cout << endl;
+}
 
+void VRPN_CALLBACK TrackerPosHandler(void* userData, const vrpn_TRACKERCB t) {
+	//for (int i = 0; i < 4; i++) {
+	//cout << "Tracker '" << t.sensor << "' : " << t.quat[0] << "," << t.quat[1] << "," << t.quat[2] << ","<<t.quat[3]<<endl;
+	//}
+	for (int i = 0; i < 3; i++) {
+		analogState[i] = t.pos[i];
+	}
+	chng = true;
+}
 
 
 void VrpnBridge::StartButtonHandler(int* external) {
@@ -146,6 +169,8 @@ void VrpnBridge::StartButtonHandler(int* external) {
 	}
 }
 
+
+
 void VrpnBridge::StartAnalogHandler() {
 
 	std::string m = this->deviceName + "@localhost";
@@ -153,6 +178,7 @@ void VrpnBridge::StartAnalogHandler() {
 	const char* host = m.c_str();
 	cout << host;
 	vrpn_Analog_Remote* vrpnAnalog = new vrpn_Analog_Remote(host);
+	vrpn_Tracker_Remote* trackerRemote = new vrpn_Tracker_Remote(host);
 
 	vrpnAnalog->register_change_handler(0, AnalogHandler);
 	while (this->running != NULL) {
@@ -174,15 +200,20 @@ void VrpnBridge::StartGamepadHandler() {
 	//SIVRData.open(this->path, std::ofstream::trunc);
 	//cout << this->dataTypes;
 	std::string m = this->VRPNname + "@localhost";
+	cout << m << endl;
 	const char* host = m.c_str();
-	vrpn_Analog_Remote* vrpnAnalog = new vrpn_Analog_Remote(host);
-	vrpn_Button_Remote* vrpnButton = new vrpn_Button_Remote(host);
+	//vrpn_Analog_Remote* vrpnAnalog = new vrpn_Analog_Remote(host);
+	vrpn_Tracker_Remote* vrpnTracker = new vrpn_Tracker_Remote(host);
+	//vrpn_Button_Remote* vrpnButton = new vrpn_Button_Remote(host);
 
-	vrpnAnalog->register_change_handler(0, AnalogHandler);
-	vrpnButton->register_change_handler(0, ButtonHandler);
+	vrpnTracker->register_change_handler(0, TrackerRotHandler);
+	//vrpnAnalog->register_change_handler(0, AnalogHandler);
+	//vrpnButton->register_change_handler(0, ButtonHandler);
 	while (this->running != NULL) {
-		
-		vrpnAnalog->mainloop();
+
+		vrpnTracker->mainloop();
+		//vrpnAnalog->mainloop();
+		//cout << "Main Loop";
 		//vrpnButton->mainloop();
 		//SIVRData.seekp(0);
 		//cout << this->dataTypes << " "<<this->deviceType;
@@ -191,30 +222,32 @@ void VrpnBridge::StartGamepadHandler() {
 		{
 			
 			if (this->rot) {
-				if (i+1 == (int)this->XRot) {
-					this->Rotation[0] = analogArray[i];
+				if (i+1 == abs((int)this->XRot)) {
+					this->Rotation[0] = analogArray[i] * (this->XRot / abs(this->XRot));
 				}
-				else if (i+1 == (int)this->YRot) {
-					this->Rotation[1] = analogArray[i];
+				else if (i+1 == abs((int)this->YRot)) {
+					this->Rotation[1] = analogArray[i] * (this->YRot / abs(this->YRot));
 				}
-				else if (i+1 == (int)this->ZRot) {
-					this->Rotation[2] = analogArray[i];
+				else if (i+1 == abs((int)this->ZRot)) {
+					this->Rotation[2] = analogArray[i] * (this->ZRot / abs(this->ZRot));
 				}
-				else if (i+1 == (int)this->WRot) {
-					this->Rotation[3] = analogArray[i];
+				else if (i+1 == abs((int)this->WRot)) {
+					this->Rotation[3] = analogArray[i] * (this->WRot / abs(this->WRot));
 				}
 			}
 			if (this->pos) {
-				if (i+1 == (int)this->XPos) {
-					this->Position[0] = analogArray[i];
+				if (i+1 == abs((int)this->XPos)) {
+					this->Position[0] = analogArray[i] * (this->XPos / abs(this->XPos));
 				}
-				else if (i+1 == (int)this->YPos) {
-					this->Position[1] = analogArray[i];
+				else if (i+1 == abs((int)this->YPos)) {
+					this->Position[1] = analogArray[i] * (this->YPos / abs(this->YPos));
 				}
-				else if (i+1 == (int)this->ZPos) {
-					this->Position[2] = analogArray[i];
+				else if (i+1 == abs((int)this->ZPos)) {
+					this->Position[2] = analogArray[i]*(this->ZPos/abs(this->ZPos));
 				}
 			}
+
+			
 			
 		}
 		//SIVRData << this->Position.at(0) << " " << this->Position.at(1) << " " << this->Position.at(2) << endl;
