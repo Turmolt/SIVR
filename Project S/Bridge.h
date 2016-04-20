@@ -21,6 +21,8 @@ public:
 
 	//float &analogArray;
 	bool &changed;
+	std::array<float, 4> &rotArray;
+	std::array<float, 3> &posArray;
 	std::array<float, 7> &analogArray;
 
 	std::string deviceName;
@@ -28,7 +30,7 @@ public:
 	DevType deviceType;
 
 	std::string path;
-
+	std::string bridgeType;
 	std::string VRPNname;
 	std::string dataTypes;
 

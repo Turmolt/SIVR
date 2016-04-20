@@ -123,7 +123,7 @@ SIVConfig^ ProcWorker::readConfig(DevType t, System::String^ devName)
 	//array<System::String^>^ cfgString = gcnew array<System::String^>(6);
 	System::String^ cfgLine = "";
 
-	for (int i = 0; i < 6; i++) {
+	for (int i = 0; i < 7; i++) {
 		//read in the line of text 
 		cfgLine = reader->ReadLine();
 
@@ -136,18 +136,21 @@ SIVConfig^ ProcWorker::readConfig(DevType t, System::String^ devName)
 			newConfig->VRPNname = cfgLine;
 			break;
 		case 1:
+			newConfig->bridgeType = cfgLine;
+			break;
+		case 2:
 			//number of analog channels
 			newConfig->channels = System::Int32::Parse(cfgLine);
 			break;
-		case 2:
+		case 3:
 			//what type of data the device returns
 			newConfig->dataTypes = cfgLine;
 			break;
-		case 3:
+		case 4:
 			//number of buttons associated with it
 			newConfig->buttons = System::Int32::Parse(cfgLine);
 			break;
-		case 4:
+		case 5:
 			//rotation channels (X,Y,Z,W) if quaternion
 			if (newConfig->dataTypes->Equals("Rotation") || newConfig->dataTypes->Equals("Both"))
 			{
@@ -161,7 +164,7 @@ SIVConfig^ ProcWorker::readConfig(DevType t, System::String^ devName)
 				newConfig->WRot = System::Int32::Parse(parseMe[3]);
 			}
 			break;
-		case 5:
+		case 6:
 			//position channels (X,Y,Z,Scale)
 			if (newConfig->dataTypes->Equals("Position") || newConfig->dataTypes->Equals("Both")) {
 				cfgLine = cfgLine->Replace("(", "");

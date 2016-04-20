@@ -9,6 +9,7 @@ public:
 	System::String^ deviceName;
 	System::String^ VRPNname;
 	System::String^ dataTypes;
+	System::String^ bridgeType;
 
 	//set true if marked in config
 	bool rot;

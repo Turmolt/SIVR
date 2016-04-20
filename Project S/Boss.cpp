@@ -1,6 +1,7 @@
 #include "Boss.h"
 
 #include "MainWindow.h"
+#include "DeviceWindow.h"
 
 
 
@@ -40,6 +41,7 @@ void Boss::newClient(DevType t, String^ devName, SIVConfig^ cfg)
 	case DevType::Misc:
 		if (!this->misc){
 			this->Misc = gcnew VRPNClient(t, devName,cfg);
+			Console::WriteLine(cfg->channels);
 			this->miscCfg = cfg;
 			//this->Misc->config = cfg;
 			this->misc = true;
@@ -256,7 +258,7 @@ int main()
 {
 	Application::EnableVisualStyles();
 	Application::SetCompatibleTextRenderingDefault(false);
-	Application::Run(gcnew ProjectS::MainWindow());
+	Application::Run(gcnew ProjectS::DeviceWindow());
 	
 	return 0;
 }

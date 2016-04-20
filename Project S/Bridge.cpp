@@ -20,13 +20,16 @@ bool chng = false;
 int butState = 0;
 int butNumber = -1;
 
+int index = 0;
 
-array<typename float,7> analogState;
+array<typename float, 7> analgArray;
+array<typename float,4> rotationArray;
+array<typename float, 3> positionArray;
 float analogChan;
 int totalChannels;
 
 VrpnBridge::VrpnBridge(DevType x, SIVConfig^ cfg)
-	:buttonState(butState), buttonNumber(butNumber), changed(chng), analogArray(analogState)
+	:buttonState(butState), buttonNumber(butNumber), changed(chng), rotArray(rotationArray), posArray(positionArray), analogArray(analgArray)
 {
 	char pth[MAX_PATH];
 	GetCurrentDirectory(MAX_PATH, pth);
@@ -56,9 +59,12 @@ VrpnBridge::VrpnBridge(DevType x, SIVConfig^ cfg)
 	this->VRPNname =ctx.marshal_as<string>(cfg->VRPNname->Trim());
 	this->dataTypes = ctx.marshal_as<string>(cfg->dataTypes->Trim());
 	this->buttons = cfg->buttons;
+
+
 	this->channels = cfg->channels;
 	totalChannels = this->channels;
 
+	this->bridgeType = ctx.marshal_as<string>(cfg->bridgeType->Trim());
 
 	if (this->dataTypes == "Rotation") {
 		this->rot = true;
@@ -111,24 +117,38 @@ void VRPN_CALLBACK ButtonHandler(void* userData, const vrpn_BUTTONCB b) {
 }
 
 void VRPN_CALLBACK AnalogHandler(void* userData, const vrpn_ANALOGCB a) {
-	
+	if (index != 3) {
+		index = 0;
+	}
 //	totalChannels = a.num_channel;
 	for (int i = 0; i < a.num_channel; i++) {
 		//cout << a.channel[i]<<" ";
-		analogState[i] = a.channel[i];
+		analgArray[i] = a.channel[i];
 		//cout << a.channel[i] << " ";
 	}
 	//cout << "end"<<endl;
 	//cout << endl;
 	chng = true;
 }
+void VRPN_CALLBACK TrackerHandler(void* userData, const vrpn_TRACKERCB t) {
+	//for (int i = 0; i < 4; i++) {
+	//cout << "Tracker '" << t.sensor << "' : " << t.quat[0] << "," << t.quat[1] << "," << t.quat[2] << ","<<t.quat[3]<<endl;
+	//}
+	for (int i = 0; i < 4; i++) {
+		if(i!=3)
+			positionArray[i] = t.pos[i];
 
+		rotationArray[i] = t.quat[i];
+	}
+	chng = true;
+}
 void VRPN_CALLBACK TrackerRotHandler(void* userData, const vrpn_TRACKERCB t) {
 	//for (int i = 0; i < 4; i++) {
 		//cout << "Tracker '" << t.sensor << "' : " << t.quat[0] << "," << t.quat[1] << "," << t.quat[2] << ","<<t.quat[3]<<endl;
 	//}
+
 	for (int i = 0; i < 4; i++) {
-		analogState[i] = t.quat[i];
+		rotationArray[i] = t.quat[i];
 		//cout << analogState[i];
 	}
 	//cout << endl;
@@ -139,7 +159,7 @@ void VRPN_CALLBACK TrackerPosHandler(void* userData, const vrpn_TRACKERCB t) {
 	//cout << "Tracker '" << t.sensor << "' : " << t.quat[0] << "," << t.quat[1] << "," << t.quat[2] << ","<<t.quat[3]<<endl;
 	//}
 	for (int i = 0; i < 3; i++) {
-		analogState[i] = t.pos[i];
+		positionArray[i] = t.pos[i];
 	}
 	chng = true;
 }
@@ -202,67 +222,119 @@ void VrpnBridge::StartGamepadHandler() {
 	std::string m = this->VRPNname + "@localhost";
 	cout << m << endl;
 	const char* host = m.c_str();
-	//vrpn_Analog_Remote* vrpnAnalog = new vrpn_Analog_Remote(host);
-	vrpn_Tracker_Remote* vrpnTracker = new vrpn_Tracker_Remote(host);
-	//vrpn_Button_Remote* vrpnButton = new vrpn_Button_Remote(host);
+	
+	if (this->bridgeType == "Analog") {
+		vrpn_Analog_Remote* vrpnAnalog = new vrpn_Analog_Remote(host);
+		vrpnAnalog->register_change_handler(0, AnalogHandler);
+		while (this->running != NULL) {
+			vrpnAnalog->mainloop();
+			//vrpnAnalog->mainloop();
+			//cout << "Main Loop";
+			//vrpnButton->mainloop();
+			//SIVRData.seekp(0);
+			//cout << this->dataTypes << " "<<this->deviceType;
 
-	vrpnTracker->register_change_handler(0, TrackerRotHandler);
-	//vrpnAnalog->register_change_handler(0, AnalogHandler);
-	//vrpnButton->register_change_handler(0, ButtonHandler);
-	while (this->running != NULL) {
+			for (int i = 0; i < this->channels; i++)
+			{
 
-		vrpnTracker->mainloop();
-		//vrpnAnalog->mainloop();
-		//cout << "Main Loop";
-		//vrpnButton->mainloop();
-		//SIVRData.seekp(0);
-		//cout << this->dataTypes << " "<<this->deviceType;
+				if (this->rot) {
+					if (i + 1 == abs((int)this->XRot)) {
+						this->Rotation[0] = this->analogArray[i] * (this->XRot / abs(this->XRot));
+					}
+					else if (i + 1 == abs((int)this->YRot)) {
+						this->Rotation[1] = this->analogArray[i] * (this->YRot / abs(this->YRot));
+					}
+					else if (i + 1 == abs((int)this->ZRot)) {
+						this->Rotation[2] = this->analogArray[i] * (this->ZRot / abs(this->ZRot));
+					}
+					else if (i + 1 == abs((int)this->WRot)) {
+						this->Rotation[3] = this->analogArray[i] * (this->WRot / abs(this->WRot));
+					}
+				}
+				if (this->pos) {
+					if (i + 1 == abs((int)this->XPos)) {
+						this->Position[0] = this->analogArray[i] * (this->XPos / abs(this->XPos));
+					}
+					else if (i + 1 == abs((int)this->YPos)) {
+						this->Position[1] = this->analogArray[i] * (this->YPos / abs(this->YPos));
+					}
+					else if (i + 1 == abs((int)this->ZPos)) {
+						this->Position[2] = this->analogArray[i] * (this->ZPos / abs(this->ZPos));
+					}
+				}
 
-		for (int i = 0; i < this->channels; i++)
-		{
-			
-			if (this->rot) {
-				if (i+1 == abs((int)this->XRot)) {
-					this->Rotation[0] = analogArray[i] * (this->XRot / abs(this->XRot));
-				}
-				else if (i+1 == abs((int)this->YRot)) {
-					this->Rotation[1] = analogArray[i] * (this->YRot / abs(this->YRot));
-				}
-				else if (i+1 == abs((int)this->ZRot)) {
-					this->Rotation[2] = analogArray[i] * (this->ZRot / abs(this->ZRot));
-				}
-				else if (i+1 == abs((int)this->WRot)) {
-					this->Rotation[3] = analogArray[i] * (this->WRot / abs(this->WRot));
-				}
+
+
 			}
-			if (this->pos) {
-				if (i+1 == abs((int)this->XPos)) {
-					this->Position[0] = analogArray[i] * (this->XPos / abs(this->XPos));
-				}
-				else if (i+1 == abs((int)this->YPos)) {
-					this->Position[1] = analogArray[i] * (this->YPos / abs(this->YPos));
-				}
-				else if (i+1 == abs((int)this->ZPos)) {
-					this->Position[2] = analogArray[i]*(this->ZPos/abs(this->ZPos));
-				}
+			try {
+				if (this->running == false)
+					break;
 			}
-
-			
-			
-		}
-		//SIVRData << this->Position.at(0) << " " << this->Position.at(1) << " " << this->Position.at(2) << endl;
-		//SIVRData << this->Rotation.at(0) << " " << this->Rotation.at(1) << " " << this->Rotation.at(2) << " " << this->Rotation.at(3) <<endl;
-		//
-		//SIVRData.flush();
-		Sleep(10.0);
-		try {
-			if (this->running == false)
-				break;
-		}
-		catch (System::NullReferenceException^) {
-			cout << "Running null value" << endl;
+			catch (System::NullReferenceException^) {
+				cout << "Running null value" << endl;
+			}
 		}
 	}
+	//vrpn_Button_Remote* vrpnButton = new vrpn_Button_Remote(host);
+	else if (this->bridgeType == "Tracker") {
+		vrpn_Tracker_Remote* vrpnTracker = new vrpn_Tracker_Remote(host);
+		if(this->rot&&!this->pos)
+			vrpnTracker->register_change_handler(0, TrackerRotHandler);
+		else if (this->pos&&!this->rot)
+			vrpnTracker->register_change_handler(0, TrackerRotHandler);
+		else
+			vrpnTracker->register_change_handler(0, TrackerHandler);
+		while (this->running != NULL) {
+			vrpnTracker->mainloop();
+			//vrpnAnalog->mainloop();
+			//cout << "Main Loop";
+			//vrpnButton->mainloop();
+			//SIVRData.seekp(0);
+			//cout << this->dataTypes << " "<<this->deviceType;
+
+			for (int i = 0; i < this->channels; i++)
+			{
+
+				if (this->rot) {
+					if (i + 1 == abs((int)this->XRot)) {
+						this->Rotation[0] = rotArray[i] * (this->XRot / abs(this->XRot));
+					}
+					else if (i + 1 == abs((int)this->YRot)) {
+						this->Rotation[1] = rotArray[i] * (this->YRot / abs(this->YRot));
+					}
+					else if (i + 1 == abs((int)this->ZRot)) {
+						this->Rotation[2] = rotArray[i] * (this->ZRot / abs(this->ZRot));
+					}
+					else if (i + 1 == abs((int)this->WRot)) {
+						this->Rotation[3] = rotArray[i] * (this->WRot / abs(this->WRot));
+					}
+				}
+				if (this->pos) {
+					if (i + 1 == abs((int)this->XPos)) {
+						this->Position[0] = posArray[i] * (this->XPos / abs(this->XPos));
+					}
+					else if (i + 1 == abs((int)this->YPos)) {
+						this->Position[1] = posArray[i] * (this->YPos / abs(this->YPos));
+					}
+					else if (i + 1 == abs((int)this->ZPos)) {
+						this->Position[2] = posArray[i] * (this->ZPos / abs(this->ZPos));
+					}
+				}
+
+
+
+			}
+			try {
+				if (this->running == false)
+					break;
+			}
+			catch (System::NullReferenceException^) {
+				cout << "Running null value" << endl;
+			}
+		}
+	}
+	//vrpnButton->register_change_handler(0, ButtonHandler);
+	
 	//SIVRData.close();
 	cout << "Closing Time~~\n";
 
