@@ -290,6 +290,7 @@ void VRPNClient::stopThread()
 {
 
 	this->running = false;
+	this->b->running = false;
 	Console::WriteLine("Shutting down thread");
 	
 	/*

@@ -53,6 +53,9 @@ public:
 
 	int activePurposes;
 
+	System::Net::Sockets::TcpListener^ listener;
+	System::Net::Sockets::TcpClient^ client;
+
 	int activeRot;
 	int activePos;
 

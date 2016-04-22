@@ -1,4 +1,5 @@
-VRPNname: XInput0
+VRPNname: zSight
+Tracker_Type: Tracker
 Channels: 4
 Returns[Rotation,Position,Both,None]: Rotation
 Buttons: 0

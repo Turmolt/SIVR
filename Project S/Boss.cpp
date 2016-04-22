@@ -105,6 +105,8 @@ VRPNClient ^ Boss::getClient(DevType type)
 
 void Boss::killServer() {
 	if (this->server->running) {
+		this->server->listener->Stop();
+		this->server->client->Close();
 		this->server->running = false;
 	}
 }
@@ -114,6 +116,7 @@ void Boss::killClient(DevType t) {
 		switch (t) {
 		case DevType::HeadTracker:
 			this->Head->stopThread();
+			//delete(th,sizeof(this->Head));
 			//delete this->Head;
 			this->head = false;
 			break;
