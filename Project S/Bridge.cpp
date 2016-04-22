@@ -336,6 +336,6 @@ void VrpnBridge::StartGamepadHandler() {
 	//vrpnButton->register_change_handler(0, ButtonHandler);
 	
 	//SIVRData.close();
-	cout << "Closing Time~~\n";
+	//cout << "Closing Time~~\n";
 
 }

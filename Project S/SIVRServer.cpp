@@ -258,83 +258,87 @@ void SIVRServer::ServerLoop() {
 	catch (Exception^ e){
 		//Console::WriteLine("Client Reset");
 	}
+	try {
+		while (this->running) {
 
-	while (this->running) {
+			Console::Write("Waiting for client...");
+			//this->client->Close();
+			//this->listener->Stop();
 
-		Console::Write("Waiting for client...");
-		//this->client->Close();
-		//this->listener->Stop();
+			this->listener->Start();
+			this->client = this->listener->AcceptTcpClient();
+			Console::WriteLine(" Client connected!");
+			NetworkStream^ stream = this->client->GetStream();
+			StreamWriter^ writer = gcnew StreamWriter(stream, Encoding::ASCII);
+			try {
+				while (this->running) {
+					String^ strng = "";
 
-		this->listener->Start();
-		this->client = this->listener->AcceptTcpClient();
-		Console::WriteLine(" Client connected!");
-		NetworkStream^ stream = this->client->GetStream();
-		StreamWriter^ writer = gcnew StreamWriter(stream, Encoding::ASCII);
-		try{
-			while (this->running) {
-				String^ strng = "";
+					if (this->headData.tracking) {
+						if (this->headData.pos)
+							for (int i = 0; i < 3; i++)
+								strng += this->headData.positionArray[i] + " ";
 
-				if (this->headData.tracking) {
-					if (this->headData.pos)
-						for (int i = 0; i < 3; i++)
-							strng += this->headData.positionArray[i] + " ";
+						if (this->headData.rot)
+							for (int i = 0; i < 4; i++)
+								strng += this->headData.rotationArray[i] + " ";
 
-					if (this->headData.rot)
-						for (int i = 0; i < 4; i++)
-							strng += this->headData.rotationArray[i] + " ";
+						strng += "#";
+					}
+					if (this->handData.tracking) {
+						if (this->handData.pos)
+							for (int i = 0; i < 3; i++)
+								strng += this->handData.positionArray[i] + " ";
 
-					strng += "#";
+						if (this->handData.rot)
+							for (int i = 0; i < 4; i++)
+								strng += this->handData.rotationArray[i] + " ";
+
+						strng += "#";
+					}
+					if (this->spatialData.tracking) {
+						if (this->spatialData.pos)
+							for (int i = 0; i < 3; i++)
+								strng += this->spatialData.positionArray[i] + " ";
+
+						if (this->spatialData.rot)
+							for (int i = 0; i < 4; i++)
+								strng += this->spatialData.rotationArray[i] + " ";
+
+						strng += "#";
+
+					}
+					if (this->miscData.tracking) {
+						if (this->miscData.pos)
+							for (int i = 0; i < 3; i++)
+								strng += this->miscData.positionArray[i] + " ";
+
+						if (this->miscData.rot)
+							for (int i = 0; i < 4; i++)
+								strng += this->miscData.rotationArray[i] + " ";
+
+						strng += "#";
+					}
+					//strng += "\0";
+					Sleep(5);
+					writer->WriteLine(strng);
+					writer->Flush();
 				}
-				if (this->handData.tracking) {
-					if (this->handData.pos)
-						for (int i = 0; i < 3; i++)
-							strng += this->handData.positionArray[i] + " ";
+			}
+			catch (Exception^ e) {
+				Console::WriteLine("Client Quit.");
+				this->listener->Stop();
+				this->client->Close();
 
-					if (this->handData.rot)
-						for (int i = 0; i < 4; i++)
-							strng += this->handData.rotationArray[i] + " ";
-
-					strng += "#";
-				}
-				if (this->spatialData.tracking) {
-					if (this->spatialData.pos)
-						for (int i = 0; i < 3; i++)
-							strng += this->spatialData.positionArray[i] + " ";
-					
-					if (this->spatialData.rot)
-						for (int i = 0; i < 4; i++)
-							strng += this->spatialData.rotationArray[i] + " ";
-
-					strng += "#";
-					
-				}
-				if (this->miscData.tracking) {
-					if (this->miscData.pos)
-						for (int i = 0; i < 3; i++)
-							strng += this->miscData.positionArray[i] + " ";
-
-					if (this->miscData.rot)
-						for (int i = 0; i < 4; i++)
-							strng += this->miscData.rotationArray[i] + " ";
-
-					strng += "#";
-				}
-				//strng += "\0";
-				Sleep(5);
-				writer->WriteLine(strng);
-				writer->Flush();
 			}
 		}
-		catch (Exception^ e) {
-			Console::WriteLine("Client Quit.");
-			this->listener->Stop();
-			this->client->Close();
-			
-		}
+		this->listener->Stop();
+		this->client->Close();
+		//Console::WriteLine("Closed client and listener.");
 	}
-	this->listener->Stop();
-	this->client->Close();
-	Console::WriteLine("Closed client and listener.");
+	catch (Exception^ e) {
+		Console::WriteLine("Server halted.");
+	}
 }
 
 void SIVRServer::SetData(DevType)
@@ -353,6 +357,7 @@ void SIVRServer::StartServer()
 	while (!this->serverThread->IsAlive);
 
 	Sleep(100);
+	Console::WriteLine("Thread Started");
 	
 	/*
 	while (1) {

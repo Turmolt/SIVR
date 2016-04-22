@@ -106,7 +106,7 @@ VRPNClient ^ Boss::getClient(DevType type)
 void Boss::killServer() {
 	if (this->server->running) {
 		this->server->listener->Stop();
-		this->server->client->Close();
+		//this->server->client->Close();
 		this->server->running = false;
 	}
 }

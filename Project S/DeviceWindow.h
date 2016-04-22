@@ -400,7 +400,10 @@ private: System::Void miscDeviceChoices_SelectedIndexChanged(System::Object^  se
 
 }
 private: System::Void KillClients_Click(System::Object^  sender, System::EventArgs^  e) {
-	
+	if (ProcWorker::getBoss()->server->running) {
+		ProcWorker::getBoss()->killServer();
+		Console::WriteLine("Killing Server");
+	}
 	if(this->MDCheck->Checked)
 		ProcWorker::getBoss()->killClient(DevType::Misc);
 	if(this->HMDCheck->Checked)
@@ -410,9 +413,7 @@ private: System::Void KillClients_Click(System::Object^  sender, System::EventAr
 	if(this->STCheck->Checked)
 		ProcWorker::getBoss()->killClient(DevType::Spatial);
 
-	if (ProcWorker::getBoss()->server->running) {
-		ProcWorker::getBoss()->killServer();
-	}
+
 
 	
 	//SIVRServer* s = new SIVRServer(7777, "n", "n", "p", "b");
