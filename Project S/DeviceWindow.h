@@ -158,18 +158,16 @@ namespace ProjectS {
 			this->panel2->Controls->Add(this->label2);
 			this->panel2->Controls->Add(this->panel3);
 			this->panel2->Controls->Add(this->Title);
-			this->panel2->Location = System::Drawing::Point(16, 15);
-			this->panel2->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->panel2->Location = System::Drawing::Point(12, 12);
 			this->panel2->Name = L"panel2";
-			this->panel2->Size = System::Drawing::Size(345, 508);
+			this->panel2->Size = System::Drawing::Size(259, 413);
 			this->panel2->TabIndex = 8;
 			// 
 			// refreshDevices
 			// 
-			this->refreshDevices->Location = System::Drawing::Point(104, 380);
-			this->refreshDevices->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->refreshDevices->Location = System::Drawing::Point(78, 309);
 			this->refreshDevices->Name = L"refreshDevices";
-			this->refreshDevices->Size = System::Drawing::Size(100, 28);
+			this->refreshDevices->Size = System::Drawing::Size(75, 23);
 			this->refreshDevices->TabIndex = 19;
 			this->refreshDevices->Text = L"Refresh";
 			this->refreshDevices->UseVisualStyleBackColor = true;
@@ -177,10 +175,9 @@ namespace ProjectS {
 			// 
 			// KillClients
 			// 
-			this->KillClients->Location = System::Drawing::Point(104, 452);
-			this->KillClients->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->KillClients->Location = System::Drawing::Point(78, 367);
 			this->KillClients->Name = L"KillClients";
-			this->KillClients->Size = System::Drawing::Size(100, 28);
+			this->KillClients->Size = System::Drawing::Size(75, 23);
 			this->KillClients->TabIndex = 18;
 			this->KillClients->Text = L"Kill Clients";
 			this->KillClients->UseVisualStyleBackColor = true;
@@ -188,10 +185,9 @@ namespace ProjectS {
 			// 
 			// applyDevicePurposes
 			// 
-			this->applyDevicePurposes->Location = System::Drawing::Point(104, 416);
-			this->applyDevicePurposes->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->applyDevicePurposes->Location = System::Drawing::Point(78, 338);
 			this->applyDevicePurposes->Name = L"applyDevicePurposes";
-			this->applyDevicePurposes->Size = System::Drawing::Size(100, 28);
+			this->applyDevicePurposes->Size = System::Drawing::Size(75, 23);
 			this->applyDevicePurposes->TabIndex = 17;
 			this->applyDevicePurposes->Text = L"Launch";
 			this->applyDevicePurposes->UseVisualStyleBackColor = true;
@@ -200,20 +196,18 @@ namespace ProjectS {
 			// miscDeviceChoices
 			// 
 			this->miscDeviceChoices->FormattingEnabled = true;
-			this->miscDeviceChoices->Location = System::Drawing::Point(75, 308);
-			this->miscDeviceChoices->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->miscDeviceChoices->Location = System::Drawing::Point(56, 250);
 			this->miscDeviceChoices->Name = L"miscDeviceChoices";
-			this->miscDeviceChoices->Size = System::Drawing::Size(160, 24);
+			this->miscDeviceChoices->Size = System::Drawing::Size(121, 21);
 			this->miscDeviceChoices->TabIndex = 16;
 			this->miscDeviceChoices->SelectedIndexChanged += gcnew System::EventHandler(this, &DeviceWindow::miscDeviceChoices_SelectedIndexChanged);
 			// 
 			// MDCheck
 			// 
 			this->MDCheck->AutoSize = true;
-			this->MDCheck->Location = System::Drawing::Point(41, 286);
-			this->MDCheck->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->MDCheck->Location = System::Drawing::Point(31, 232);
 			this->MDCheck->Name = L"MDCheck";
-			this->MDCheck->Size = System::Drawing::Size(18, 17);
+			this->MDCheck->Size = System::Drawing::Size(15, 14);
 			this->MDCheck->TabIndex = 15;
 			this->MDCheck->UseVisualStyleBackColor = true;
 			// 
@@ -221,29 +215,26 @@ namespace ProjectS {
 			// 
 			this->label5->AutoSize = true;
 			this->label5->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12));
-			this->label5->Location = System::Drawing::Point(69, 279);
-			this->label5->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->label5->Location = System::Drawing::Point(52, 227);
 			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(128, 25);
+			this->label5->Size = System::Drawing::Size(101, 20);
 			this->label5->TabIndex = 14;
 			this->label5->Text = L"Misc Devices";
 			// 
 			// handDeviceChoices
 			// 
 			this->handDeviceChoices->FormattingEnabled = true;
-			this->handDeviceChoices->Location = System::Drawing::Point(75, 233);
-			this->handDeviceChoices->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->handDeviceChoices->Location = System::Drawing::Point(56, 189);
 			this->handDeviceChoices->Name = L"handDeviceChoices";
-			this->handDeviceChoices->Size = System::Drawing::Size(160, 24);
+			this->handDeviceChoices->Size = System::Drawing::Size(121, 21);
 			this->handDeviceChoices->TabIndex = 13;
 			// 
 			// HTCheck
 			// 
 			this->HTCheck->AutoSize = true;
-			this->HTCheck->Location = System::Drawing::Point(41, 210);
-			this->HTCheck->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->HTCheck->Location = System::Drawing::Point(31, 171);
 			this->HTCheck->Name = L"HTCheck";
-			this->HTCheck->Size = System::Drawing::Size(18, 17);
+			this->HTCheck->Size = System::Drawing::Size(15, 14);
 			this->HTCheck->TabIndex = 12;
 			this->HTCheck->UseVisualStyleBackColor = true;
 			// 
@@ -251,48 +242,43 @@ namespace ProjectS {
 			// 
 			this->label4->AutoSize = true;
 			this->label4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12));
-			this->label4->Location = System::Drawing::Point(69, 204);
-			this->label4->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->label4->Location = System::Drawing::Point(52, 166);
 			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(140, 25);
+			this->label4->Size = System::Drawing::Size(112, 20);
 			this->label4->TabIndex = 11;
 			this->label4->Text = L"Hand Tracking";
 			// 
 			// SpatialTrackingChoices
 			// 
 			this->SpatialTrackingChoices->FormattingEnabled = true;
-			this->SpatialTrackingChoices->Location = System::Drawing::Point(75, 158);
-			this->SpatialTrackingChoices->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->SpatialTrackingChoices->Location = System::Drawing::Point(56, 128);
 			this->SpatialTrackingChoices->Name = L"SpatialTrackingChoices";
-			this->SpatialTrackingChoices->Size = System::Drawing::Size(160, 24);
+			this->SpatialTrackingChoices->Size = System::Drawing::Size(121, 21);
 			this->SpatialTrackingChoices->TabIndex = 10;
 			// 
 			// headDeviceChoices
 			// 
 			this->headDeviceChoices->FormattingEnabled = true;
-			this->headDeviceChoices->Location = System::Drawing::Point(75, 84);
-			this->headDeviceChoices->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->headDeviceChoices->Location = System::Drawing::Point(56, 68);
 			this->headDeviceChoices->Name = L"headDeviceChoices";
-			this->headDeviceChoices->Size = System::Drawing::Size(160, 24);
+			this->headDeviceChoices->Size = System::Drawing::Size(121, 21);
 			this->headDeviceChoices->TabIndex = 9;
 			// 
 			// STCheck
 			// 
 			this->STCheck->AutoSize = true;
-			this->STCheck->Location = System::Drawing::Point(41, 135);
-			this->STCheck->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->STCheck->Location = System::Drawing::Point(31, 110);
 			this->STCheck->Name = L"STCheck";
-			this->STCheck->Size = System::Drawing::Size(18, 17);
+			this->STCheck->Size = System::Drawing::Size(15, 14);
 			this->STCheck->TabIndex = 8;
 			this->STCheck->UseVisualStyleBackColor = true;
 			// 
 			// HMDCheck
 			// 
 			this->HMDCheck->AutoSize = true;
-			this->HMDCheck->Location = System::Drawing::Point(41, 62);
-			this->HMDCheck->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->HMDCheck->Location = System::Drawing::Point(31, 50);
 			this->HMDCheck->Name = L"HMDCheck";
-			this->HMDCheck->Size = System::Drawing::Size(18, 17);
+			this->HMDCheck->Size = System::Drawing::Size(15, 14);
 			this->HMDCheck->TabIndex = 7;
 			this->HMDCheck->UseVisualStyleBackColor = true;
 			// 
@@ -300,10 +286,9 @@ namespace ProjectS {
 			// 
 			this->label3->AutoSize = true;
 			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12));
-			this->label3->Location = System::Drawing::Point(69, 129);
-			this->label3->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->label3->Location = System::Drawing::Point(52, 105);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(153, 25);
+			this->label3->Size = System::Drawing::Size(122, 20);
 			this->label3->TabIndex = 6;
 			this->label3->Text = L"Spatial Tracking";
 			// 
@@ -311,45 +296,46 @@ namespace ProjectS {
 			// 
 			this->label2->AutoSize = true;
 			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12));
-			this->label2->Location = System::Drawing::Point(69, 55);
-			this->label2->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->label2->Location = System::Drawing::Point(52, 45);
 			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(140, 25);
+			this->label2->Size = System::Drawing::Size(112, 20);
 			this->label2->TabIndex = 5;
 			this->label2->Text = L"Head Tracking";
 			// 
 			// panel3
 			// 
 			this->panel3->BackColor = System::Drawing::SystemColors::InactiveCaptionText;
-			this->panel3->Location = System::Drawing::Point(28, 46);
-			this->panel3->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->panel3->Location = System::Drawing::Point(21, 37);
+			this->panel3->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->panel3->Name = L"panel3";
-			this->panel3->Size = System::Drawing::Size(7, 313);
+			this->panel3->Size = System::Drawing::Size(5, 254);
 			this->panel3->TabIndex = 4;
 			// 
 			// Title
 			// 
 			this->Title->AutoSize = true;
 			this->Title->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15, System::Drawing::FontStyle::Bold));
-			this->Title->Location = System::Drawing::Point(21, 12);
+			this->Title->Location = System::Drawing::Point(16, 10);
+			this->Title->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->Title->Name = L"Title";
-			this->Title->Size = System::Drawing::Size(238, 29);
+			this->Title->Size = System::Drawing::Size(190, 25);
 			this->Title->TabIndex = 2;
 			this->Title->Text = L"VR Purpose Setup";
 			// 
 			// DeviceWindow
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->AutoSize = true;
 			this->BackColor = System::Drawing::SystemColors::GradientActiveCaption;
-			this->ClientSize = System::Drawing::Size(377, 534);
+			this->ClientSize = System::Drawing::Size(283, 434);
 			this->Controls->Add(this->panel2);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
-			this->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->Name = L"DeviceWindow";
+			this->ShowIcon = false;
 			this->SizeGripStyle = System::Windows::Forms::SizeGripStyle::Hide;
-			this->Text = L"SIVR";
+			this->Text = L"S I V R";
 			this->Load += gcnew System::EventHandler(this, &DeviceWindow::DeviceWindow_Load);
 			this->panel2->ResumeLayout(false);
 			this->panel2->PerformLayout();
