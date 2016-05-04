@@ -96,11 +96,13 @@ VrpnBridge::VrpnBridge(DevType x, SIVConfig^ cfg)
 		this->XRot = cfg->XRot;
 		this->WRot = cfg->WRot;
 	}
-	cout << this->deviceName << " " << this->channels << " " << this->VRPNname << " "<< this->dataTypes<<" "<<this->buttons << endl;
-	if (this->rot)
-		cout << "Rotation: (" << this->XRot << "," << this->YRot << "," << this->ZRot << "," << this->WRot << ")" << endl;
-	if (this->pos)
-		cout << "Position: (" << this->XPos << "," << this->YPos << "," << this->ZPos << "," << this->Scale << ")" << endl;
+	
+	//cout << this->deviceName << " " << this->channels << " " << this->VRPNname << " "<< this->dataTypes<<" "<<this->buttons << endl;
+	//if (this->rot)
+	//	cout << "Rotation: (" << this->XRot << "," << this->YRot << "," << this->ZRot << "," << this->WRot << ")" << endl;
+	//if (this->pos)
+	//	cout << "Position: (" << this->XPos << "," << this->YPos << "," << this->ZPos << "," << this->Scale << ")" << endl;
+		
 	
 
 	/*if (this->buttons > 0 && this->channels > 0) {
@@ -184,7 +186,7 @@ void VrpnBridge::StartButtonHandler(int* external) {
 				break;
 		}
 		catch (System::NullReferenceException^){
-			cout << "Running null value" << endl;
+			cout << "[Bridge]: Running null value" << endl;
 		}
 	}
 }
@@ -194,9 +196,9 @@ void VrpnBridge::StartButtonHandler(int* external) {
 void VrpnBridge::StartAnalogHandler() {
 
 	std::string m = this->deviceName + "@localhost";
-	cout << "\nm is: " << m << endl;
+	//cout << "\nm is: " << m << endl;
 	const char* host = m.c_str();
-	cout << host;
+	//cout << host;
 	vrpn_Analog_Remote* vrpnAnalog = new vrpn_Analog_Remote(host);
 	vrpn_Tracker_Remote* trackerRemote = new vrpn_Tracker_Remote(host);
 
@@ -209,7 +211,7 @@ void VrpnBridge::StartAnalogHandler() {
 				break;
 		}
 		catch (System::NullReferenceException^) {
-			cout << "Running null value" << endl;
+			cout << "[Bridge]: Running null value" << endl;
 		}
 	}
 }
@@ -220,7 +222,7 @@ void VrpnBridge::StartGamepadHandler() {
 	//SIVRData.open(this->path, std::ofstream::trunc);
 	//cout << this->dataTypes;
 	std::string m = this->VRPNname + "@localhost";
-	cout << m << endl;
+	//cout << m << endl;
 	const char* host = m.c_str();
 	
 	if (this->bridgeType == "Analog") {
@@ -271,7 +273,7 @@ void VrpnBridge::StartGamepadHandler() {
 					break;
 			}
 			catch (System::NullReferenceException^) {
-				cout << "Running null value" << endl;
+				cout << "[Bridge]: Running null value" << endl;
 			}
 		}
 	}
@@ -329,7 +331,7 @@ void VrpnBridge::StartGamepadHandler() {
 					break;
 			}
 			catch (System::NullReferenceException^) {
-				cout << "Running null value" << endl;
+				cout << "[Bridge]: Running null value" << endl;
 			}
 		}
 	}

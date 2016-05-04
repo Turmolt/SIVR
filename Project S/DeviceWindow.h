@@ -81,7 +81,9 @@ namespace ProjectS {
 
 	private: System::Windows::Forms::Label^  label3;
 	private: System::Windows::Forms::Label^  label2;
-	private: System::Windows::Forms::Panel^  panel3;
+	private: System::Windows::Forms::Panel^  ServerStatus;
+
+
 	private: System::Windows::Forms::Button^  refreshDevices;
 	private: System::Windows::Forms::Button^  KillClients;
 	private: System::Windows::Forms::Button^  applyDevicePurposes;
@@ -133,14 +135,14 @@ namespace ProjectS {
 			this->HMDCheck = (gcnew System::Windows::Forms::CheckBox());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
-			this->panel3 = (gcnew System::Windows::Forms::Panel());
+			this->ServerStatus = (gcnew System::Windows::Forms::Panel());
 			this->Title = (gcnew System::Windows::Forms::Label());
 			this->panel2->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// panel2
 			// 
-			this->panel2->BackColor = System::Drawing::SystemColors::GradientActiveCaption;
+			this->panel2->BackColor = System::Drawing::SystemColors::ActiveCaption;
 			this->panel2->Controls->Add(this->refreshDevices);
 			this->panel2->Controls->Add(this->KillClients);
 			this->panel2->Controls->Add(this->applyDevicePurposes);
@@ -156,7 +158,7 @@ namespace ProjectS {
 			this->panel2->Controls->Add(this->HMDCheck);
 			this->panel2->Controls->Add(this->label3);
 			this->panel2->Controls->Add(this->label2);
-			this->panel2->Controls->Add(this->panel3);
+			this->panel2->Controls->Add(this->ServerStatus);
 			this->panel2->Controls->Add(this->Title);
 			this->panel2->Location = System::Drawing::Point(12, 12);
 			this->panel2->Name = L"panel2";
@@ -179,7 +181,7 @@ namespace ProjectS {
 			this->KillClients->Name = L"KillClients";
 			this->KillClients->Size = System::Drawing::Size(75, 23);
 			this->KillClients->TabIndex = 18;
-			this->KillClients->Text = L"Kill Clients";
+			this->KillClients->Text = L"Kill Server";
 			this->KillClients->UseVisualStyleBackColor = true;
 			this->KillClients->Click += gcnew System::EventHandler(this, &DeviceWindow::KillClients_Click);
 			// 
@@ -214,10 +216,10 @@ namespace ProjectS {
 			// label5
 			// 
 			this->label5->AutoSize = true;
-			this->label5->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12));
+			this->label5->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Bold));
 			this->label5->Location = System::Drawing::Point(52, 227);
 			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(101, 20);
+			this->label5->Size = System::Drawing::Size(113, 20);
 			this->label5->TabIndex = 14;
 			this->label5->Text = L"Misc Devices";
 			// 
@@ -241,10 +243,10 @@ namespace ProjectS {
 			// label4
 			// 
 			this->label4->AutoSize = true;
-			this->label4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12));
+			this->label4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Bold));
 			this->label4->Location = System::Drawing::Point(52, 166);
 			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(112, 20);
+			this->label4->Size = System::Drawing::Size(125, 20);
 			this->label4->TabIndex = 11;
 			this->label4->Text = L"Hand Tracking";
 			// 
@@ -285,40 +287,40 @@ namespace ProjectS {
 			// label3
 			// 
 			this->label3->AutoSize = true;
-			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12));
+			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Bold));
 			this->label3->Location = System::Drawing::Point(52, 105);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(122, 20);
+			this->label3->Size = System::Drawing::Size(138, 20);
 			this->label3->TabIndex = 6;
 			this->label3->Text = L"Spatial Tracking";
 			// 
 			// label2
 			// 
 			this->label2->AutoSize = true;
-			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12));
+			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Bold));
 			this->label2->Location = System::Drawing::Point(52, 45);
 			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(112, 20);
+			this->label2->Size = System::Drawing::Size(125, 20);
 			this->label2->TabIndex = 5;
 			this->label2->Text = L"Head Tracking";
 			// 
-			// panel3
+			// ServerStatus
 			// 
-			this->panel3->BackColor = System::Drawing::SystemColors::InactiveCaptionText;
-			this->panel3->Location = System::Drawing::Point(21, 37);
-			this->panel3->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
-			this->panel3->Name = L"panel3";
-			this->panel3->Size = System::Drawing::Size(5, 254);
-			this->panel3->TabIndex = 4;
+			this->ServerStatus->BackColor = System::Drawing::Color::Black;
+			this->ServerStatus->Location = System::Drawing::Point(21, 37);
+			this->ServerStatus->Margin = System::Windows::Forms::Padding(2);
+			this->ServerStatus->Name = L"ServerStatus";
+			this->ServerStatus->Size = System::Drawing::Size(5, 254);
+			this->ServerStatus->TabIndex = 4;
 			// 
 			// Title
 			// 
 			this->Title->AutoSize = true;
-			this->Title->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15, System::Drawing::FontStyle::Bold));
+			this->Title->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 16, System::Drawing::FontStyle::Bold));
 			this->Title->Location = System::Drawing::Point(16, 10);
 			this->Title->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->Title->Name = L"Title";
-			this->Title->Size = System::Drawing::Size(190, 25);
+			this->Title->Size = System::Drawing::Size(209, 26);
 			this->Title->TabIndex = 2;
 			this->Title->Text = L"VR Purpose Setup";
 			// 
@@ -327,11 +329,11 @@ namespace ProjectS {
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->AutoSize = true;
-			this->BackColor = System::Drawing::SystemColors::GradientActiveCaption;
+			this->BackColor = System::Drawing::SystemColors::ActiveCaption;
 			this->ClientSize = System::Drawing::Size(283, 434);
 			this->Controls->Add(this->panel2);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
-			this->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->Margin = System::Windows::Forms::Padding(2);
 			this->Name = L"DeviceWindow";
 			this->ShowIcon = false;
 			this->SizeGripStyle = System::Windows::Forms::SizeGripStyle::Hide;
@@ -399,6 +401,7 @@ private: System::Void KillClients_Click(System::Object^  sender, System::EventAr
 	if(this->STCheck->Checked)
 		ProcWorker::getBoss()->killClient(DevType::Spatial);
 
+	this->SwitchServerStatusOff();
 
 
 	
@@ -440,6 +443,39 @@ private: System::Void KillClients_Click(System::Object^  sender, System::EventAr
 
 	//Console::WriteLine(strng);
 }
+
+public: void SwitchServerStatusOn() {
+
+
+	this->ServerStatus->BackColor = Color::Green;
+	
+
+
+}
+
+public: void SwitchServerStatusWaiting() {
+
+
+	this->ServerStatus->BackColor = Color::Orange;
+	this->HMDCheck->AutoCheck = false;
+	this->STCheck->AutoCheck = false;
+	this->HTCheck->AutoCheck = false;
+	this->MDCheck->AutoCheck = false;
+
+
+}
+
+private: void SwitchServerStatusOff() {
+
+
+	this->ServerStatus->BackColor = Color::Black;
+	this->HMDCheck->AutoCheck = true;
+	this->STCheck->AutoCheck = true;
+	this->HTCheck->AutoCheck = true;
+	this->MDCheck->AutoCheck = true;
+
+
+	}
 private: System::Void applyDevicePurposes_Click_1(System::Object^  sender, System::EventArgs^  e) {
 //	if (ProcWorker::getBoss()->curMax < ProcWorker::getBoss()->clientArray->Length) {
 
@@ -475,9 +511,13 @@ private: System::Void applyDevicePurposes_Click_1(System::Object^  sender, Syste
 	}
 
 	if (clientCount > 0) {
-		Console::WriteLine("Start");
+		//Console::WriteLine("[SIVR Server]: Starting server...");
 
+		
+		ProcWorker::getBoss()->makeServer();
+		ProcWorker::getBoss()->server->c = this->ServerStatus;
 		ProcWorker::getBoss()->startServer();
+		this->SwitchServerStatusWaiting();
 	}
 	else
 		Console::WriteLine("No clients selected to launch.");

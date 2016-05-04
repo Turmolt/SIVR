@@ -44,6 +44,8 @@ public:
 
 	bool running;
 
+	System::Windows::Forms::Panel^ c;
+
 	//float* MarshalData(cli::array < cli::interior_ptr<float>>^);
 
 	bool headTracking;

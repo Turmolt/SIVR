@@ -260,14 +260,15 @@ void SIVRServer::ServerLoop() {
 	}
 	try {
 		while (this->running) {
-
-			Console::Write("Waiting for client...");
+			this->c->BackColor = System::Drawing::Color::Orange;
+			Console::Write("[SIVR Server]: Waiting for client...");
 			//this->client->Close();
 			//this->listener->Stop();
 
 			this->listener->Start();
 			this->client = this->listener->AcceptTcpClient();
 			Console::WriteLine(" Client connected!");
+			this->c->BackColor = System::Drawing::Color::Lime;
 			NetworkStream^ stream = this->client->GetStream();
 			StreamWriter^ writer = gcnew StreamWriter(stream, Encoding::ASCII);
 			try {
@@ -337,7 +338,7 @@ void SIVRServer::ServerLoop() {
 		//Console::WriteLine("Closed client and listener.");
 	}
 	catch (Exception^ e) {
-		Console::WriteLine("Server halted.");
+		Console::WriteLine("[SIVR Server]: Server halted.");
 	}
 }
 
@@ -346,18 +347,20 @@ void SIVRServer::SetData(DevType)
 
 }
 
+
+
 //Spawn thread to run the server toop
 void SIVRServer::StartServer()
 {
 	//System::Console::WriteLine("Server!");
-
+	Console::WriteLine("[SIVR Server]: Starting Server");
 	this->serverThread = gcnew Thread(gcnew ThreadStart(this, &SIVRServer::ServerLoop));
 	this->serverThread->Start();
 	this->running = true;
 	while (!this->serverThread->IsAlive);
 
 	Sleep(100);
-	Console::WriteLine("Thread Started");
+	//Console::WriteLine("Thread Started");
 	
 	/*
 	while (1) {

@@ -41,7 +41,7 @@ void Boss::newClient(DevType t, String^ devName, SIVConfig^ cfg)
 	case DevType::Misc:
 		if (!this->misc){
 			this->Misc = gcnew VRPNClient(t, devName,cfg);
-			Console::WriteLine(cfg->channels);
+			//Console::WriteLine(cfg->channels);
 			this->miscCfg = cfg;
 			//this->Misc->config = cfg;
 			this->misc = true;
@@ -78,7 +78,7 @@ void Boss::newClient(DevType t, String^ devName, SIVConfig^ cfg)
 			Console::WriteLine("Hands already has a device assigned.");
 		break;
 	}
-	Console::WriteLine("End New Client");
+	//Console::WriteLine("End New Client");
 }
 
 //return the client of selected type
@@ -143,19 +143,42 @@ void Boss::killClient(DevType t) {
 	}
 }
 
+void Boss::startServer() {
+	//assign server reference toe ach client
+	this->server->StartServer();
+	if (this->head) {
+		this->Head->server = this->server;
 
-SIVRServer^ Boss::startServer()
+		this->Head->startAnalogThread();
+	}
+	if (this->hands) {
+		this->Hands->server = this->server;
+
+		this->Hands->startAnalogThread();
+	}
+	if (this->tracker) {
+		this->Spatial->server = this->server;
+
+		this->Spatial->startAnalogThread();
+	}
+	if (this->misc) {
+		this->Misc->server = this->server;
+
+		this->Misc->startAnalogThread();
+	}
+}
+SIVRServer^ Boss::makeServer()
 {
 	String^ head = "n";
 	String^ hands = "n";
 	String^ spatial = "n";
 	String^ misc = "n";
 
-	System::Console::WriteLine("startServer()");
+	//System::Console::WriteLine("startServer()");
 
 	//DETERMINE DATA TYPES TO SEND HAND
 	if (this->hands) {
-		Console::WriteLine(this->handCfg->dataTypes->ToString() + " chosen for hand\n");
+		//Console::WriteLine(this->handCfg->dataTypes->ToString() + " chosen for hand\n");
 		if (this->handCfg->dataTypes->Equals("Rotation")) {
 			hands = "r";
 		}
@@ -201,7 +224,7 @@ SIVRServer^ Boss::startServer()
 	}
 	//DETERMINE DATA TYPES TO SEND MISC
 	if (this->misc) {
-		Console::WriteLine(this->miscCfg->dataTypes->ToString() + " chosen for misc\n");
+		//Console::WriteLine(this->miscCfg->dataTypes->ToString() + " chosen for misc\n");
 		if (this->miscCfg->dataTypes->Equals("Rotation")) {
 			misc = "r";
 		}
@@ -220,28 +243,7 @@ SIVRServer^ Boss::startServer()
 
 	//System::Console::WriteLine(this->server->activePurposes);
 
-	//assign server reference toe ach client
-	this->server->StartServer();
-	if (this->head) {
-		this->Head->server = this->server;
-
-		this->Head->startAnalogThread();
-	}
-	if (this->hands) {
-		this->Hands->server = this->server;
-
-		this->Hands->startAnalogThread();
-	}
-	if (this->tracker) {
-		this->Spatial->server = this->server;
-
-		this->Spatial->startAnalogThread();
-	}
-	if (this->misc) {
-		this->Misc->server = this->server;
-
-		this->Misc->startAnalogThread();
-	}
+	
 
 	return this->server;
 }
@@ -255,6 +257,8 @@ void Boss::stopServer()
 {
 	throw gcnew System::NotImplementedException();
 }
+
+
 
 [STAThread]
 int main()

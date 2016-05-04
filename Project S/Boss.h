@@ -19,7 +19,8 @@ public:
 
 	//SERVER FUNCTIONS
 	SIVRServer^ getServer();
-	SIVRServer^ startServer();
+	SIVRServer^ makeServer();
+	void startServer();
 	void stopServer();
 
 	//The Server

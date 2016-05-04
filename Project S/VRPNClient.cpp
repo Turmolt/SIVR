@@ -35,7 +35,7 @@ VRPNClient::VRPNClient(DevType t, String^ dev,SIVConfig^ cfg)
 	this->config->deviceName = dev;
 	s = gcnew String("");
 	this->dName = dev;
-	Console::WriteLine("Start Bridge");
+	//Console::WriteLine("Start Bridge");
 	this->b = new VrpnBridge(t, this->config);
 	this->deviceType = t;
 
@@ -67,7 +67,7 @@ void VRPNClient::buttonListen2() {
 		}
 		else
 		{
-			Console::Write("No Bridge");
+			Console::Write("[VRPN Client]: No Bridge");
 			this->b = new VrpnBridge(this->deviceType, this->config);
 		}
 		
@@ -92,7 +92,7 @@ void VRPNClient::analogListen2() {
 
 		//write to head if device type is head
 	case DevType::HeadTracker:
-		Console::WriteLine(this->config->dataTypes + " is the type");
+		//Console::WriteLine(this->config->dataTypes + " is the type");
 		//set data ahead of being changed
 		for (int k = 0; k <= 3; k++) {
 			if(k!=3)
@@ -130,7 +130,7 @@ void VRPNClient::analogListen2() {
 		//if the device is hand then write to hand
 	case DevType::HandTracker:
 		//set data ahead of being changed
-		Console::WriteLine("hand data logging started\n");
+		//Console::WriteLine("hand data logging started\n");
 		for (int k = 0; k <= 3; k++) {
 			if (k != 3)
 				server->handData.positionArray[k] = this->b->Position[k];
@@ -280,7 +280,7 @@ void VRPNClient::startAnalogThread()
 	this->a2Thread->Start();
 	while (!this->aThread->IsAlive); //waiting for the thread to start
 	Thread::Sleep(100);
-	Console::WriteLine("Running");
+	//Console::WriteLine("Running");
 	//this->running = false;
 }
 
@@ -291,7 +291,7 @@ void VRPNClient::stopThread()
 
 	this->running = false;
 	this->b->running = false;
-	Console::WriteLine("Shutting down thread");
+	Console::WriteLine("[VRPN Client]: Shutting down thread");
 	
 	/*
 	if (this->aThread != nullptr) {
