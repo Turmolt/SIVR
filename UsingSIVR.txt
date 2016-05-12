@@ -1,4 +1,4 @@
-#USING IN UNITY:
+USING IN UNITY:
 
 Set up server with desired VR Purposes and devices selected and enabled
 
